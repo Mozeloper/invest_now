@@ -148,7 +148,7 @@ export default function UpdateBioData({ handleCloseModals }) {
                   defaultValue={values.title}
                 />
                 {errors.title && touched.title ? (
-                  <Text variant="small" weight="normal" color="text-red-700">
+                  <Text variant="small" weight="normal" color="text-red">
                     {errors.title}
                   </Text>
                 ) : null}
@@ -160,7 +160,7 @@ export default function UpdateBioData({ handleCloseModals }) {
                 </label>
                 <Input placeholder="Maiden name" type="text" name="maidenName" handleChange={handleChange} />
                 {errors.maidenName && touched.maidenName ? (
-                  <Text variant="h4" weight="normal" color="text-red-700">
+                  <Text variant="h4" weight="normal" color="text-red">
                     {errors.maidenName}
                   </Text>
                 ) : null}
@@ -178,7 +178,7 @@ export default function UpdateBioData({ handleCloseModals }) {
                   defaultValue={values.religion}
                 />
                 {errors.religion && touched.religion ? (
-                  <Text variant="small" weight="normal" color="text-red-700">
+                  <Text variant="small" weight="normal" color="text-red">
                     {errors.religion}
                   </Text>
                 ) : null}
@@ -197,7 +197,7 @@ export default function UpdateBioData({ handleCloseModals }) {
                   defaultValue={values.marital_status}
                 />
                 {errors.marital_status && touched.marital_status ? (
-                  <Text variant="small" weight="normal" color="text-red-700">
+                  <Text variant="small" weight="normal" color="text-red">
                     {errors.marital_status}
                   </Text>
                 ) : null}
@@ -221,7 +221,7 @@ export default function UpdateBioData({ handleCloseModals }) {
             )}
             {errorMessage !== "" && (
               <div className="w-full text-center mt-4">
-                <Text variant="h4" color="text-red-500">
+                <Text variant="h4" color="text-red">
                   {errorMessage}
                 </Text>
               </div>

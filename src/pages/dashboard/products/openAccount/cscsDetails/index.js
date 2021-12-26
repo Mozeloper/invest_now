@@ -85,7 +85,7 @@ export default function CscsDetails({
           This information helps us personalise and secure your InvestNow account
         </Text>
       </div>
-      <div className="bg-[#65666A] p-[4%] w-[85%] mt-4 flex flex-col gap-3 h-[193px]">
+      <div className="bg-[#65666A] p-[4%] w-[85%] mt-4 flex flex-col gap-3 h-auto">
         <Text color="text-white" variant="h4">
           What is CSCS?
         </Text>

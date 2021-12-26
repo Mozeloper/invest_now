@@ -1,21 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import Text from "../../../components/Typography/Typography";
 import ProfileImg from "../../../assets/icons/profile_img.svg";
-import logout from "../../../assets/icons/logout.svg";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { resetInitialState } from "../../../store/slices/authSlices";
+import { NavLink, Outlet } from "react-router-dom";
 
 export default function Settings() {
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
   const dashboardReducer = useSelector((state) => state?.dashboardReducer);
   const customerPic = dashboardReducer?.customerDetails?.payload?.data?.data?.profile_pic;
-  const firstName = userDetails?.data?.customer?.firstname;
-  const lastName = userDetails?.data?.customer?.lastname;
-
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const firstName = userDetails?.data?.customer?.firstname ?? "";
+  const lastName = userDetails?.data?.customer?.lastname ?? "";
 
   const menuList = [
     {
@@ -36,12 +31,6 @@ export default function Settings() {
     },
   ];
 
-  const handlelogout = () => {
-    dispatch(resetInitialState());
-    localStorage.removeItem("access_token");
-    navigate("/login");
-  };
-
   return (
     <div data-aos="fade-up" data-aos-duration="2000">
       <Text variant="h1" weight="bold">
@@ -57,17 +46,6 @@ export default function Settings() {
           <Text color="text-[#465174]" variant="h3" format="whitespace-nowrap mt-3 font-bold">
             {firstName} {lastName}
           </Text>
-        </div>
-        <div className="flex flex-col whitespace-nowrap justify-end">
-          <div
-            className="h-[40px] cursor-pointer px-4 py-2 flex gap-2 border border-[#E32526]"
-            onClick={() => handlelogout()}
-          >
-            <img src={logout} alt="dashboard_icon" className="w-[18px] h-[20px]" />
-            <Text variant="h4" weight="bold" color="text-[#E32526]">
-              Log out
-            </Text>
-          </div>
         </div>
       </div>
       <div className="border-b border-[#BCBCBC] w-full m-4"></div>

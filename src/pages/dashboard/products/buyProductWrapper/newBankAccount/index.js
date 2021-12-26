@@ -1,0 +1,368 @@
+import React, { useEffect, useState } from "react";
+import Select from "react-select";
+import Text from "../../../../../components/Typography/Typography";
+import downArrow from "../../../../../assets/icons/down_arrow.svg";
+import downArrowWhite from "../../../../../assets/icons/white_small_logo.svg";
+import Input from "../../../../../components/formFields/inputs";
+import Button from "../../../../../components/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { getBankList, verifyBankAccount } from "../../../../../store/slices/openAccountSlice";
+import Loader from "../../../../../components/loader";
+import checked from "../../../../../assets/icons/correct.svg";
+import { useNavigate } from "react-router-dom";
+
+const colourStyles = {
+  control: (styles) => ({
+    ...styles,
+    backgroundColor: "#f2f5fa",
+    minHeight: 56,
+  }),
+  option: (styles, { isDisabled, isFocused }) => {
+    return {
+      ...styles,
+      backgroundColor: isFocused ? "#FE0000" : "#FFF",
+      color: isFocused ? "#FFF" : "#000",
+      cursor: isDisabled ? "not-allowed" : "default",
+    };
+  },
+};
+
+export default function NewBankAccount() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const openAccountReducer = useSelector((state) => state.openAccountReducer);
+  const account_name = openAccountReducer?.verifiedBankAccount?.payload?.data?.data?.account_name ?? "";
+  const failedVerifyAccount = openAccountReducer?.verifiedBankAccount?.payload?.data?.message ?? "";
+  const [existingBankDetails] = useState([
+    { name: "Paul Akilapa", number: " 31134567890", code: "FBN" },
+    { name: "Paul Akilapa", number: " 31134567890", code: "FBN" },
+  ]);
+
+  const bankList = [];
+  const [isSelected, setIsSelected] = useState({
+    new_bank_details: false,
+    existing_bank_details: false,
+  });
+
+  const [error, setError] = useState({
+    bank: false,
+    account_number: false,
+    options_error: false,
+    exceeded_account_number: false,
+    verify_account: false,
+    existing_account: false,
+  });
+  const [bankSelected, setBankSelected] = useState(null);
+  const [selectedExistingBank, setIsSelectedExistingBank] = useState(null);
+  const [accountNumber, setAccountNumber] = useState(null);
+
+  useEffect(() => {
+    let mounted = false;
+    (async () => {
+      mounted = true;
+      if (mounted && isSelected?.new_bank_details) {
+        dispatch(getBankList());
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [dispatch, isSelected?.new_bank_details]);
+
+  if (openAccountReducer?.bankListData?.type === "openaccount/banklist/fulfilled") {
+    openAccountReducer?.bankListData?.payload?.data?.data.map((list) => {
+      return bankList.push({
+        label: list.name,
+        value: {
+          code: list.code,
+          id: list.id,
+        },
+      });
+    });
+  }
+
+  const handleToggleAccordion = (type) => {
+    setBankSelected(null);
+    setAccountNumber(null);
+    setError((prev) => ({
+      ...prev,
+      bank: false,
+      account_number: false,
+      options_error: false,
+      exceeded_account_number: false,
+      verify_account: false,
+      existing_account: false,
+    }));
+    setIsSelected(false);
+    setIsSelected((prev) => ({
+      ...prev,
+      [type]: true,
+    }));
+  };
+
+  const handleToggleCloseAccordion = (type) => {
+    setIsSelected((prev) => ({
+      ...prev,
+      [type]: false,
+    }));
+  };
+
+  const handleVerifyAccount = async (bank_account_number) => {
+    const data = {
+      code: bankSelected.code,
+      account_number: bank_account_number,
+    };
+
+    dispatch(verifyBankAccount(data))
+      .unwrap()
+      .then(() => {})
+      .catch(() => {
+        setError((prev) => ({
+          ...prev,
+          verify_account: true,
+        }));
+        setTimeout(() => {
+          setError((prev) => ({
+            ...prev,
+            verify_account: false,
+          }));
+        }, 3000);
+      });
+  };
+
+  const handleBankDetails = () => {
+    if (isSelected?.new_bank_details) {
+      console.log("New Bank");
+      if (bankSelected === null || bankSelected === undefined) {
+        setError((prev) => ({
+          ...prev,
+          bank: true,
+        }));
+      }
+      if (accountNumber === null || accountNumber === undefined) {
+        setError((prev) => ({
+          ...prev,
+          account_number: true,
+        }));
+      }
+      if (bankSelected !== null && accountNumber !== null && accountNumber.length === 10 && account_name !== "") {
+        console.log(accountNumber, bankSelected, account_name);
+        navigate("/products/next_of_kin");
+      }
+    } else if (isSelected?.existing_bank_details) {
+      console.log("Exisiting Bank");
+      if (selectedExistingBank === null) {
+        setError((prev) => ({
+          ...prev,
+          existing_account: true,
+        }));
+      } else {
+        navigate("/products/next_of_kin");
+      }
+    } else {
+      setError((prev) => ({
+        ...prev,
+        options_error: true,
+      }));
+    }
+  };
+
+  return (
+    <div data-aos="fade-up" data-aos-duration="2000" className="p-[4%]">
+      <div className="flex flex-col gap-1 w-full">
+        <Text color="text-black" weight="bold" variant="h2">
+          Bank account details
+        </Text>
+        <Text color="text-black" weight="normal" variant="h3" format="tracking-wide">
+          Which bank account would you want to use?
+        </Text>
+      </div>
+      <div className="flex flex-col h-full justify-between mt-4">
+        <div className="flex flex-col gap-3">
+          <>
+            <div
+              style={{
+                background: `${
+                  isSelected?.new_bank_details ? "linear-gradient(to right, #2B2B2B, 70%, #606161)" : "#F8F8F8"
+                }`,
+              }}
+              className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer flex justify-between items-center"
+              onClick={() => {
+                !!!isSelected?.new_bank_details
+                  ? handleToggleAccordion("new_bank_details")
+                  : handleToggleCloseAccordion("new_bank_details");
+              }}
+            >
+              <Text color={`${isSelected?.new_bank_details ? "text-white" : null}`} weight="bold" variant="h4">
+                Provide new bank details
+              </Text>
+              <img
+                src={isSelected?.new_bank_details ? downArrowWhite : downArrow}
+                alt="down_arrow"
+                loading="lazy"
+                className="w-[15px] h-[15px]"
+              />
+            </div>
+            {isSelected?.new_bank_details && (
+              <>
+                <div className="w-full">
+                  <Select
+                    className="lg:w-[534px] md:w-full w-full bg-[#f2f2f2] rounded-lg"
+                    onChange={(e) => {
+                      setBankSelected(e.value);
+                      setError((prev) => ({
+                        ...prev,
+                        bank: false,
+                      }));
+                    }}
+                    name="bank"
+                    isLoading={openAccountReducer?.bankIsLoading}
+                    placeholder="Choose Bank"
+                    options={bankList}
+                    styles={colourStyles}
+                  />
+                </div>
+                {error.bank && (
+                  <Text variant="sub" weight="normal" color="text-red">
+                    Please select bank
+                  </Text>
+                )}
+                <div className="lg:w-[534px] md:w-full w-full">
+                  <Input
+                    handleChange={(e) => {
+                      if (e.target.value.length === 10) {
+                        setAccountNumber(e.target.value);
+                        setError((prev) => ({
+                          ...prev,
+                          exceeded_account_number: false,
+                        }));
+                        handleVerifyAccount(e.target.value);
+                      }
+
+                      if (e.target.value.length > 10 || e.target.value.length < 10) {
+                        setError((prev) => ({
+                          ...prev,
+                          exceeded_account_number: true,
+                        }));
+                      }
+                      setError((prev) => ({
+                        ...prev,
+                        account_number: false,
+                      }));
+                    }}
+                    placeholder="Account Number"
+                    type="text"
+                    name="amount"
+                  />
+                </div>
+                {error.account_number && (
+                  <Text variant="sub" weight="normal" color="text-red">
+                    Please Account Number
+                  </Text>
+                )}
+                {error.exceeded_account_number && (
+                  <Text variant="sub" weight="normal" color="text-red">
+                    Account Number Exceeded or Below length
+                  </Text>
+                )}
+                {openAccountReducer?.verifyAccountIsLoading && (
+                  <div className="w-[20%] mt-4">
+                    <Loader />
+                  </div>
+                )}
+                {!!!openAccountReducer?.verifyAccountIsLoading && account_name !== null && account_name !== "" && (
+                  <div className="flex gap-2 mt-4">
+                    <Text variant="body" weight="bold" color="text-black" format="text-left tracking-wide">
+                      {account_name}
+                    </Text>
+                    <img src={checked} alt="correct" className="w-[10px] h-[10px] md:w-[20px] md:h-[20px]" />
+                  </div>
+                )}
+                {!!!openAccountReducer?.verifyAccountIsLoading && error.verify_account && (
+                  <>
+                    <Text variant="body" weight="bold" color="text-red" format="w-full mt-4 tracking-wide">
+                      {failedVerifyAccount}
+                    </Text>
+                  </>
+                )}
+              </>
+            )}
+          </>
+          {!!!isSelected?.new_bank_details && (
+            <div className="flex flex-col gap3">
+              <div
+                style={{
+                  background: `${
+                    isSelected?.existing_bank_details ? "linear-gradient(to right, #2B2B2B, 70%, #606161)" : "#F8F8F8"
+                  }`,
+                }}
+                className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer flex justify-between items-center"
+                onClick={() => {
+                  !!!isSelected?.existing_bank_details
+                    ? handleToggleAccordion("existing_bank_details")
+                    : handleToggleCloseAccordion("existing_bank_details");
+                }}
+              >
+                <Text color={`${isSelected?.existing_bank_details ? "text-white" : null}`} weight="bold" variant="h4">
+                  Use existing bank details
+                </Text>
+                <img
+                  src={isSelected?.existing_bank_details ? downArrowWhite : downArrow}
+                  alt="down_arrow"
+                  loading="lazy"
+                  className="w-[15px] h-[15px]"
+                />
+              </div>
+              {error?.existing_account && (
+                <>
+                  <Text variant="body" weight="bold" color="text-red" format="w-full mt-4 tracking-wide">
+                    Please select an account
+                  </Text>
+                </>
+              )}
+              {isSelected?.existing_bank_details && (
+                <div className="mt-4">
+                  {existingBankDetails.map((list, index) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          setIsSelectedExistingBank(list);
+                          setError((prev) => ({
+                            ...prev,
+                            existing_account: false,
+                          }));
+                        }}
+                        key={index}
+                        className="bg-BACKGROUND_WHITE p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer flex justify-between items-center mt-2"
+                      >
+                        <Text color="text-black" weight="bold" variant="h4">
+                          {list?.number} - {list?.name} - {list?.code}
+                        </Text>
+                        <img src={checked} alt="correct" className="w-[10px] h-[10px] md:w-[20px] md:h-[20px]" />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="mt-[20%] self-center w-[50%]">
+          <Button
+            title="Next"
+            className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
+            type="button"
+            textColor="#fff"
+            onClick={() => handleBankDetails()}
+          />
+        </div>
+        {error.options_error && (
+          <Text variant="body" weight="normal" color="text-red" format="w-full mt-4 text-center">
+            Please Select Option Above
+          </Text>
+        )}
+      </div>
+    </div>
+  );
+}

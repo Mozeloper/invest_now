@@ -61,7 +61,7 @@ export default function Products() {
         <Text variant="h1" weight="bold">
           Products
         </Text>
-        <div className="md:w-[65%] w-full flex items-center overflow-x-auto no-scrollbar lg:gap-16 md:gap-10 gap-6 mt-4 px-[3%] bg-pink h-[68px]">
+        <div className="lg:w-[65%] md:w-full w-full flex items-center overflow-x-auto no-scrollbar lg:gap-16 md:gap-10 gap-6 mt-4 px-[3%] bg-pink h-[68px]">
           {productsLink.map((list) => {
             return (
               <NavLink

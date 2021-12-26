@@ -13,7 +13,8 @@ export default function ProductDetails({ handleShowKycMessage, handleOpenProduct
   const productsReducer = useSelector((state) => state.productsReducer);
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const productData = productsReducer?.productDetailsData?.payload?.data?.data;
-  const customerKycStep = dashboardReducer?.customerDetails?.payload?.data?.data?.kycStep;
+  const customerKycStep =
+    dashboardReducer?.customerDetails?.payload?.data?.data?.tier_status === "TIER_0" ? true : false;
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -38,12 +39,15 @@ export default function ProductDetails({ handleShowKycMessage, handleOpenProduct
 
   const handleRouting = () => {
     switch (customerKycStep) {
-      case "KYC_NOT_STARTED":
+      case true:
         handleShowKycMessage();
         handleOpenProductDetailsModal(null);
         break;
+      case false:
+        navigate("/products/buy_product", { state: productCode });
+        // navigate("/products/open_account", { state: productCode });
+        break;
       default:
-        navigate("/products/open_account", { state: productCode });
         break;
     }
   };

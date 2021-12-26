@@ -191,7 +191,7 @@ export default function SideBar() {
               </Text>
             </NavLink>
             <NavLink
-              to="/contact"
+              to="/contact_relationship_manager"
               className={({ isActive }) => (isActive ? "bg-[#FFE5E5]" : "")}
               style={{
                 width: "100%",

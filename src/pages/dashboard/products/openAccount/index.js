@@ -8,7 +8,7 @@ import checked from "../../../../assets/icons/correct.svg";
 // import BvnDetails from "./bvnDetails";
 import CscsDetails from "./cscsDetails";
 import {
-  // handleCreateAccount,
+  handleCreateAccount,
   handleNextStep,
   handlePreviousStep,
   handleResetStep,
@@ -27,11 +27,13 @@ import DepositSummary from "./depositSummary";
 import FundingSuccess from "./fundingSuccess";
 import CardPayment from "./cardPayment";
 import { handleGetProductDetails } from "../../../../store/slices/productsSlice";
+import { handleCustomerDetails } from "../../../../store/slices/dashboardSlice";
 
 export default function OpenAccount() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [errorMessage, setErrorMessage] = useState("");
   const [isLastStepSuccess, setIsLastStepSuccess] = useState(false);
   const [isRatingOpen, setIsRatingOpen] = useState(false);
   const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
@@ -45,12 +47,13 @@ export default function OpenAccount() {
   const [isFundingSuccess, setIsFundingSuccess] = useState(false);
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
   const productsReducer = useSelector((state) => state.productsReducer);
+  const dashboardReducer = useSelector((state) => state?.dashboardReducer);
+  const customerDetails = dashboardReducer?.customerDetails?.payload?.data?.data;
   const productData = productsReducer?.productDetailsData?.payload?.data?.data;
   const isBothTrue = productData?.category?.hasBeneficiary && productData?.category?.hasChnNumber;
   const isBothFalse = !productData?.category?.hasBeneficiary && !productData?.category?.hasChnNumber;
   const isbeneficiaryTrue = productData?.category?.hasBeneficiary && !productData?.category?.hasChnNumber;
   const isCHNTrue = productData?.category?.hasChnNumber && !productData?.category?.hasBeneficiary;
-  // console.log(productData);
 
   useEffect(() => {
     let mounted = false;
@@ -60,6 +63,7 @@ export default function OpenAccount() {
         if (location?.state !== null) {
           dispatch(handleGetProductDetails(location?.state));
           dispatch(handleResetStep());
+          dispatch(handleCustomerDetails());
         } else {
           const myString = location?.pathname.replace("/products/open_account/", "");
           const decodedString = atob(myString);
@@ -88,43 +92,46 @@ export default function OpenAccount() {
   }, [location?.pathname]);
 
   const handleCreatingaccount = async (values) => {
-    console.log(openAccountReducer, values, productData);
-
-    // const data = {
-    //   title: "Mr",
-    //   mothers_maiden_name: "Jayesimi",
-    //   terms_and_conditions: 1,
-    //   id_type: 1,
-    //   id_card: "C:\\SANDBOX\\ucap_api_sb/assets/uploads/2022/06/13/userId_-62a67853603d7.png",
-    //   passport: "C:\\SANDBOX\\ucap_api_sb/assets/uploads/2022/06/13/userPassport_-62a678385f165.png",
-    //   signature_specimen: "C:\\SANDBOX\\ucap_api_sb/assets/uploads/2022/06/13/userSignature_-62a6784659691.png",
-    //   utility_bill: "C:\\SANDBOX\\ucap_api_sb/assets/uploads/2022/06/13/userUtilityBill_-62a6786133961.png",
-    //   bank_id: 1,
-    //   bank_acct_no: "0022371361",
-    //   bank_acct_name: "JPtest",
-    //   is_pep: false,
-    //   nok_name: "JP Morgan1",
-    //   nok_gender: "Female",
-    //   nok_relationship: "Wife",
-    //   nok_address: "Mr",
-    //   nok_phone: "Jayesimi",
-    //   nok_email: "y1@y.com",
-    //   beneficiary_fullname: "",
-    //   beneficiary_dob: "",
-    //   beneficiary_id: "",
-    //   beneficiary_passport: "",
-    //   chn_account_number: "",
-    //   account_type: "AM_BON",
-    // };
-    // await dispatch(handleCreateAccount(data))
-    //   .unwrap()
-    //   .then((res) => {
-    //     console.log(res);
-    //     // setIsLastStepSuccess(true);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   });
+    // console.log(openAccountReducer, values, productData, customerDetails);
+    const data = {
+      title: customerDetails?.title ?? "",
+      mothers_maiden_name: customerDetails?.mothers_maiden_name ?? "",
+      terms_and_conditions: 1,
+      id_type: Number(customerDetails?.kycDetail[1]?.identity_type) ?? "",
+      passport: customerDetails?.kycDetail[0]?.location ?? "",
+      id_card: customerDetails?.kycDetail[1]?.location ?? "",
+      signature_specimen: customerDetails?.kycDetail[2]?.location ?? "",
+      utility_bill: customerDetails?.kycDetail[3]?.location ?? "",
+      bank_id: openAccountReducer?.mybankDetails?.bank?.id ?? "",
+      bank_acct_no: openAccountReducer?.mybankDetails?.accountNumber ?? "",
+      bank_acct_name: openAccountReducer?.mybankDetails?.accountName ?? "",
+      is_pep: customerDetails?.pep_status ?? false,
+      nok_name: values?.fullName ?? "",
+      nok_gender: values?.gender ?? "",
+      nok_relationship: values?.relationship ?? "",
+      nok_address: values?.address ?? "",
+      nok_phone: values?.phone_number ?? "",
+      nok_email: values?.email ?? "",
+      beneficiary_fullname: openAccountReducer?.mybeneficiaryDetails?.fullName ?? "",
+      beneficiary_dob: openAccountReducer?.mybeneficiaryDetails?.date_of_birth ?? "",
+      beneficiary_id: openAccountReducer?.mybeneficiaryId ?? "",
+      beneficiary_passport: openAccountReducer?.mybeneficiaryPassport ?? "",
+      chn_account_number: openAccountReducer?.mychnDetails?.cscsNumber ?? "",
+      account_type: productData?.code ?? "",
+    };
+    await dispatch(handleCreateAccount(data))
+      .unwrap()
+      .then((res) => {
+        if (res?.data?.success) {
+          setIsLastStepSuccess(true);
+        }
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 2000);
+        setErrorMessage(error?.data?.message);
+      });
   };
 
   const handleDispatchNextStep = (lastStep, values, nextPhase, type) => {
@@ -140,7 +147,7 @@ export default function OpenAccount() {
   };
 
   const handlePreviousRoute = () => {
-    navigate(-1);
+    navigate("/products/all");
   };
 
   const handleOpenRating = () => {
@@ -160,10 +167,10 @@ export default function OpenAccount() {
       )}
       {!!!productsReducer?.productDetailIsLoading &&
         productsReducer?.productDetailsData?.type === "products/productDetail/fulfilled" && (
-          <div className="w-full h-full flex gap-2">
-            <div className="w-[25%] h-screen fixed overflow-y-auto overflow-hidden no-scrollbar p-[3%] bg-pink">
+          <div className="w-full h-full flex md:flex-row flex-col gap-2">
+            <div className="w-full md:w-[25%] md:h-screen h-auto z-50 fixed overflow-y-auto overflow-x-auto overflow-hidden no-scrollbar p-[3%] bg-pink">
               <img src={Logosmall} alt="logo" className="min-w-[100px] max-w-[200px]" />
-              <div className="my-6">
+              <div className="my-4">
                 <Text weight="extrabold" variant="h2" color="text-[#65666A]">
                   {productData?.category?.name}
                 </Text>
@@ -174,7 +181,7 @@ export default function OpenAccount() {
               <Text weight="extrabold" variant="h4" color="text-[#65666A]">
                 In a few steps your money market fund account would be opened
               </Text>
-              <div className="flex flex-col gap-3 mt-5 w-full">
+              <div className="flex md:flex-col flex-row gap-4 md:gap-3 overflow-x-auto overflow-hidden no-scrollbar mt-5 w-full">
                 <div className="flex justify-between items-center border-b pb-2 border-[red]">
                   <div>
                     <Text weight="bold" variant="body" color="text-red">
@@ -184,7 +191,9 @@ export default function OpenAccount() {
                       Validate Bank Account
                     </Text>
                   </div>
-                  {openAccountReducer?.step > 1 && <img src={checked} alt="correct" className="w-[20px] h-[20px]" />}
+                  {openAccountReducer?.step > 1 && (
+                    <img src={checked} alt="correct" className="w-[10px] h-[10px] md:w-[20px] md:h-[20px]" />
+                  )}
                 </div>
                 {productData && productData?.category?.hasChnNumber && (
                   <div className="flex justify-between items-center border-b pb-2 border-[red]">
@@ -196,7 +205,9 @@ export default function OpenAccount() {
                         Input CSCS Detail
                       </Text>
                     </div>
-                    {openAccountReducer?.step > 2 && <img src={checked} alt="correct" className="w-[20px] h-[20px]" />}
+                    {openAccountReducer?.step > 2 && (
+                      <img src={checked} alt="correct" className="w-[10px] h-[10px] md:w-[20px] md:h-[20px]" />
+                    )}
                   </div>
                 )}
                 {productData && productData?.category?.hasBeneficiary && (
@@ -209,7 +220,9 @@ export default function OpenAccount() {
                         Beneficiary Details
                       </Text>
                     </div>
-                    {openAccountReducer?.step > 3 && <img src={checked} alt="correct" className="w-[20px] h-[20px]" />}
+                    {openAccountReducer?.step > 3 && (
+                      <img src={checked} alt="correct" className="w-[10px] h-[10px] md:w-[20px] md:h-[20px]" />
+                    )}
                   </div>
                 )}
                 <div className="flex justify-between items-center border-b pb-2 border-[red]">
@@ -221,8 +234,11 @@ export default function OpenAccount() {
                       Next of Kin
                     </Text>
                   </div>
-                  {openAccountReducer?.step >= 5 && <img src={checked} alt="correct" className="w-[20px] h-[20px]" />}
+                  {openAccountReducer?.step >= 5 && (
+                    <img src={checked} alt="correct" className="w-[10px] h-[10px] md:w-[20px] md:h-[20px]" />
+                  )}
                 </div>
+
                 {/* <div className="flex justify-between items-center border-b pb-2 border-[red]">
               <div>
                 <Text weight="bold" variant="body" color="text-red">
@@ -258,7 +274,7 @@ export default function OpenAccount() {
             </div> */}
               </div>
             </div>
-            <div className="ml-[25%] w-[70%] p-[2%]">
+            <div className="md:ml-[25%] md:mt-0 mt-[276px] md:w-[70%] w-full p-[2%] h-full">
               {openAccountReducer?.step === 1 && (
                 <BankInfo
                   isBothTrue={isBothTrue}
@@ -292,6 +308,7 @@ export default function OpenAccount() {
 
               {openAccountReducer?.step >= 4 && (
                 <NextOfKin
+                  errorMessage={errorMessage}
                   isBothTrue={isBothTrue}
                   isBothFalse={isBothFalse}
                   isbeneficiaryTrue={isbeneficiaryTrue}

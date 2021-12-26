@@ -1,13 +1,43 @@
 import React, { useState } from "react";
 import ReactStars from "react-rating-stars-component";
+import { useDispatch, useSelector } from "react-redux";
 import close from "../../../../../assets/icons/close_btn.svg";
 import checked from "../../../../../assets/icons/correct_two.svg";
 import ratingHand from "../../../../../assets/icons/rating_hand.svg";
 import Button from "../../../../../components/Button";
 import Text from "../../../../../components/Typography/Typography";
+import { handleRatingExperience } from "../../../../../store/slices/openAccountSlice";
 
 export default function RatingExperienceModal({ setIsRatingOpen, setIsPaymentModalOpen }) {
+  const dashboardReducer = useSelector((state) => state?.dashboardReducer);
+  const openAccountReducer = useSelector((state) => state.openAccountReducer);
+  const customerDetails = dashboardReducer?.customerDetails?.payload?.data?.data;
+  const dispatch = useDispatch();
   const [feedback, setFeedback] = useState(false);
+  const [ratingExp, setRateExp] = useState(1);
+  const [feedbackText, setFeedbackText] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const handleRateExp = async () => {
+    const data = {
+      rating: ratingExp.toString(),
+      featureId: 3,
+      comment: feedbackText,
+      emailAddress: customerDetails?.email,
+      platform: "web",
+    };
+    await dispatch(handleRatingExperience(data))
+      .unwrap()
+      .then((res) => {
+        setFeedback(true);
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 2000);
+        setErrorMessage(error?.data?.message);
+      });
+  };
 
   return (
     <>
@@ -35,7 +65,7 @@ export default function RatingExperienceModal({ setIsRatingOpen, setIsPaymentMod
             </Text>
             <ReactStars
               count={5}
-              // onChange={ratingChanged}
+              onChange={(e) => setRateExp(e)}
               size={24}
               isHalf={true}
               emptyIcon={<i className="far fa-star"></i>}
@@ -50,11 +80,31 @@ export default function RatingExperienceModal({ setIsRatingOpen, setIsPaymentMod
             </Text>
           </div>
           <div className="flex flex-col w-full mt-4">
-            <textarea className="w-full p-4 outline-none bg-white" id="improve" name="improve" rows="4" cols="50" />
+            <textarea
+              onChange={(e) => setFeedbackText(e.target.value)}
+              className="w-full p-4 outline-none bg-white"
+              id="improve"
+              name="improve"
+              rows="4"
+              cols="50"
+            />
           </div>
+          {errorMessage !== "" && (
+            <div className="w-full text-center mt-4">
+              <Text variant="h4" color="text-red">
+                {errorMessage}
+              </Text>
+            </div>
+          )}
           <div className="mt-10 w-full flex justify-center">
             <div className="w-[50%]">
-              <Button onClick={() => setFeedback(true)} title="Submit" className="cursor-pointer" type="button" />
+              <Button
+                isLoading={openAccountReducer?.ratingExperienceIsLoading}
+                onClick={() => handleRateExp()}
+                title="Submit"
+                className="cursor-pointer"
+                type="button"
+              />
             </div>
           </div>
         </>

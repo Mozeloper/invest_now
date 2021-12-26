@@ -9,6 +9,9 @@ export const appUrls = {
   genderURL: "api/v2/onboarding/get-gender-types",
   relationShipURL: "api/v2/onboarding/get-next-of-kin-types",
   createAccountURL: "api/v2/customers/create-account",
+  ratingExperience: "customer/customer-rating/rate",
+  portfolioItemDetail: "api/v2/customers/get-portfolio-item-detail?",
+  paymentFrequency: "payment/frequencies",
   countryURL: "api/v2/onboarding/countries",
   stateURL: "api/v2/onboarding/states",
   createCustomerURL: "api/v2/onboarding/create-customer",
@@ -40,4 +43,5 @@ export const appUrls = {
   getProductDetails: "account/get_account_type?",
   bankListURL: "api/v2/onboarding/get-all-banks",
   verifyBankAccountURL: "api/v2/onboarding/resolve-account-number?",
+  getPortfolioTransactionURL: "investnow/paystack-deposits?page=1&perPage=10",
 };

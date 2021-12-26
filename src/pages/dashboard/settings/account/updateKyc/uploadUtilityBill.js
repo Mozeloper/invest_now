@@ -99,7 +99,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
       )}
       {errorMessage !== "" && (
         <div className="w-full text-center mt-4">
-          <Text variant="h4" color="text-red-500">
+          <Text variant="h4" color="text-red">
             {errorMessage}
           </Text>
         </div>

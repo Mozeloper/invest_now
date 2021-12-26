@@ -12,6 +12,13 @@ body {
   font-family: "Century Gothic", "Roboto", "sans-serif";
 }
 
+.hambuger {
+  width: 30px;
+  height: 3px;
+  background-color: black;
+  margin: 6px 0;
+}
+
 .signatureCanvas {
   border: 1px solid black;
   width: 340px;

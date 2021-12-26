@@ -483,7 +483,7 @@ export default function Index() {
               </div>
             </div>
           </div>
-          <div className="bg-[#1C1C1C] w-full">
+          <div style={{ background: "linear-gradient(to right bottom, #1C1C1C, 89%, #FED23F)" }} className="w-full">
             <div className="wrapper w-full py-[4%]">
               <img src={LogoFooter} alt="footerLogo" loading="lazy" />
               <div className="w-full mt-8 flex justify-between flex-wrap">

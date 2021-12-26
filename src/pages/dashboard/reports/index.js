@@ -1,12 +1,201 @@
-import React from "react";
+import React, { useState } from "react";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
 import Text from "../../../components/Typography/Typography";
+import Input from "../../../components/formFields/inputs";
+import SearchableSelect from "../../../components/formFields/selectField";
+import Button from "../../../components/Button";
+import MessageModal from "../../../components/modals/MessageModal";
+import checked from "../../../assets/icons/correct.svg";
 
 export default function Reports() {
+  const [reportType, setReportType] = useState(null);
+  const [error, setError] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
+  const reportSchema = Yup.object().shape({
+    account: Yup.string().required("Account is required"),
+    startDate: Yup.string().required("Start Date is required"),
+    endDate: Yup.string().required("End Date is required"),
+  });
+
   return (
-    <div>
-      <Text variant="h1" weight="bold">
-        Reports
-      </Text>
-    </div>
+    <>
+      <MessageModal bgColor={true} modalWidth="300px" modalHeight="auto" isOpen={successModal}>
+        <div className="flex flex-col gap-4 justify-center items-center">
+          <img src={checked} alt="correct" className="w-[50px] h-[50px]" />
+          <Text variant="h4" weight="bold" format="text-center">
+            Report request submitted
+          </Text>
+        </div>
+      </MessageModal>
+      <div data-aos="fade-up" data-aos-duration="2000">
+        <div className="w-full">
+          <Text variant="h1" weight="bold">
+            Reports
+          </Text>
+        </div>
+        <div className="w-full bg-white h-full mt-4 p-[3%]">
+          <div className="flex flex-col gap-2">
+            <Text variant="h2" weight="bold" color="text-[#000000]">
+              Type of report
+            </Text>
+
+            <Text variant="h4" weight="normal" color="text-[#000000]">
+              Which report would you like to receive?
+            </Text>
+          </div>
+          <div className="flex gap-4 mt-5 md:flex-row flex-col">
+            <div
+              onClick={() => {
+                setReportType(1);
+                setError(false);
+              }}
+              className={` ${
+                reportType === 1 ? "md:border-2 md:border-red" : ""
+              } bg-[#E7E7E7] outline-none border-transparent border hover:border-red py-[3%] px-[2%] basis-1/3 cursor-pointer`}
+            >
+              <Text variant="h4" weight="normal">
+                Cash statements
+              </Text>
+              <Text variant="body" weight="normal">
+                Inflows and Outflows
+              </Text>
+            </div>
+            <div
+              onClick={() => {
+                setReportType(2);
+                setError(false);
+              }}
+              className={`${
+                reportType === 2 ? "md:border-2 md:border-red" : ""
+              } bg-[#E7E7E7] outline-none border-transparent border hover:border-red py-[3%] px-[2%] basis-1/3 cursor-pointer`}
+            >
+              <Text variant="h4" weight="normal">
+                Portfolio statements
+              </Text>
+              <Text variant="body" weight="normal">
+                Dividend payment and Dividend subscriptions
+              </Text>
+            </div>
+            <div
+              onClick={() => {
+                setReportType(3);
+                setError(false);
+              }}
+              className={` ${
+                reportType === 3 ? "md:border-2 md:border-red" : ""
+              } bg-[#E7E7E7] outline-none border-transparent border hover:border-red py-[3%] px-[2%] basis-1/3 cursor-pointer`}
+            >
+              <Text variant="h4" weight="normal">
+                Portfolio statements
+              </Text>
+              <Text variant="body" weight="normal">
+                Dividend payment and Dividend subscriptions
+              </Text>
+            </div>
+          </div>
+          {error && (
+            <Text variant="body" weight="normal" color="text-red">
+              Please Select Report Type
+            </Text>
+          )}
+          <div className="border-b border-[lightGray] w-full md:mt-10 mt-6"></div>
+          <div className="w-full my-5">
+            <div className="flex flex-col gap-2">
+              <Text variant="h3" weight="bold" color="text-[#000000]">
+                Report Parameters and Timeline
+              </Text>
+              <Text variant="h4" weight="normal" format="tracking-wide">
+                Set parameters for account and timeline
+              </Text>
+            </div>
+            <div className="w-full">
+              <Formik
+                initialValues={{
+                  account: "",
+                  startDate: "",
+                  endDate: "",
+                }}
+                validationSchema={reportSchema}
+                onSubmit={async (values, { resetForm }) => {
+                  if (reportType !== null) {
+                    console.log(values);
+                    setSuccessModal(true);
+                    setTimeout(() => {
+                      setSuccessModal(false);
+                      resetForm();
+                      setReportType(null);
+                    }, 2000);
+                  } else {
+                    setError(true);
+                  }
+                }}
+              >
+                {({ handleSubmit, handleChange, setFieldValue, isSubmitting, touched, errors }) => (
+                  <Form onSubmit={handleSubmit} className="md:w-[80%] w-full">
+                    <div className="flex md:flex-row flex-col gap-4 mt-4">
+                      <div className="w-full">
+                        <label htmlFor="account" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
+                          Select an account
+                        </label>
+                        <SearchableSelect
+                          options={[{ label: "Mutual Funds", value: "mutual_funds" }]}
+                          name="account"
+                          isLoading={false}
+                          setFieldValue={setFieldValue}
+                          placeholder="Select Account"
+                        />
+                        {errors.account && touched.account ? (
+                          <Text variant="small" weight="normal" color="text-red">
+                            {errors.account}
+                          </Text>
+                        ) : null}
+                      </div>
+                      <div className="w-full">
+                        <label htmlFor="startDate" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
+                          Start date
+                        </label>
+                        <Input
+                          className="w-full"
+                          placeholder="*Start Date"
+                          name="startDate"
+                          type="date"
+                          handleChange={handleChange}
+                        />
+                        {errors.startDate && touched.startDate ? (
+                          <Text variant="small" weight="normal" color="text-red">
+                            {errors.startDate}
+                          </Text>
+                        ) : null}
+                      </div>
+                    </div>
+                    <div className="md:w-[50%] w-full mt-4">
+                      <label htmlFor="endDate" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
+                        End date
+                      </label>
+                      <Input
+                        className="w-full"
+                        placeholder="*Start Date"
+                        name="endDate"
+                        type="date"
+                        handleChange={handleChange}
+                      />
+                      {errors.endDate && touched.endDate ? (
+                        <Text variant="small" weight="normal" color="text-red">
+                          {errors.endDate}
+                        </Text>
+                      ) : null}
+                    </div>
+                    <div className="mt-8 md:w-[30%] w-full">
+                      <Button title="Submit" className="cursor-pointer w-full" type="submit" isLoading={isSubmitting} />
+                    </div>
+                  </Form>
+                )}
+              </Formik>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }

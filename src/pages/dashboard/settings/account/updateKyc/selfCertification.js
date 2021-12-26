@@ -167,14 +167,16 @@ export default function SelfCertification({ handleCloseModals }) {
                   </Text>
                 ) : null}
               </div>
-              <div className="w-full mt-4">
-                <label htmlFor="no_reason" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
-                  If no TIN available enter Reason A, B or C
-                </label>
-                <div onClick={() => setNoReasonModal(true)} className="w-full p-4 bg-[#F2F2F2] cursor-pointer">
-                  <Text variant="h4">{reasonOption.reason !== "" ? reasonOption.reason : "Select Reason"}</Text>
+              {values?.tin === "" && (
+                <div className="w-full mt-4">
+                  <label htmlFor="no_reason" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
+                    If no TIN available enter Reason A, B or C
+                  </label>
+                  <div onClick={() => setNoReasonModal(true)} className="w-full p-4 bg-[#F2F2F2] cursor-pointer">
+                    <Text variant="h4">{reasonOption.reason !== "" ? reasonOption.reason : "Select Reason"}</Text>
+                  </div>
                 </div>
-              </div>
+              )}
 
               <div className="flex justify-start mt-8 lg:w-[50%] w-full">
                 <Button

@@ -102,7 +102,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <MessageModal modalHeight="550px" isOpen={isReferralModalOpen}>
+      <MessageModal modalHeight="80vh" isOpen={isReferralModalOpen}>
         <Referral setIsReferralModalOpen={setIsReferralModalOpen} />
       </MessageModal>
       <div data-aos="fade-up" data-aos-duration="2000">

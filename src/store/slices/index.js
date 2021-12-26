@@ -4,6 +4,7 @@ import dashboardSlice from "./dashboardSlice";
 import productsSlice from "./productsSlice";
 import updateKycSlice from "./settingsUpdateKycSlice";
 import openAccountSlice from "./openAccountSlice";
+import portfolioSlice from "./portfolioSlice";
 
 const rootReducer = combineReducers({
   authReducer: authSlices,
@@ -11,6 +12,7 @@ const rootReducer = combineReducers({
   updateKycSliceReducer: updateKycSlice,
   productsReducer: productsSlice,
   openAccountReducer: openAccountSlice,
+  portfolioReducer: portfolioSlice,
 });
 
 export default rootReducer;

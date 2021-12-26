@@ -120,7 +120,7 @@ export default function Referral({ setIsReferralModalOpen }) {
         Refer and Earn
       </Text>
       <Text variant="h4" weight="normal" format="my-2">
-        Your Referral Code and link will bbe displayed once you select a product
+        Your Referral Code and link will be displayed once you select a product
       </Text>
       <Text variant="h4" weight="normal" format="mb-2">
         what product do u want to refer

@@ -47,11 +47,49 @@ export const handleCreateAccount = createAsyncThunk(
   }
 );
 
+export const handleRatingExperience = createAsyncThunk(
+  "openaccount/ratingExperience",
+  async (values, { rejectWithValue }) => {
+    try {
+      const data = await api.post(appUrls.ratingExperience, values);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const handlePortfolioItem = createAsyncThunk(
+  "openaccount/portfolioItem",
+  async (values, { rejectWithValue }) => {
+    try {
+      const data = await api.get(appUrls.portfolioItemDetail + `cash_account_id=${values}`);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const handlePaymentFrequency = createAsyncThunk(
+  "openaccount/paymentFrequency",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await api.get(appUrls.paymentFrequency);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const initialState = {
   step: 1,
   mybankDetails: null,
   mychnDetails: null,
   mybeneficiaryDetails: null,
+  mybeneficiaryPassport: null,
+  mybeneficiaryId: null,
   mynextOfKinDetails: null,
   bankListData: null,
   verifiedBankAccount: null,
@@ -59,6 +97,8 @@ const initialState = {
   relationshipData: null,
   createAccountIsLoading: false,
   createAccountData: null,
+  portfolioItemIsLoading: false,
+  portfolioItemData: null,
 };
 
 export const openAccountSlice = createSlice({
@@ -117,6 +157,8 @@ export const openAccountSlice = createSlice({
       state.mybankDetails = null;
       state.mychnDetails = null;
       state.mybeneficiaryDetails = null;
+      state.mybeneficiaryPassport = null;
+      state.mybeneficiaryId = null;
       state.mynextOfKinDetails = null;
       state.bankListData = null;
       state.verifiedBankAccount = null;
@@ -124,6 +166,19 @@ export const openAccountSlice = createSlice({
       state.relationshipData = null;
       state.createAccountIsLoading = false;
       state.createAccountData = null;
+    },
+
+    handleUploadBeneficiaryFile: (state, action) => {
+      switch (action?.payload?.data?.type) {
+        case "beneficiary_passport":
+          state.mybeneficiaryPassport = action.payload?.data?.beneficiary_passport;
+          break;
+        case "beneficiary_id":
+          state.mybeneficiaryId = action.payload?.data?.beneficiary_id;
+          break;
+        default:
+          break;
+      }
     },
   },
 
@@ -148,7 +203,7 @@ export const openAccountSlice = createSlice({
     },
     [verifyBankAccount.rejected]: (state, action) => {
       state.verifyAccountIsLoading = false;
-      state.verifiedBankAccount = action.payload;
+      state.verifiedBankAccount = action;
     },
     [getRelationShipStatus.pending]: (state) => {
       state.relationshipIsLoading = true;
@@ -172,9 +227,38 @@ export const openAccountSlice = createSlice({
       state.createAccountIsLoading = false;
       state.createAccountData = action.payload;
     },
+    [handleRatingExperience.pending]: (state) => {
+      state.ratingExperienceIsLoading = true;
+    },
+    [handleRatingExperience.fulfilled]: (state) => {
+      state.ratingExperienceIsLoading = false;
+    },
+    [handleRatingExperience.rejected]: (state) => {
+      state.ratingExperienceIsLoading = false;
+    },
+    [handlePortfolioItem.pending]: (state) => {
+      state.portfolioItemIsLoading = true;
+    },
+    [handlePortfolioItem.fulfilled]: (state, action) => {
+      state.portfolioItemIsLoading = false;
+      state.portfolioItemData = action.payload;
+    },
+    [handlePortfolioItem.rejected]: (state) => {
+      state.portfolioItemIsLoading = false;
+    },
+    [handlePaymentFrequency.pending]: (state) => {
+      state.paymentFrequencyIsLoading = true;
+    },
+    [handlePaymentFrequency.fulfilled]: (state, action) => {
+      state.paymentFrequencyIsLoading = false;
+      state.paymentFrequencyData = action;
+    },
+    [handlePaymentFrequency.rejected]: (state) => {
+      state.paymentFrequencyIsLoading = false;
+    },
   },
 });
 
 const { reducer, actions } = openAccountSlice;
-export const { handleNextStep, handlePreviousStep, handleResetStep } = actions;
+export const { handleUploadBeneficiaryFile, handleNextStep, handlePreviousStep, handleResetStep } = actions;
 export default reducer;

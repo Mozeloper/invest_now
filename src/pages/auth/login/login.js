@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Text from "../../../components/Typography/Typography";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Button from "../../../components/Button";
 import Password from "../../../components/formFields/password";
 import Input from "../../../components/formFields/inputs";
@@ -19,6 +19,8 @@ export default function Login() {
   });
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
+  console.log(location.state?.from?.pathname);
 
   const handleSubmitLogin = async (values) => {
     await dispatch(handleLogin(values))

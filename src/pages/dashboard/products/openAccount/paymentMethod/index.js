@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 
 import close from "../../../../../assets/icons/close_btn.svg";
-import dbCard from "../../../../../assets/icons/debit_card_1.svg";
-import bankCard from "../../../../../assets/icons/pay_with_bank.svg";
+import Button from "../../../../../components/Button";
 import Input from "../../../../../components/formFields/inputs";
 import Text from "../../../../../components/Typography/Typography";
+import { handlePaymentFrequency, handlePortfolioItem } from "../../../../../store/slices/openAccountSlice";
 
 const colourStyles = {
   control: (styles) => ({
@@ -33,65 +34,54 @@ export default function PaymentModal({
   setHowFrequentState,
   setIsPaymentModalOpen,
 }) {
+  const dispatch = useDispatch();
+  const openAccountReducer = useSelector((state) => state.openAccountReducer);
+  const cashAccountId = openAccountReducer?.createAccountData?.data?.data?.cash_account_id;
   const [error, setError] = useState({
     amount: false,
     frequent: false,
   });
 
-  const howFrequent = [
-    {
-      label: "One-off",
-      value: "One-off",
-    },
-    {
-      label: "Daily",
-      value: "Daily",
-    },
-    {
-      label: "Weekly",
-      value: "Weekly",
-    },
-    {
-      label: "Monthly",
-      value: "Monthly",
-    },
-  ];
+  useEffect(() => {
+    let mounted = false;
+    (async () => {
+      mounted = true;
+      if (mounted) {
+        dispatch(handlePortfolioItem(cashAccountId));
+        dispatch(handlePaymentFrequency());
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [dispatch, cashAccountId]);
 
-  const handlePaymentMethod = (type) => {
-    if (type === "pay_with_bank") {
-      if (amount === "") {
-        setError((prev) => ({
-          ...prev,
-          amount: true,
-        }));
-      }
-      if (howFrequentState === "") {
-        setError((prev) => ({
-          ...prev,
-          frequent: true,
-        }));
-      }
-      if (amount !== "" && howFrequentState !== "") {
-        setIsBankModalOpen(true);
-      }
+  const howFrequent = [];
+
+  if (openAccountReducer?.paymentFrequencyData?.type === "openaccount/paymentFrequency/fulfilled") {
+    openAccountReducer?.paymentFrequencyData?.payload?.data?.data.map((list) => {
+      return howFrequent.push({
+        label: list.name,
+        value: list.name,
+      });
+    });
+  }
+
+  const handlePaymentMethod = () => {
+    if (amount === "") {
+      setError((prev) => ({
+        ...prev,
+        amount: true,
+      }));
     }
-
-    if (type === "debit_card") {
-      if (amount === "") {
-        setError((prev) => ({
-          ...prev,
-          amount: true,
-        }));
-      }
-      if (howFrequentState === "") {
-        setError((prev) => ({
-          ...prev,
-          frequent: true,
-        }));
-      }
-      if (amount !== "" && howFrequentState !== "") {
-        setIsCardModalOpen(true);
-      }
+    if (howFrequentState === "") {
+      setError((prev) => ({
+        ...prev,
+        frequent: true,
+      }));
+    }
+    if (amount !== "" && howFrequentState !== "") {
+      setIsBankModalOpen(true);
     }
   };
 
@@ -148,6 +138,7 @@ export default function PaymentModal({
           name="frequent"
           options={howFrequent}
           styles={colourStyles}
+          isLoading={openAccountReducer?.paymentFrequencyIsLoading}
         />
       </div>
       {error.frequent && (
@@ -155,29 +146,16 @@ export default function PaymentModal({
           please tell us how frequent
         </Text>
       )}
-      <div className="mt-6 w-[80%]">
-        <Text variant="h3" color="text-[#000000]">
-          How would you like to make your payment
-        </Text>
-      </div>
-      <div className="w-[90%] mt-6 flex gap-2">
-        <div
-          onClick={() => handlePaymentMethod("debit_card")}
-          className="px-[6%] py-[3%] cursor-pointer flex flex-col justify-center items-center bg-[#EBEBEB]"
-        >
-          <img src={dbCard} alt="db_card" />
-          <Text variant="small" color="text-[#000000]">
-            Via Debit Card
-          </Text>
-        </div>
-        <div
-          onClick={() => handlePaymentMethod("pay_with_bank")}
-          className="px-[6%] py-[3%] cursor-pointer flex flex-col justify-center items-center bg-[#EBEBEB]"
-        >
-          <img src={bankCard} alt="bank_card" />
-          <Text variant="small" color="text-[#000000]">
-            Pay with bank
-          </Text>
+
+      <div className="mt-10 w-full flex justify-center">
+        <div className="w-[70%]">
+          <Button
+            title="Continue"
+            className="cursor-pointer"
+            type="button"
+            onClick={() => handlePaymentMethod()}
+            isLoading={false}
+          />
         </div>
       </div>
     </>

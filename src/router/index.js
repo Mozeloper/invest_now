@@ -34,6 +34,13 @@ import Trust from "../pages/dashboard/products/trust";
 import Securities from "../pages/dashboard/products/securities";
 import OtpForgetPassword from "../pages/auth/forgetPassword/otpForgetPassword";
 import ChangePasswordForgetPassword from "../pages/auth/forgetPassword/changePasswordForgetPassword";
+import RequestEmbassy from "../pages/dashboard/requestEmbassy";
+import RelationshipManager from "../pages/dashboard/relationshipManager";
+import BuyProductWrapper from "../pages/dashboard/products/buyProductWrapper";
+import BuyProducts from "../pages/dashboard/products/buyProductWrapper/buyProduct";
+import NewBankAccount from "../pages/dashboard/products/buyProductWrapper/newBankAccount";
+import NextOfKin from "../pages/dashboard/products/buyProductWrapper/nextOfKin";
+import DependentInfo from "../pages/dashboard/products/buyProductWrapper/dependentInfo";
 
 function InappPrivateRoute() {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
@@ -88,6 +95,12 @@ export default function AppRoute() {
             <Route path="/products/trust" element={<Trust />} />
             <Route path="/products/securities" element={<Securities />} />
           </Route>
+          <Route element={<BuyProductWrapper />}>
+            <Route path="/products/buy_product" element={<BuyProducts />} />
+            <Route path="/products/new_bank_account" element={<NewBankAccount />} />
+            <Route path="/products/next_of_kin" element={<NextOfKin />} />
+            <Route path="/products/dependent_information" element={<DependentInfo />} />
+          </Route>
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/loans" element={<Loans />} />
           <Route path="/live_trading" element={<LiveTrading />} />
@@ -98,6 +111,8 @@ export default function AppRoute() {
             <Route path="faq" element={<Faq />} />
             <Route path="contact_us" element={<ContactUs />} />
           </Route>
+          <Route path="/request_embassy_statement" element={<RequestEmbassy />} />
+          <Route path="/contact_relationship_manager" element={<RelationshipManager />} />
         </Route>
         <Route path="/products/open_account/*" element={<OpenAccount />} />
 

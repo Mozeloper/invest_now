@@ -10,18 +10,16 @@ import pictureIcon from "../../../../../../assets/icons/picture_taker.svg";
 import Webcam from "react-webcam";
 import ImageUploading from "react-images-uploading";
 import { useDispatch, useSelector } from "react-redux";
-import { getIdentityTypes, handleValidId } from "../../../../../../store/slices/settingsUpdateKycSlice";
-
+import { getIdentityTypes } from "../../../../../../store/slices/settingsUpdateKycSlice";
+import { handleUploadBeneficiaryFile } from "../../../../../../store/slices/openAccountSlice";
 const videoConstraints = {
   width: 220,
   height: 200,
   facingMode: "user",
 };
 
-const WebcamCapture = ({ handleCloseUploadModals, validId, customerId, isLoading }) => {
+const WebcamCapture = ({ handleCloseUploadModals, validId }) => {
   const [image, setImage] = useState("");
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const webcamRef = React.useRef(null);
   const capture = React.useCallback(() => {
@@ -43,27 +41,12 @@ const WebcamCapture = ({ handleCloseUploadModals, validId, customerId, isLoading
     }
 
     const data = {
-      id: customerId,
-      data: {
-        identity_type_id: validId,
-        id_base64: result,
-      },
+      beneficiary_id: result,
+      validId: validId,
+      type: "beneficiary_id",
     };
-    await dispatch(handleValidId(data))
-      .unwrap()
-      .then((res) => {
-        setTimeout(() => {
-          handleCloseUploadModals();
-          setMessage("");
-        }, 2000);
-        setMessage(res?.data?.message);
-      })
-      .catch((error) => {
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 2000);
-        setErrorMessage(error?.data?.message);
-      });
+    dispatch(handleUploadBeneficiaryFile({ data }));
+    handleCloseUploadModals();
   };
   return (
     <div className="flex flex-col gap-3 items-center justify-center">
@@ -82,28 +65,8 @@ const WebcamCapture = ({ handleCloseUploadModals, validId, customerId, isLoading
       {image !== "" && (
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <Button
-            isLoading={isLoading}
-            onClick={() => uploadValid()}
-            title="Save Picture"
-            className="cursor-pointer w-full"
-            type="button"
-          />
+          <Button onClick={() => uploadValid()} title="Save Picture" className="cursor-pointer w-full" type="button" />
         </>
-      )}
-      {message !== "" && (
-        <div className="w-full text-center mt-4">
-          <Text variant="h4" color="text-green-600">
-            {message}
-          </Text>
-        </div>
-      )}
-      {errorMessage !== "" && (
-        <div className="w-full text-center mt-4">
-          <Text variant="h4" color="text-red-500">
-            {errorMessage}
-          </Text>
-        </div>
       )}
     </div>
   );
@@ -113,16 +76,12 @@ export default function BeneficiaryId({ handleCloseModals }) {
   const [validId, setValidId] = useState(null);
   const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
   const identityType = updateKycSliceReducer?.identityTypeState?.payload?.data?.data;
-  const authReducer = useSelector((state) => state.authReducer);
-  const customerId = authReducer?.authedUser?.data?.customer?.id;
 
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState({
     valid_id: false,
     take_picture: false,
   });
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     let mounted = false;
@@ -200,7 +159,7 @@ export default function BeneficiaryId({ handleCloseModals }) {
     setValidId(e.target.value);
   };
 
-  const uploadValid = async () => {
+  const uploadValid = () => {
     const containsJpeg = "data:image/jpeg;base64,";
     const constainsPng = "data:image/png;base64,";
     let result;
@@ -214,29 +173,13 @@ export default function BeneficiaryId({ handleCloseModals }) {
     }
 
     const data = {
-      id: customerId,
-      data: {
-        identity_type_id: validId,
-        id_base64: result,
-      },
+      beneficiary_id: result,
+      validId: validId,
+      type: "beneficiary_id",
     };
-    await dispatch(handleValidId(data))
-      .unwrap()
-      .then((res) => {
-        setTimeout(() => {
-          handleCloseIdUpload("upload_picture");
-          handleCloseIdUpload("valid_id");
-          handleCloseModals("valid_id");
-          setMessage("");
-        }, 2000);
-        setMessage(res?.data?.message);
-      })
-      .catch((error) => {
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 2000);
-        setErrorMessage(error?.data?.message);
-      });
+    dispatch(handleUploadBeneficiaryFile({ data }));
+    handleCloseIdUpload("valid_id");
+    handleCloseModals("valid_id");
   };
 
   const loadingState = () => {
@@ -369,20 +312,6 @@ export default function BeneficiaryId({ handleCloseModals }) {
                       />
                     </div>
                   )}
-                  {message !== "" && (
-                    <div className="w-full text-center mt-4">
-                      <Text variant="h4" color="text-green-600">
-                        {message}
-                      </Text>
-                    </div>
-                  )}
-                  {errorMessage !== "" && (
-                    <div className="w-full text-center mt-4">
-                      <Text variant="h4" color="text-red-500">
-                        {errorMessage}
-                      </Text>
-                    </div>
-                  )}
                 </MessageModal>
               </div>
             </>
@@ -412,9 +341,7 @@ export default function BeneficiaryId({ handleCloseModals }) {
             handleCloseIdUpload("valid_id");
             handleCloseModals("valid_id");
           }}
-          customerId={customerId}
           validId={validId}
-          isLoading={updateKycSliceReducer?.isLoading}
         />
       </MessageModal>
     </>

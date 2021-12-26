@@ -19,6 +19,7 @@ export default function NextOfKin({
   isbeneficiaryTrue,
   isCHNTrue,
   handleCreatingaccount,
+  errorMessage,
 }) {
   const authReducer = useSelector((state) => state.authReducer);
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
@@ -54,7 +55,7 @@ export default function NextOfKin({
     openAccountReducer?.relationshipData?.payload?.data?.data.map((list) => {
       return relationship.push({
         label: list.next_of_kin_relation,
-        value: list.id,
+        value: list.next_of_kin_relation,
       });
     });
   }
@@ -121,8 +122,8 @@ export default function NextOfKin({
             handleDispatchNextStep("last_step", values, 5, "nextOfKin");
           }}
         >
-          {({ handleSubmit, handleChange, setFieldValue, isSubmitting, values, touched, errors }) => (
-            <Form onSubmit={handleSubmit} className="w-full h-full">
+          {({ handleSubmit, handleChange, setFieldValue, values, touched, errors }) => (
+            <Form onSubmit={handleSubmit} className="lg:w-[70%] w-full h-full">
               <div className="flex md:flex-row flex-col gap-3 w-full mt-4">
                 <div className="w-full">
                   <MyInput
@@ -229,6 +230,13 @@ export default function NextOfKin({
                   />
                 </div>
               </div>
+              {errorMessage !== "" && (
+                <div className="w-full text-center mt-4">
+                  <Text variant="h3" color="text-red">
+                    {errorMessage}
+                  </Text>
+                </div>
+              )}
             </Form>
           )}
         </Formik>

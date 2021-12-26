@@ -11,6 +11,7 @@ import MyInput from "../../../../../components/formFields/inputs/MyInput";
 import SearchableSelect from "../../../../../components/formFields/selectField";
 import Text from "../../../../../components/Typography/Typography";
 import { getBankList, verifyBankAccount } from "../../../../../store/slices/openAccountSlice";
+import { useLocation } from "react-router-dom";
 
 export default function BankInfo({
   handleDispatchNextStep,
@@ -21,6 +22,7 @@ export default function BankInfo({
   isCHNTrue,
 }) {
   const dispatch = useDispatch();
+  const location = useLocation();
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
   const account_name = openAccountReducer?.verifiedBankAccount?.payload?.data?.data?.account_name ?? "";
   const bankList = [];
@@ -58,7 +60,7 @@ export default function BankInfo({
       mounted = true;
       if (mounted && debouncedText !== undefined) {
         const data = {
-          code: bankCode,
+          code: bankCode.code,
           account_number: debouncedText,
         };
         dispatch(verifyBankAccount(data));
@@ -73,7 +75,10 @@ export default function BankInfo({
     openAccountReducer?.bankListData?.payload?.data?.data.map((list) => {
       return bankList.push({
         label: list.name,
-        value: list.code,
+        value: {
+          code: list.code,
+          id: list.id,
+        },
       });
     });
   }
@@ -81,12 +86,14 @@ export default function BankInfo({
   return (
     <div className="w-full">
       <div className="w-full">
-        <img
-          onClick={() => handleDispatchPreviousStep()}
-          src={arrowLeft}
-          alt="arrow-left"
-          className="w-[24px] h-[24px] cursor-pointer"
-        />
+        {location?.pathname !== null && (
+          <img
+            onClick={() => handleDispatchPreviousStep()}
+            src={arrowLeft}
+            alt="arrow-left"
+            className="w-[24px] h-[24px] cursor-pointer"
+          />
+        )}
       </div>
       <div className="flex flex-col mt-2">
         <Text weight="bold" variant="body" color="text-red">
@@ -96,7 +103,7 @@ export default function BankInfo({
           Bank Information
         </Text>
       </div>
-      <div className="flex flex-col gap-2 mt-6 w-[40%]">
+      <div className="flex flex-col gap-2 mt-6 md:w-[40%] w-full">
         <Text weight="bold" variant="body" color="text-[#65666A]">
           Bank Information
         </Text>
@@ -104,8 +111,8 @@ export default function BankInfo({
           This information helps us personalise and secure your InvestNow account
         </Text>
       </div>
-      <div className="bg-[#E1F0CB] p-[2%] w-[60%] mt-4">
-        <Text color="text-[#65666A]" variant="h4" format="w-[70%]">
+      <div className="bg-[#E1F0CB] p-[2%] md:w-[60%] w-full mt-4">
+        <Text color="text-[#65666A]" variant="h4" format="md:w-[70%] w-full">
           The account provided here is where your withdrawal goes to
         </Text>
       </div>
@@ -130,8 +137,8 @@ export default function BankInfo({
             }
           }}
         >
-          {({ handleSubmit, handleChange, setFieldValue, isSubmitting, values, touched, errors }) => (
-            <Form onSubmit={handleSubmit} className="w-full h-full">
+          {({ handleSubmit, handleChange, setFieldValue, values, touched, errors }) => (
+            <Form onSubmit={handleSubmit} className="lg:w-[70%] w-full h-full">
               <div className="flex md:flex-row flex-col gap-3 w-full mt-4">
                 <div className="w-full">
                   <label htmlFor="bank" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
@@ -176,7 +183,7 @@ export default function BankInfo({
               )}
               {!!!openAccountReducer?.verifyAccountIsLoading && values?.accountName !== "" && (
                 <>
-                  <div className="w-[50%] mt-4">
+                  <div className="md:w-[50%] w-full mt-4">
                     <MyInput
                       className="w-full"
                       placeholder="name"
