@@ -1,0 +1,16 @@
+export const appUrls = {
+  loginURL: "auth/app-login",
+  customerExistURL: "api/v2/onboarding/check-if-bvn-exists",
+  smileIdentityURL: "v1/id_verification",
+  genderURL: "api/v2/onboarding/get-gender-types",
+  countryURL: "api/v2/onboarding/countries",
+  stateURL: "api/v2/onboarding/states",
+  createCustomerURL: "api/v2/onboarding/create-customer",
+  verificationCodeURL: "api/v2/onboarding/get-verification-code",
+  resendOtpCodeURL: "api/v2/onboarding/generate-verification-code",
+  validateOTPURL: "api/v2/onboarding/validate-verification-code",
+  passwordCreationURL: "api/v2/onboarding/save-password",
+  dashboardSummaryURL: "investnow/dashboard-summary",
+  completionSummaryURL: "api/v2/customers/get-profile-completion-status",
+  slidingRateURL: "product/mutual-fund-rates",
+};
