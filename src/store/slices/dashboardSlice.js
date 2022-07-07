@@ -48,7 +48,7 @@ export const dashboardSlice = createSlice({
     },
     [handleDashboardSummary.fulfilled]: (state, action) => {
       state.dashboardSummaryIsLoading = false;
-      state.dashboardSummary = action.payload;
+      state.dashboardSummary = action;
     },
     [handleDashboardSummary.rejected]: (state) => {
       state.dashboardSummaryIsLoading = false;

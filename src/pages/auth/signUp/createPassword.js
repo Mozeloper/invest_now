@@ -46,7 +46,14 @@ export default function CreatePassword() {
   };
 
   const passwordSchema = Yup.object().shape({
-    password: Yup.string().min(8, "Too Short!").max(50, "Too Long!").required("Password is required"),
+    password: Yup.string()
+      .min(8, "Too Short!")
+      .max(50, "Too Long!")
+      .matches(
+        "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$",
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+      )
+      .required("Password is required"),
     confirm_password: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
       .required("Password confirm is required"),
@@ -78,53 +85,69 @@ export default function CreatePassword() {
           confirm_password: "",
         }}
         validationSchema={passwordSchema}
-        onSubmit={async (values) => {
+        onSubmit={async (values, errors) => {
           const data = {
             password: values.password,
           };
-          handlePasswordUserCreation(data);
+          console.log(errors);
+          // handlePasswordUserCreation(data);
         }}
       >
         {({ handleSubmit, handleChange, isSubmitting, values, touched, errors }) => (
-          <Form onSubmit={handleSubmit} className="w-[100%] md:w-[80%]">
-            <div className="mt-4">
-              <label htmlFor="password" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
-                New Password
-              </label>
-              <Password
-                placeholder="New Password"
-                type="password"
-                name="password"
-                handleChange={handleChange}
-                className="w-full"
-              />
-            </div>
-            {errors.password && touched.password ? (
-              <Text variant="h4" weight="normal" color="text-red-700">
-                {errors.password}
+          <div className="bg-BACKGROUND_WHITE rounded-xl h-auto md:p-10 p-4 w-[100%] md:w-[80%]">
+            <div className="mt-3 flex justify-start flex-col">
+              <Text weight="bold" color="text-[#65666A]" variant="h2">
+                Set up your password
               </Text>
-            ) : null}
-            <div className="mt-4">
-              <label htmlFor="confirm_password" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
-                Repeat Password
-              </label>
-              <Password
-                placeholder="*Confirm New Password"
-                type="password"
-                name="confirm_password"
-                handleChange={handleChange}
-                className="w-full"
-              />
-              {errors.confirm_password && touched.confirm_password ? (
+              <Text variant="h4">
+                Create a password for your Investnow app. This code is for your eyes only and unique to only you
+              </Text>
+            </div>
+            <Form onSubmit={handleSubmit}>
+              <div className="mt-4">
+                <label htmlFor="password" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
+                  New Password
+                </label>
+                <Password
+                  placeholder="New Password"
+                  type="password"
+                  name="password"
+                  handleChange={handleChange}
+                  className="w-full"
+                />
+              </div>
+              {errors.password && touched.password ? (
                 <Text variant="h4" weight="normal" color="text-red-700">
-                  {errors.confirm_password}
+                  {errors.password}
                 </Text>
               ) : null}
-            </div>
-            <div className="mt-8">
-              <Button isLoading={authReducer?.isLoading} title="Next" className="cursor-pointer w-full" type="submit" />
-            </div>
-          </Form>
+              <div className="mt-4">
+                <label htmlFor="confirm_password" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
+                  Repeat Password
+                </label>
+                <Password
+                  placeholder="*Confirm New Password"
+                  type="password"
+                  name="confirm_password"
+                  handleChange={handleChange}
+                  className="w-full"
+                />
+                {errors.confirm_password && touched.confirm_password ? (
+                  <Text variant="h4" weight="normal" color="text-red-700">
+                    {errors.confirm_password}
+                  </Text>
+                ) : null}
+              </div>
+              <div className="mt-8">
+                <Button
+                  isLoading={authReducer?.isLoading}
+                  title="Next"
+                  className="cursor-pointer w-full"
+                  type="submit"
+                />
+              </div>
+            </Form>
+          </div>
         )}
       </Formik>
       <MessageModal isOpen={openModal} modalWidth="400px" modalHeight="300px">

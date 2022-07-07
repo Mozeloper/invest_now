@@ -135,7 +135,7 @@ export default function BvnVerify() {
   const displayMessageAlert = () => {
     if (!!showMessageAlert) {
       return (
-        <MessageModal isOpen={showMessageAlert} modalWidth="800px" modalHeight="auto">
+        <MessageModal isOpen={showMessageAlert} minWidth="auto" modalWidth="800px" modalHeight="auto">
           <TermsOfService setShowMessageAlert={() => setShowMessageAlert(!showMessageAlert)} />
         </MessageModal>
       );
@@ -176,10 +176,6 @@ export default function BvnVerify() {
           </div>
         </div>
       </MessageModal>
-      <div className="mt-8 font-CenturyGothic">
-        <Text variant="h0">Hello</Text>
-        <Text variant="h3">kindly provide your BVN for your account set up </Text>
-      </div>
       <Formik
         initialValues={{
           bvn: "",
@@ -193,31 +189,61 @@ export default function BvnVerify() {
         }}
       >
         {({ handleSubmit, handleChange, isSubmitting, values, touched, errors }) => (
-          <Form style={{ width: "60%" }} onSubmit={handleSubmit} className="mt-6">
-            <div className="mt-4">
-              <label htmlFor="bvn" className="font-normal text-lg text-NEUTRAL-_900 pb-2">
-                Bvn
-              </label>
-              <Input placeholder="Enter BVN" type="text" name="bvn" handleChange={handleChange} />
-              {errors.bvn && touched.bvn ? (
-                <Text variant="h4" weight="normal" color="text-red-700">
-                  {errors.bvn}
-                </Text>
-              ) : null}
+          <div className="bg-BACKGROUND_WHITE rounded-xl md:w-[85%] w-full p-10 h-auto">
+            <div className="mt-3 flex justify-center flex-col items-center">
+              <Text weight="bold" color="text-[#65666A]" variant="h2">
+                Sign Up
+              </Text>
+              <Text variant="h4">Sign up to create your InvestNow Account </Text>
             </div>
-            {values.bvn.length === 11 && (
+            <div className="mt-8">
+              <Text color="text-[#10B165]" weight="bold" variant="h2">
+                Hello
+              </Text>
+              <Text variant="h4">kindly provide your BVN for your account set up </Text>
+            </div>
+            <Form onSubmit={handleSubmit} className="mt-6 md:w-[60%] w-full">
               <div className="mt-4">
-                <Button
-                  title="Next"
-                  className="cursor-pointer w-full"
-                  type="submit"
-                  isLoading={authReducer?.isLoading}
-                />
+                <label htmlFor="bvn" className="font-normal text-lg text-NEUTRAL-_900 pb-2">
+                  Bvn
+                </label>
+                <Input placeholder="Enter BVN" type="text" name="bvn" handleChange={handleChange} />
+                {errors.bvn && touched.bvn ? (
+                  <Text variant="h4" weight="normal" color="text-red-700">
+                    {errors.bvn}
+                  </Text>
+                ) : null}
               </div>
-            )}
-          </Form>
+              {values.bvn.length === 11 && (
+                <div className="mt-4">
+                  <Button
+                    title="Next"
+                    className="cursor-pointer w-full"
+                    type="submit"
+                    isLoading={authReducer?.isLoading}
+                  />
+                </div>
+              )}
+            </Form>
+          </div>
         )}
       </Formik>
+      <div className="w-full mt-3 flex gap-2 justify-center">
+        <Text weight="bold" color="text-[#65666A]" variant="h4">
+          Already have an account?
+        </Text>
+        <Text
+          onClick={() => {
+            navigate("/login");
+          }}
+          format="cursor-pointer"
+          weight="bold"
+          variant="h4"
+          color="text-[#E32526]"
+        >
+          Sign in here
+        </Text>
+      </div>
     </>
   );
 }

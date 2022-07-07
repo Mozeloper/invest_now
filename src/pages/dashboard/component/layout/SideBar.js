@@ -63,7 +63,7 @@ export default function SideBar() {
     {
       title: "Settings",
       img: Settings,
-      path: "/settings",
+      path: "/settings/accounts",
     },
   ];
 
@@ -77,14 +77,17 @@ export default function SideBar() {
       <div className="flex justify-center my-4">
         <img src={Logosmall} alt="logo" className="min-w-[100px] max-w-[150px]" />
       </div>
-      <div className="flex gap-2 bg-[#F7F7F8] mb-5 p-3 rounded-md">
+      <div
+        onClick={() => navigate("/settings/accounts")}
+        className="flex gap-2 cursor-pointer bg-[#F7F7F8] mb-5 p-3 rounded-md"
+      >
         <img src={ProfileImg} alt="logo" className="lg:h-[52px] lg:w-[52px] h-[40px] w-[40px]" />
         <Text color="text-[#465174]" variant="h4" format="whitespace-nowrap mt-3 font-bold">
           {firstName} {lastName}
         </Text>
       </div>
       <div className="w-full">
-        <div className="border-b-2 border-[#BCBCBC] w-full">
+        <div className="border-b border-[#BCBCBC] w-full">
           <Text variant="h4">Menu</Text>
         </div>
         <div className="w-full mt-4 mb-6">
@@ -110,7 +113,7 @@ export default function SideBar() {
             );
           })}
         </div>
-        <div className="border-b-2 border-[#BCBCBC] w-full m-4"></div>
+        <div className="border-b border-[#BCBCBC] w-full m-4"></div>
         <div className="w-full">
           <NavLink
             to="/request_embassy_statement"
@@ -161,7 +164,7 @@ export default function SideBar() {
         >
           <img src={logout} alt="dashboard_icon" />
           <Text variant="h4" color="text-[#E32526]">
-            logout
+            Log out
           </Text>
         </div>
       </div>

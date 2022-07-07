@@ -74,15 +74,6 @@ export const handleCreateCustomer = createAsyncThunk("auth/createCustomer", asyn
   }
 });
 
-export const handleGetVerificationCode = createAsyncThunk("auth/getOtpCode", async (values, { rejectWithValue }) => {
-  try {
-    const data = await api.get(appUrls.verificationCodeURL + `?email=${values}`);
-    return data;
-  } catch (error) {
-    return rejectWithValue(error);
-  }
-});
-
 export const handleResetVerificationCode = createAsyncThunk(
   "auth/getResetOtpCode",
   async (values, { rejectWithValue }) => {
@@ -223,18 +214,6 @@ export const authSlice = createSlice({
     [handleCreateCustomer.rejected]: (state, action) => {
       state.isLoading = false;
       state.customerData = action.payload;
-    },
-    [handleGetVerificationCode.pending]: (state) => {
-      state.isLoading = true;
-      state.otpData = null;
-    },
-    [handleGetVerificationCode.fulfilled]: (state, action) => {
-      state.isLoading = false;
-      state.otpData = action?.payload?.data;
-    },
-    [handleGetVerificationCode.rejected]: (state, action) => {
-      state.isLoading = false;
-      state.otpData = action.payload;
     },
     [handleResetVerificationCode.pending]: (state) => {
       state.isLoading = true;

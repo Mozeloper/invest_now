@@ -8,7 +8,7 @@ export default function TermsOfService({ setShowMessageAlert }) {
   const navigate = useNavigate();
 
   return (
-    <>
+    <div className="overflow-y-auto overflow-hidden no-scrollbar">
       <div className="flex flex-col gap-3 text-center">
         <img loading="lazy" src={Logo} alt="logo-investnow" className="w-80 h-10 self-center" />
         <Text variant="h3" weight="extrabold" color="#000000">
@@ -37,12 +37,8 @@ export default function TermsOfService({ setShowMessageAlert }) {
           onClick={() => navigate("/")}
           className="py-4 font-extrabold"
         />
-        <Button
-          title="Agree"
-          onClick={setShowMessageAlert}
-          className="py-4 font-extrabold"
-        />
+        <Button title="Agree" onClick={setShowMessageAlert} className="py-4 font-extrabold" />
       </div>
-    </>
+    </div>
   );
 }

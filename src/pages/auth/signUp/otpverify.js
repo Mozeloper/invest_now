@@ -8,11 +8,7 @@ import Text from "../../../components/Typography/Typography";
 import Button from "../../../components/Button";
 import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
-import {
-  handleValidateOtpCode,
-  handleGetVerificationCode,
-  handleResetVerificationCode,
-} from "../../../store/slices/authSlices";
+import { handleValidateOtpCode, handleResetVerificationCode } from "../../../store/slices/authSlices";
 import MessageModal from "../../../components/modals/MessageModal";
 
 export default function OTPverify() {
@@ -25,6 +21,7 @@ export default function OTPverify() {
   const [isTimeOver, setIsTimeOver] = useState(false);
   const dispatch = useDispatch();
   const state = useLocation();
+  const navigate = useNavigate();
   const authReducer = useSelector((state) => state.authReducer);
 
   const handleValidateCode = async (values) => {
@@ -42,22 +39,6 @@ export default function OTPverify() {
       })
       .catch((err) => {
         console.log(err);
-      });
-  };
-
-  const handleVerificationOtp = async () => {
-    const email = state?.state?.email;
-    await dispatch(handleGetVerificationCode(email))
-      .unwrap()
-      .then((res) => {})
-      .catch((err) => {
-        console.log(err);
-        setOpenStatusMessage(true);
-        setStatusMessage((prev) => ({
-          ...prev,
-          reason: "OTP NOT SENT",
-          message: err?.data?.message,
-        }));
       });
   };
 
@@ -83,19 +64,9 @@ export default function OTPverify() {
   };
 
   useEffect(() => {
-    if (state?.state !== null && state?.state !== undefined) {
-      handleVerificationOtp();
-    } else {
-      handleResetVerificationOtpCode();
-    }
-  }, []);
-
-  useEffect(() => {
     counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
     checkTime();
   }, [counter]);
-
-  const navigate = useNavigate();
 
   const otpSchema = Yup.object().shape({
     otp: Yup.string().required("OTP is Required"),
@@ -129,8 +100,17 @@ export default function OTPverify() {
           await handleValidateCode(values);
         }}
       >
-        {({ handleSubmit, handleChange, setFieldValue, isSubmitting, values, touched, errors }) => (
-          <Form onSubmit={handleSubmit} className="w-[80%] md:w-[60%] mt-6">
+        {({ handleSubmit, resetForm, setFieldValue, isSubmitting, values, touched, errors }) => (
+          <Form
+            onSubmit={handleSubmit}
+            className="bg-BACKGROUND_WHITE rounded-xl md:p-10 p-4 w-full h-auto flex flex-col md:w-[70%] mt-6"
+          >
+            <div className="mt-3 text-center flex justify-center flex-col items-center">
+              <Text weight="bold" color="text-[#65666A]" variant="h2">
+                Verification code
+              </Text>
+              <Text variant="h4">Please enter the code sent to your emails to validate your account</Text>
+            </div>
             <OtpInput
               containerStyle="flex justify-between"
               value={values.otp}
@@ -139,7 +119,7 @@ export default function OTPverify() {
               numInputs={5}
               focusStyle={false}
               isInputNum={false}
-              className="bg-BACKGROUND_WHITE mb-4 p-3"
+              className="bg-[#E6EAEE] my-4 p-3"
             />
             {errors.otp && touched.otp ? (
               <Text variant="h4" weight="normal" color="text-red-700">
@@ -151,17 +131,20 @@ export default function OTPverify() {
                 <p>If you didnt receive the code, resend code in {counter}secs </p>
               </Text>
             )}
-            {isTimeOver && (
-              <div className="flex w-[30%]  mt-8">
+            {isTimeOver && !!!values?.otp.length >= 1 && (
+              <div className="items-start w-[50%] mt-4">
                 <Button
                   title="Resend Otp"
                   textColor="#E32526"
                   backgroundColor="none"
-                  className="cursor-pointer w-full"
+                  className="cursor-pointer w-full whitespace-nowrap"
                   type="button"
                   isLoading={isSubmitting}
                   style={{ borderRadius: "20px", border: "3px solid #E32526" }}
-                  onClick={() => handleResetVerificationOtpCode()}
+                  onClick={() => {
+                    handleResetVerificationOtpCode();
+                    resetForm();
+                  }}
                 />
               </div>
             )}

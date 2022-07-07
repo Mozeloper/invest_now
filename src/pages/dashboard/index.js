@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
+import { ResponsiveContainer, LineChart, Line, XAxis, CartesianGrid, Tooltip } from "recharts";
 import { Skeleton, Box } from "@mui/material";
 import Text from "../../components/Typography/Typography";
 import Button from "../../components/Button";
@@ -21,6 +21,7 @@ import {
   handleDashboardSummary,
   handleSlidingRating,
 } from "../../store/slices/dashboardSlice";
+import { currencyEntities } from "../../helper";
 
 const data = [
   {
@@ -74,7 +75,7 @@ export default function Dashboard() {
   const customerId = userDetails?.data?.customer?.id;
   const dashboardSummaryDetails = useSelector((state) => state?.dashboardReducer);
   const completion_statuses = dashboardSummaryDetails?.completionSummary?.data?.data;
-  const account_summary = dashboardSummaryDetails?.dashboardSummary?.data?.data;
+  const account_summary = dashboardSummaryDetails?.dashboardSummary?.payload?.data?.data;
 
   const dashboardSummary = async () => {
     await dispatch(handleDashboardSummary())
@@ -188,101 +189,106 @@ export default function Dashboard() {
           <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="100%" height={118} />
         </div>
       )}
-      {!!!dashboardSummaryDetails?.dashboardSummaryIsLoading && (
-        <>
-          <div className="w-full mt-4">
-            <Text format="mb-3" weight="bold" variant="h3">
-              Account summary
-            </Text>
-          </div>
-          <div className="w-full flex gap-2 no-scrollbar overflow-hidden overflow-x-auto">
-            <div
-              style={{ backgroundImage: `url(${redFrame})` }}
-              className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-            >
-              <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-              <div className="flex flex-col justify-center">
-                <Text variant="body" color="text-white">
-                  Portfolio Net Value
-                </Text>
-                <Text weight="bold" variant="h2" color="text-white">
-                  &#8358; 0.00
-                </Text>
+      {!!!dashboardSummaryDetails?.dashboardSummaryIsLoading &&
+        dashboardSummaryDetails?.dashboardSummary?.type === "dashboard/summary/fulfilled" && (
+          <>
+            <div className="w-full mt-4">
+              <Text format="mb-3" weight="bold" variant="h3">
+                Account summary
+              </Text>
+            </div>
+            <div className="w-full flex gap-2 no-scrollbar overflow-hidden overflow-x-auto">
+              <div
+                style={{ backgroundImage: `url(${redFrame})` }}
+                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+              >
+                <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                <div className="flex flex-col justify-center">
+                  <Text variant="body" color="text-white">
+                    Portfolio Net Value
+                  </Text>
+                  <Text weight="bold" variant="h2" color="text-white">
+                    {currencyEntities[account_summary?.agregateSummary[0]?.CurrencyId]}{" "}
+                    {account_summary?.agregateSummary[0]?.Total}
+                  </Text>
+                </div>
+              </div>
+              <div
+                style={{ backgroundImage: `url(${greenFrame})` }}
+                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+              >
+                <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
+                <div className="flex flex-col justify-center">
+                  <Text color="text-[#65666A]" variant="body">
+                    Cash Value
+                  </Text>
+                  <Text weight="bold" variant="h2" color="text-[#65666A]">
+                    {currencyEntities[account_summary?.cashAccountSummary[0]?.CurrencyId]}{" "}
+                    {account_summary?.cashAccountSummary[0]?.Total}
+                  </Text>
+                </div>
+              </div>
+              <div
+                style={{ backgroundImage: `url(${purpleFrame})` }}
+                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+              >
+                <img src={PurpleIcon} alt="icon" className="w-[64px] h-[64px]" />
+                <div className="flex flex-col justify-center">
+                  <Text color="text-[#65666A]" variant="body">
+                    Loans
+                  </Text>
+                  <Text weight="bold" variant="h2" color="text-[#65666A]">
+                    &#8358; 0.00
+                  </Text>
+                </div>
+              </div>
+              <div
+                style={{ backgroundImage: `url(${redFrame})` }}
+                className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+              >
+                <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                <div className="flex flex-col justify-center">
+                  <Text color="text-white" variant="body">
+                    Trust
+                  </Text>
+                  <Text weight="bold" variant="h2" color="text-white">
+                    &#8358; 0.00
+                  </Text>
+                </div>
+              </div>
+              <div
+                style={{ backgroundImage: `url(${greenFrame})` }}
+                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+              >
+                <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
+                <div className="flex flex-col justify-center">
+                  <Text color="text-[#65666A]" variant="body">
+                    Mutual Funds
+                  </Text>
+                  <Text weight="bold" variant="h2" color="text-[#65666A]">
+                    {currencyEntities[account_summary?.mutualFundsSummary[0]?.CurrencyId]}{" "}
+                    {account_summary?.mutualFundsSummary[0]?.Total}
+                  </Text>
+                </div>
+              </div>
+              <div
+                style={{ backgroundImage: `url(${redFrame})` }}
+                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+              >
+                <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                <div className="flex flex-col justify-center">
+                  <Text color="text-[#fff]" variant="body">
+                    Securities
+                  </Text>
+                  <Text weight="bold" variant="h2" color="text-[#fff]">
+                    {currencyEntities[account_summary?.equitySummary[0]?.CurrencyId]}{" "}
+                    {account_summary?.equitySummary[0]?.Total}
+                  </Text>
+                </div>
               </div>
             </div>
-            <div
-              style={{ backgroundImage: `url(${greenFrame})` }}
-              className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-            >
-              <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
-              <div className="flex flex-col justify-center">
-                <Text color="text-[#65666A]" variant="body">
-                  Cash Value
-                </Text>
-                <Text weight="bold" variant="h2" color="text-[#65666A]">
-                  &#8358; 0.00
-                </Text>
-              </div>
-            </div>
-            <div
-              style={{ backgroundImage: `url(${purpleFrame})` }}
-              className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-            >
-              <img src={PurpleIcon} alt="icon" className="w-[64px] h-[64px]" />
-              <div className="flex flex-col justify-center">
-                <Text color="text-[#65666A]" variant="body">
-                  Loans
-                </Text>
-                <Text weight="bold" variant="h2" color="text-[#65666A]">
-                  &#8358; 0.00
-                </Text>
-              </div>
-            </div>
-            <div
-              style={{ backgroundImage: `url(${redFrame})` }}
-              className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-            >
-              <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-              <div className="flex flex-col justify-center">
-                <Text color="text-white" variant="body">
-                  Trust
-                </Text>
-                <Text weight="bold" variant="h2" color="text-white">
-                  &#8358; 0.00
-                </Text>
-              </div>
-            </div>
-            <div
-              style={{ backgroundImage: `url(${greenFrame})` }}
-              className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-            >
-              <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
-              <div className="flex flex-col justify-center">
-                <Text color="text-[#65666A]" variant="body">
-                  Mutual Funds
-                </Text>
-                <Text weight="bold" variant="h2" color="text-[#65666A]">
-                  &#8358; 0.00
-                </Text>
-              </div>
-            </div>
-            <div
-              style={{ backgroundImage: `url(${redFrame})` }}
-              className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-            >
-              <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-              <div className="flex flex-col justify-center">
-                <Text color="text-[#fff]" variant="body">
-                  Securities
-                </Text>
-                <Text weight="bold" variant="h2" color="text-[#fff]">
-                  &#8358; 0.00
-                </Text>
-              </div>
-            </div>
-          </div>
-        </>
-      )}
+          </>
+        )}
       <div className="w-full mt-4">
         <Text format="mb-3" weight="bold" variant="h3">
           Performance

@@ -16,7 +16,8 @@ const Text = ({ variant, children, color, weight, format, ...rest }) => {
 
   return (
     <Component
-      className={`typography--variant-${variant} ${color || "text-tertiary"} font-${weight || "base"} ${format}`} {...rest}
+      className={`typography--variant-${variant} ${color || "text-tertiary"} font-${weight || "base"} ${format}`}
+      {...rest}
     >
       {children}
     </Component>

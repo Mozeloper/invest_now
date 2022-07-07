@@ -4,12 +4,14 @@ module.exports = {
     extend: {
       colors: {
         primary: "#E32526",
-        // secondary: "#E32526",
+        secondary: "#FFFAFA",
         tertiary: "#465174",
+        pink: "#FFF0F0",
         white: "#FFFFFF",
         black: "#000000",
         gray: "#DADADA",
         lightGray: "#E6EAEE",
+        headerColor: "#7B839C",
 
         BACKGROUND_GRAY: "#E5E5E5",
         BACKGROUND_WHITE: "#FFFFFF",

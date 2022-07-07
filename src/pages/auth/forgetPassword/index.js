@@ -28,7 +28,8 @@ export default function ForgetPassword() {
         }}
         validationSchema={forgetPasswordSchema}
         onSubmit={async (values) => {
-          navigate("/otp_verificaation");
+          // navigate("/otp_verification");
+          alert(values?.email);
           console.log(values);
         }}
       >

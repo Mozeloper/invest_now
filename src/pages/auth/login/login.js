@@ -20,10 +20,6 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    dispatch(resetInitialState());
-  }, []);
-
   const handleSubmitLogin = async (values) => {
     await dispatch(handleLogin(values))
       .unwrap()

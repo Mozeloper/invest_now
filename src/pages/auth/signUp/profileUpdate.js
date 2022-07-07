@@ -123,8 +123,8 @@ export default function ProfileUpdate() {
     // phone_number: Yup.string().required("Phone Number is Required"),
     // date_of_birth: Yup.string().required("Date of Birth is Required"),
     gender_type: Yup.string().required("Gender is Required"),
-    // country_code: Yup.string().required("Country is Required"),
-    // state_id: Yup.string().required("State is Required"),
+    country_code: Yup.string().required("Country is Required"),
+    state_id: Yup.string().required("State is Required"),
     // residential_address: Yup.string().required("Residential Address is Required"),
     // referral_code: Yup.string(),
   });
@@ -164,7 +164,7 @@ export default function ProfileUpdate() {
         }}
       >
         {({ handleSubmit, handleChange, setFieldValue, isSubmitting, values, touched, errors }) => (
-          <Form onSubmit={handleSubmit} className="w-[100%]">
+          <Form onSubmit={handleSubmit} className="w-full rounded-xl h-auto bg-BACKGROUND_WHITE md:p-10 p-4 mb-10">
             <div className="flex md:flex-row flex-col gap-3 w-full mt-4">
               <div className="w-full">
                 <MyInput
