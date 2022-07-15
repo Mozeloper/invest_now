@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import Password from "../../../components/formFields/password";
 import Input from "../../../components/formFields/inputs";
-import { handleLogin, resetInitialState } from "../../../store/slices/authSlices";
+import { handleLogin } from "../../../store/slices/authSlices";
 import MessageModal from "../../../components/modals/MessageModal";
 
 export default function Login() {

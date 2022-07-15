@@ -187,7 +187,7 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
       <MessageModal modalHeight="auto" isOpen={openModal?.bio_data}>
         <UpdateBioData handleCloseModals={handleCloseModals} />
       </MessageModal>
-      <MessageModal modalHeight="auto" isOpen={openModal?.employment_details}>
+      <MessageModal modalHeight="700px" isOpen={openModal?.employment_details}>
         <EmploymentDetails handleCloseModals={handleCloseModals} />
       </MessageModal>
       <MessageModal modalHeight="auto" isOpen={openModal?.self_certification}>

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ResponsiveContainer, LineChart, Line, XAxis, CartesianGrid, Tooltip } from "recharts";
 import { Skeleton, Box } from "@mui/material";
@@ -22,6 +22,8 @@ import {
   handleSlidingRating,
 } from "../../store/slices/dashboardSlice";
 import { currencyEntities } from "../../helper";
+import MessageModal from "../../components/modals/MessageModal";
+import Referral from "./component/referral";
 
 const data = [
   {
@@ -70,6 +72,8 @@ const data = [
 
 export default function Dashboard() {
   const dispatch = useDispatch();
+  const [isReferralModalOpen, setIsReferralModalOpen] = useState(false);
+
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
   const firstName = userDetails?.data?.customer?.firstname;
   const customerId = userDetails?.data?.customer?.id;
@@ -117,328 +121,336 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div data-aos="fade-up" data-aos-duration="2000">
-      <div className="w-full">
-        <Text weight="bold" variant="h1">
-          Welcome {firstName},
-        </Text>
-      </div>
-      {dashboardSummaryDetails?.completionSummaryIsLoading && (
-        <div className="my-24">
-          <Box>
-            <Skeleton />
-            <Skeleton animation="wave" />
-            <Skeleton animation={false} />
-          </Box>
+    <>
+      <MessageModal modalHeight="550px" isOpen={isReferralModalOpen}>
+        <Referral setIsReferralModalOpen={setIsReferralModalOpen} />
+      </MessageModal>
+      <div data-aos="fade-up" data-aos-duration="2000">
+        <div className="w-full">
+          <Text weight="bold" variant="h1">
+            Welcome {firstName},
+          </Text>
         </div>
-      )}
-      {!!!dashboardSummaryDetails?.completionSummaryIsLoading && (
-        <div className="w-full bg-[#FFFBF0] p-5 rounded-md overflow-hidden">
-          <div className="w-full flex lg:flex-row flex-col gap-2 justify-between">
-            <div className="w-full flex gap-2 items-center">
-              <img src={setupIcon} className="w-[40px] h-[40px]" alt="set_icon" />
-              <div>
-                <Text format="whitespace-nowrap" weight="bold" variant="h3">
-                  {completion_statuses?.total_percent}% of profile complete
+        {dashboardSummaryDetails?.completionSummaryIsLoading && (
+          <div className="my-24">
+            <Box>
+              <Skeleton />
+              <Skeleton animation="wave" />
+              <Skeleton animation={false} />
+            </Box>
+          </div>
+        )}
+        {!!!dashboardSummaryDetails?.completionSummaryIsLoading && (
+          <div className="w-full bg-[#FFFBF0] p-5 rounded-md overflow-hidden">
+            <div className="w-full flex lg:flex-row flex-col gap-2 justify-between">
+              <div className="w-full flex gap-2 items-center">
+                <img src={setupIcon} className="w-[40px] h-[40px]" alt="set_icon" />
+                <div>
+                  <Text format="whitespace-nowrap" weight="bold" variant="h3">
+                    {completion_statuses?.total_percent}% of profile complete
+                  </Text>
+                  <Text format="whitespace-nowrap" variant="body">
+                    Complete your profile so you can start investing
+                  </Text>
+                </div>
+              </div>
+              <div
+                onClick={() => setIsReferralModalOpen(true)}
+                className="bg-[#FFD8D8] cursor-pointer w-full p-5 text-right rounded-md"
+              >
+                <Text color="text-[#E32526]" weight="bold" variant="h4">
+                  Refer and Earn
                 </Text>
-                <Text format="whitespace-nowrap" variant="body">
-                  Complete your profile so you can start investing
+                <Text color="text-[#E32526]" variant="body">
+                  Become an Investnow affiliate marketer and earn up 3% commission
                 </Text>
               </div>
             </div>
-            <div className="bg-[#FFD8D8] w-full p-5 text-right rounded-md">
-              <Text color="text-[#E32526]" weight="bold" variant="h4">
-                Refer and Earn
-              </Text>
-              <Text color="text-[#E32526]" variant="body">
-                Become an Investnow affiliate marketer and earn up 3% commission
-              </Text>
+            <div className="border-b-2 border-[#7B839C] w-full my-4"></div>
+            <div className="overflow-x-auto no-scrollbar py-4 w-full flex gap-8">
+              {completion_statuses?.completion_status.map((step, index) => {
+                return (
+                  <div key={index + 1} className="flex gap-3 items-center">
+                    <div
+                      className={`${
+                        step?.is_completed ? "bg-[#FFCF5C]" : "bg-[#A4A5A7]"
+                      } rounded-full h-[24px] w-[24px] text-center font-bold text-[#000000]`}
+                    >
+                      {index + 1}
+                    </div>
+                    <div className="flex flex-col">
+                      <div className="flex gap-2 items-center">
+                        <Text format="whitespace-nowrap" weight="extrabold" variant="h4">
+                          {step?.label}
+                        </Text>
+                        {step?.is_completed && <img src={checked} className="w-[12px] h-[12px]" alt="set_icon" />}
+                      </div>
+                      <Text format="tracking-wide whitespace-nowrap" variant="body">
+                        Completes your profile up to {step?.percent}
+                      </Text>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
-          <div className="border-b-2 border-[#7B839C] w-full my-4"></div>
-          <div className="overflow-x-auto no-scrollbar py-4 w-full flex gap-8">
-            {completion_statuses?.completion_status.map((step, index) => {
-              return (
-                <div key={index + 1} className="flex gap-3 items-center">
-                  <div
-                    className={`${
-                      step?.is_completed ? "bg-[#FFCF5C]" : "bg-[#A4A5A7]"
-                    } rounded-full h-[24px] w-[24px] text-center font-bold text-[#000000]`}
-                  >
-                    {index + 1}
-                  </div>
-                  <div className="flex flex-col">
-                    <div className="flex gap-2 items-center">
-                      <Text format="whitespace-nowrap" weight="extrabold" variant="h4">
-                        {step?.label}
-                      </Text>
-                      {step?.is_completed && <img src={checked} className="w-[12px] h-[12px]" alt="set_icon" />}
-                    </div>
-                    <Text format="tracking-wide whitespace-nowrap" variant="body">
-                      Completes your profile up to {step?.percent}
+        )}
+        {dashboardSummaryDetails?.dashboardSummaryIsLoading && (
+          <div className="">
+            <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="100%" height={118} />
+          </div>
+        )}
+        {!!!dashboardSummaryDetails?.dashboardSummaryIsLoading &&
+          dashboardSummaryDetails?.dashboardSummary?.type === "dashboard/summary/fulfilled" && (
+            <>
+              <div className="w-full mt-4">
+                <Text format="mb-3" weight="bold" variant="h3">
+                  Account summary
+                </Text>
+              </div>
+              <div className="w-full flex gap-2 no-scrollbar overflow-hidden overflow-x-auto">
+                <div
+                  style={{ backgroundImage: `url(${redFrame})` }}
+                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text variant="body" color="text-white">
+                      Portfolio Net Value
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-white">
+                      {currencyEntities[account_summary?.agregateSummary[0]?.CurrencyId]}{" "}
+                      {account_summary?.agregateSummary[0]?.Total}
                     </Text>
                   </div>
                 </div>
-              );
-            })}
-          </div>
+                <div
+                  style={{ backgroundImage: `url(${greenFrame})` }}
+                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text color="text-[#65666A]" variant="body">
+                      Cash Value
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-[#65666A]">
+                      {currencyEntities[account_summary?.cashAccountSummary[0]?.CurrencyId]}{" "}
+                      {account_summary?.cashAccountSummary[0]?.Total}
+                    </Text>
+                  </div>
+                </div>
+                <div
+                  style={{ backgroundImage: `url(${purpleFrame})` }}
+                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={PurpleIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text color="text-[#65666A]" variant="body">
+                      Loans
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-[#65666A]">
+                      &#8358; 0.00
+                    </Text>
+                  </div>
+                </div>
+                <div
+                  style={{ backgroundImage: `url(${redFrame})` }}
+                  className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text color="text-white" variant="body">
+                      Trust
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-white">
+                      &#8358; 0.00
+                    </Text>
+                  </div>
+                </div>
+                <div
+                  style={{ backgroundImage: `url(${greenFrame})` }}
+                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text color="text-[#65666A]" variant="body">
+                      Mutual Funds
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-[#65666A]">
+                      {currencyEntities[account_summary?.mutualFundsSummary[0]?.CurrencyId]}{" "}
+                      {account_summary?.mutualFundsSummary[0]?.Total}
+                    </Text>
+                  </div>
+                </div>
+                <div
+                  style={{ backgroundImage: `url(${redFrame})` }}
+                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text color="text-[#fff]" variant="body">
+                      Securities
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-[#fff]">
+                      {currencyEntities[account_summary?.equitySummary[0]?.CurrencyId]}{" "}
+                      {account_summary?.equitySummary[0]?.Total}
+                    </Text>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        <div className="w-full mt-4">
+          <Text format="mb-3" weight="bold" variant="h3">
+            Performance
+          </Text>
         </div>
-      )}
-      {dashboardSummaryDetails?.dashboardSummaryIsLoading && (
-        <div className="">
-          <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="100%" height={118} />
-        </div>
-      )}
-      {!!!dashboardSummaryDetails?.dashboardSummaryIsLoading &&
-        dashboardSummaryDetails?.dashboardSummary?.type === "dashboard/summary/fulfilled" && (
-          <>
-            <div className="w-full mt-4">
+        <div className="w-full flex lg:flex-row flex-col gap-2">
+          <div className="bg-BACKGROUND_WHITE p-6 lg:basis-2/3 lg:w-[729px] h-[529px]">
+            <div className="flex justify-between">
               <Text format="mb-3" weight="bold" variant="h3">
-                Account summary
+                Portfolio Performance
               </Text>
-            </div>
-            <div className="w-full flex gap-2 no-scrollbar overflow-hidden overflow-x-auto">
-              <div
-                style={{ backgroundImage: `url(${redFrame})` }}
-                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-              >
-                <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                <div className="flex flex-col justify-center">
-                  <Text variant="body" color="text-white">
-                    Portfolio Net Value
-                  </Text>
-                  <Text weight="bold" variant="h2" color="text-white">
-                    {currencyEntities[account_summary?.agregateSummary[0]?.CurrencyId]}{" "}
-                    {account_summary?.agregateSummary[0]?.Total}
-                  </Text>
-                </div>
-              </div>
-              <div
-                style={{ backgroundImage: `url(${greenFrame})` }}
-                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-              >
-                <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
-                <div className="flex flex-col justify-center">
-                  <Text color="text-[#65666A]" variant="body">
-                    Cash Value
-                  </Text>
-                  <Text weight="bold" variant="h2" color="text-[#65666A]">
-                    {currencyEntities[account_summary?.cashAccountSummary[0]?.CurrencyId]}{" "}
-                    {account_summary?.cashAccountSummary[0]?.Total}
-                  </Text>
-                </div>
-              </div>
-              <div
-                style={{ backgroundImage: `url(${purpleFrame})` }}
-                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-              >
-                <img src={PurpleIcon} alt="icon" className="w-[64px] h-[64px]" />
-                <div className="flex flex-col justify-center">
-                  <Text color="text-[#65666A]" variant="body">
-                    Loans
-                  </Text>
-                  <Text weight="bold" variant="h2" color="text-[#65666A]">
-                    &#8358; 0.00
-                  </Text>
-                </div>
-              </div>
-              <div
-                style={{ backgroundImage: `url(${redFrame})` }}
-                className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-              >
-                <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                <div className="flex flex-col justify-center">
-                  <Text color="text-white" variant="body">
-                    Trust
-                  </Text>
-                  <Text weight="bold" variant="h2" color="text-white">
-                    &#8358; 0.00
-                  </Text>
-                </div>
-              </div>
-              <div
-                style={{ backgroundImage: `url(${greenFrame})` }}
-                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-              >
-                <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
-                <div className="flex flex-col justify-center">
-                  <Text color="text-[#65666A]" variant="body">
+              <div className="flex gap-3">
+                <div className="flex gap-2">
+                  <div className="bg-[#EF69A7] w-[16px] h-[16px]"></div>
+                  <Text format="mb-3" weight=" normal" variant="body">
                     Mutual Funds
                   </Text>
-                  <Text weight="bold" variant="h2" color="text-[#65666A]">
-                    {currencyEntities[account_summary?.mutualFundsSummary[0]?.CurrencyId]}{" "}
-                    {account_summary?.mutualFundsSummary[0]?.Total}
-                  </Text>
                 </div>
-              </div>
-              <div
-                style={{ backgroundImage: `url(${redFrame})` }}
-                className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-              >
-                <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                <div className="flex flex-col justify-center">
-                  <Text color="text-[#fff]" variant="body">
-                    Securities
-                  </Text>
-                  <Text weight="bold" variant="h2" color="text-[#fff]">
-                    {currencyEntities[account_summary?.equitySummary[0]?.CurrencyId]}{" "}
-                    {account_summary?.equitySummary[0]?.Total}
+                <div className="flex gap-2">
+                  <div className="bg-[#21C3F2] w-[16px] h-[16px]"></div>
+                  <Text format="mb-3" weight=" normal" variant="body">
+                    Trust Fund
                   </Text>
                 </div>
               </div>
             </div>
-          </>
-        )}
-      <div className="w-full mt-4">
-        <Text format="mb-3" weight="bold" variant="h3">
-          Performance
-        </Text>
-      </div>
-      <div className="w-full flex lg:flex-row flex-col gap-2">
-        <div className="bg-BACKGROUND_WHITE p-6 lg:basis-2/3 lg:w-[729px] h-[529px]">
-          <div className="flex justify-between">
-            <Text format="mb-3" weight="bold" variant="h3">
-              Portfolio Performance
-            </Text>
-            <div className="flex gap-3">
-              <div className="flex gap-2">
-                <div className="bg-[#EF69A7] w-[16px] h-[16px]"></div>
-                <Text format="mb-3" weight=" normal" variant="body">
-                  Mutual Funds
-                </Text>
-              </div>
-              <div className="flex gap-2">
-                <div className="bg-[#21C3F2] w-[16px] h-[16px]"></div>
-                <Text format="mb-3" weight=" normal" variant="body">
-                  Trust Fund
-                </Text>
-              </div>
+            <div className="w-full">
+              <ResponsiveContainer width="95%" height={400}>
+                <LineChart width={600} height={800} data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
+                  <XAxis dataKey="name" />
+                  <Tooltip />
+                  <CartesianGrid stroke="#f5f5f5" />
+                  <Line type="monotone" dataKey="Mutual_Funds" stroke="#EF69A7" yAxisId={0} />
+                  <Line type="monotone" dataKey="Trust_Fund" stroke="#21C3F2" yAxisId={1} />
+                </LineChart>
+              </ResponsiveContainer>
             </div>
           </div>
-          <div className="w-full">
-            <ResponsiveContainer width="95%" height={400}>
-              <LineChart width={600} height={800} data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-                <XAxis dataKey="name" />
-                <Tooltip />
-                <CartesianGrid stroke="#f5f5f5" />
-                <Line type="monotone" dataKey="Mutual_Funds" stroke="#EF69A7" yAxisId={0} />
-                <Line type="monotone" dataKey="Trust_Fund" stroke="#21C3F2" yAxisId={1} />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-        <div className="bg-[#FFFBF0] W-[100%] lg:basis-1/3 lg:h-[full] p-6">
-          <div className="w-full mb-10">
-            <Text weight="bold" variant="h3">
-              Daily Market rates
-            </Text>
-          </div>
-          <div className="flex flex-col gap-6">
-            <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-              <Text format="self-center" weight="bold" variant="h4">
-                Money Market Fund
+          <div className="bg-[#FFFBF0] W-[100%] lg:basis-1/3 lg:h-[full] p-6">
+            <div className="w-full mb-10">
+              <Text weight="bold" variant="h3">
+                Daily Market rates
               </Text>
-              <div className="flex items-center gap-2">
-                <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
-                <Text format="text-[#009A49]" weight="bold" variant="body">
-                  17.2%
-                </Text>
-              </div>
             </div>
-            <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-              <Text format="self-center" weight="bold" variant="h4">
-                Nigerian Diaspora Trust
-              </Text>
-              <div className="flex items-center gap-2">
-                <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
-                <Text format="text-[#009A49]" weight="bold" variant="body">
-                  7.2%
+            <div className="flex flex-col gap-6">
+              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
+                <Text format="self-center" weight="bold" variant="h4">
+                  Money Market Fund
                 </Text>
+                <div className="flex items-center gap-2">
+                  <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
+                  <Text format="text-[#009A49]" weight="bold" variant="body">
+                    17.2%
+                  </Text>
+                </div>
               </div>
-            </div>
-            <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-              <Text format="self-center" weight="bold" variant="h4">
-                Education Trust
-              </Text>
-              <div className="flex items-center gap-2">
-                <img src={loss} alt="profit" className="w-[15px] h-[7px]" />
-                <Text format="text-[#FE0000]" weight="bold" variant="body">
-                  7.2%
+              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
+                <Text format="self-center" weight="bold" variant="h4">
+                  Nigerian Diaspora Trust
                 </Text>
+                <div className="flex items-center gap-2">
+                  <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
+                  <Text format="text-[#009A49]" weight="bold" variant="body">
+                    7.2%
+                  </Text>
+                </div>
               </div>
-            </div>
-            <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-              <Text format="self-center" weight="bold" variant="h4">
-                Nigerian Eurobond fund
-              </Text>
-              <div className="flex items-center gap-2">
-                <img src={loss} alt="profit" className="w-[15px] h-[7px]" />
-                <Text format="text-[#FE0000]" weight="bold" variant="body">
-                  7.2%
+              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
+                <Text format="self-center" weight="bold" variant="h4">
+                  Education Trust
                 </Text>
+                <div className="flex items-center gap-2">
+                  <img src={loss} alt="profit" className="w-[15px] h-[7px]" />
+                  <Text format="text-[#FE0000]" weight="bold" variant="body">
+                    7.2%
+                  </Text>
+                </div>
               </div>
-            </div>
-            <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-              <Text format="self-center" weight="bold" variant="h4">
-                Equity Fund
-              </Text>
-              <div className="flex items-center gap-2">
-                <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
-                <Text format="text-[#009A49]" weight="bold" variant="body">
-                  7.2%
+              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
+                <Text format="self-center" weight="bold" variant="h4">
+                  Nigerian Eurobond fund
                 </Text>
+                <div className="flex items-center gap-2">
+                  <img src={loss} alt="profit" className="w-[15px] h-[7px]" />
+                  <Text format="text-[#FE0000]" weight="bold" variant="body">
+                    7.2%
+                  </Text>
+                </div>
+              </div>
+              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
+                <Text format="self-center" weight="bold" variant="h4">
+                  Equity Fund
+                </Text>
+                <div className="flex items-center gap-2">
+                  <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
+                  <Text format="text-[#009A49]" weight="bold" variant="body">
+                    7.2%
+                  </Text>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="w-full mt-4 flex lg:flex-row flex-col gap-2">
-        <div className="bg-BACKGROUND_WHITE h-[400px] p-6 lg:basis-1/2 basis-1">
-          <div className="w-full mt-4">
-            <Text format="mb-3" weight="bold" variant="h3">
-              My Portfolio
-            </Text>
-          </div>
-          <div className="w-full h-[80%] flex flex-col justify-center items-center">
-            <img src={empty} alt="empty" className="w-[200px] h-[100px]" />
-            <Text format="mb-3" weight="bold" variant="body">
-              You currently haven’t no portfolio
-            </Text>
-            <div>
-              <Button
-                title="Build your portfolio"
-                className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
-                type="button"
-                textColor="#fff"
-              />
+        <div className="w-full mt-4 flex lg:flex-row flex-col gap-2">
+          <div className="bg-BACKGROUND_WHITE h-[400px] p-6 lg:basis-1/2 basis-1">
+            <div className="w-full mt-4">
+              <Text format="mb-3" weight="bold" variant="h3">
+                My Portfolio
+              </Text>
+            </div>
+            <div className="w-full h-[80%] flex flex-col justify-center items-center">
+              <img src={empty} alt="empty" className="w-[200px] h-[100px]" />
+              <Text format="mb-3" weight="bold" variant="body">
+                You currently haven’t no portfolio
+              </Text>
+              <div>
+                <Button
+                  title="Build your portfolio"
+                  className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
+                  type="button"
+                  textColor="#fff"
+                />
+              </div>
             </div>
           </div>
-        </div>
-        <div className="bg-BACKGROUND_WHITE h-[400px] p-6 lg:basis-1/2 basis-1">
-          <div className="w-full mt-4">
-            <Text format="mb-3" weight="bold" variant="h3">
-              My Loans
-            </Text>
-          </div>
-          <div className="w-full h-[70%] flex flex-col justify-center items-center">
-            <img src={empty} alt="empty" className="w-[200px] h-[100px]" />
-            <Text format="px-20" weight="bold" variant="body">
-              You have no loans.
-            </Text>
-            <Text format="mb-3 px-20" weight="bold" variant="body">
-              Never run out of money for your business
-            </Text>
-            <div>
-              <Button
-                title="Get a loan"
-                className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
-                type="button"
-                textColor="#fff"
-              />
+          <div className="bg-BACKGROUND_WHITE h-[400px] p-6 lg:basis-1/2 basis-1">
+            <div className="w-full mt-4">
+              <Text format="mb-3" weight="bold" variant="h3">
+                My Loans
+              </Text>
+            </div>
+            <div className="w-full h-[70%] flex flex-col justify-center items-center">
+              <img src={empty} alt="empty" className="w-[200px] h-[100px]" />
+              <Text format="px-20" weight="bold" variant="body">
+                You have no loans.
+              </Text>
+              <Text format="mb-3 px-20" weight="bold" variant="body">
+                Never run out of money for your business
+              </Text>
+              <div>
+                <Button
+                  title="Get a loan"
+                  className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
+                  type="button"
+                  textColor="#fff"
+                />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

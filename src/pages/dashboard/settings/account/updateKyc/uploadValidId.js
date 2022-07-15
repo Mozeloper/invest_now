@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import closeBtn from "../../../../../assets/icons/close_btn.svg";
 import Button from "../../../../../components/Button";
 import MessageModal from "../../../../../components/modals/MessageModal";
 import Text from "../../../../../components/Typography/Typography";
+import Loader from "../../../../../components/loader";
 import Selfie from "../../../../../assets/icons/selfie.svg";
 import UploadJpeg from "../../../../../assets/icons/upload_doc.svg";
 import pictureIcon from "../../../../../assets/icons/picture_taker.svg";
 import Webcam from "react-webcam";
 import ImageUploading from "react-images-uploading";
+import { useDispatch, useSelector } from "react-redux";
+import { getIdentityTypes, handleValidId } from "../../../../../store/slices/settingsUpdateKycSlice";
 
 const videoConstraints = {
   width: 220,
@@ -15,13 +18,53 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-const WebcamCapture = ({ handleCloseUploadModals }) => {
+const WebcamCapture = ({ handleCloseUploadModals, validId, customerId, isLoading }) => {
   const [image, setImage] = useState("");
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const dispatch = useDispatch();
   const webcamRef = React.useRef(null);
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
   }, [webcamRef]);
+
+  const uploadValid = async () => {
+    const containsJpeg = "data:image/jpeg;base64,";
+    const constainsPng = "data:image/png;base64,";
+    let result;
+
+    if (image.includes(containsJpeg)) {
+      result = image.replace(containsJpeg, "");
+    } else if (image.includes(constainsPng)) {
+      result = image.replace(constainsPng, "");
+    } else {
+      result = image;
+    }
+
+    const data = {
+      id: customerId,
+      data: {
+        identity_type_id: validId,
+        id_base64: result,
+      },
+    };
+    await dispatch(handleValidId(data))
+      .unwrap()
+      .then((res) => {
+        setTimeout(() => {
+          handleCloseUploadModals();
+          setMessage("");
+        }, 2000);
+        setMessage(res?.data?.message);
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 2000);
+        setErrorMessage(error?.data?.message);
+      });
+  };
   return (
     <div className="flex flex-col gap-3 items-center justify-center">
       {image === "" && (
@@ -40,12 +83,27 @@ const WebcamCapture = ({ handleCloseUploadModals }) => {
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
           <Button
-            onClick={() => handleCloseUploadModals()}
+            isLoading={isLoading}
+            onClick={() => uploadValid()}
             title="Save Picture"
             className="cursor-pointer w-full"
             type="button"
           />
         </>
+      )}
+      {message !== "" && (
+        <div className="w-full text-center mt-4">
+          <Text variant="h4" color="text-green-600">
+            {message}
+          </Text>
+        </div>
+      )}
+      {errorMessage !== "" && (
+        <div className="w-full text-center mt-4">
+          <Text variant="h4" color="text-red-500">
+            {errorMessage}
+          </Text>
+        </div>
       )}
     </div>
   );
@@ -53,10 +111,35 @@ const WebcamCapture = ({ handleCloseUploadModals }) => {
 
 export default function UploadValidId({ handleCloseModals }) {
   const [validId, setValidId] = useState(null);
+  const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
+  const identityType = updateKycSliceReducer?.identityTypeState?.payload?.data?.data;
+  const authReducer = useSelector((state) => state.authReducer);
+  const customerId = authReducer?.authedUser?.data?.customer?.id;
+
+  const dispatch = useDispatch();
   const [openModal, setOpenMpdal] = useState({
     valid_id: false,
     take_picture: false,
   });
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    let mounted = false;
+    (async () => {
+      mounted = true;
+      if (mounted) {
+        try {
+          dispatch(getIdentityTypes());
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [dispatch]);
 
   const [images, setImages] = useState("");
   const onChange = (imageList) => {
@@ -113,27 +196,53 @@ export default function UploadValidId({ handleCloseModals }) {
     }
   };
 
-  const validIdentiy = [
-    {
-      name: "Drivers License",
-      id: 1,
-    },
-    {
-      name: "Voters Card",
-      id: 2,
-    },
-    {
-      name: "National ID card",
-      id: 3,
-    },
-    {
-      name: "International Passport",
-      id: 4,
-    },
-  ];
-
   const handleValidIdenty = (e) => {
     setValidId(e.target.value);
+  };
+
+  const uploadValid = async () => {
+    const containsJpeg = "data:image/jpeg;base64,";
+    const constainsPng = "data:image/png;base64,";
+    let result;
+
+    if (images.includes(containsJpeg)) {
+      result = images.replace("data:image/jpeg;base64,", "");
+    } else if (images.includes(constainsPng)) {
+      result = images.replace("data:image/png;base64,", "");
+    } else {
+      result = images;
+    }
+
+    const data = {
+      id: customerId,
+      data: {
+        identity_type_id: validId,
+        id_base64: result,
+      },
+    };
+    await dispatch(handleValidId(data))
+      .unwrap()
+      .then((res) => {
+        setTimeout(() => {
+          handleCloseIdUpload("upload_picture");
+          handleCloseIdUpload("valid_id");
+          handleCloseModals("valid_id");
+          setMessage("");
+        }, 2000);
+        setMessage(res?.data?.message);
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 2000);
+        setErrorMessage(error?.data?.message);
+      });
+  };
+
+  const loadingState = () => {
+    if (updateKycSliceReducer?.isLoading) {
+      return <Loader />;
+    }
   };
 
   return (
@@ -154,18 +263,28 @@ export default function UploadValidId({ handleCloseModals }) {
           Select which type of ID you want to upload
         </Text>
       </div>
-      <div className="bg-BACKGROUND_WHITE p-6 rounded-lg m-[1%]">
-        {validIdentiy.map(({ name, id }) => {
-          return (
-            <div key={id} className="flex justify-between my-6">
-              <Text variant="h3" weight="normal">
-                {name}
-              </Text>
-              <input onChange={handleValidIdenty} name="identity" type="radio" value={id} className="accent-primary" />
-            </div>
-          );
-        })}
-      </div>
+      {loadingState()}
+      {!!!updateKycSliceReducer?.isLoading &&
+        updateKycSliceReducer?.identityTypeState?.type === "settings/identityTypes/fulfilled" && (
+          <div className="bg-BACKGROUND_WHITE p-6 rounded-lg m-[1%]">
+            {identityType.map(({ identity_type_name, id }) => {
+              return (
+                <div key={id} className="flex justify-between my-6">
+                  <Text variant="h3" weight="normal">
+                    {identity_type_name}
+                  </Text>
+                  <input
+                    onChange={handleValidIdenty}
+                    name="identity"
+                    type="radio"
+                    value={id}
+                    className="accent-primary"
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
       {validId !== null && (
         <Button
           onClick={() => handleOpenIdUpload("valid_id")}
@@ -241,14 +360,27 @@ export default function UploadValidId({ handleCloseModals }) {
                       <img src={imageList} alt="img_preview" className="h-[300px] w-[300px]" />
                       <Button
                         onClick={() => {
-                          handleCloseIdUpload("upload_picture");
-                          handleCloseIdUpload("valid_id");
-                          handleCloseModals("valid_id");
+                          uploadValid();
                         }}
                         title="Save Picture"
                         className="cursor-pointer w-full"
                         type="button"
+                        isLoading={updateKycSliceReducer?.isLoading}
                       />
+                    </div>
+                  )}
+                  {message !== "" && (
+                    <div className="w-full text-center mt-4">
+                      <Text variant="h4" color="text-green-600">
+                        {message}
+                      </Text>
+                    </div>
+                  )}
+                  {errorMessage !== "" && (
+                    <div className="w-full text-center mt-4">
+                      <Text variant="h4" color="text-red-500">
+                        {errorMessage}
+                      </Text>
                     </div>
                   )}
                 </MessageModal>
@@ -280,6 +412,9 @@ export default function UploadValidId({ handleCloseModals }) {
             handleCloseIdUpload("valid_id");
             handleCloseModals("valid_id");
           }}
+          customerId={customerId}
+          validId={validId}
+          isLoading={updateKycSliceReducer?.isLoading}
         />
       </MessageModal>
     </>

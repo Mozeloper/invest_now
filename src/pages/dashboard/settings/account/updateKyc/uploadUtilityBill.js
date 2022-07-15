@@ -9,6 +9,8 @@ import MessageModal from "../../../../../components/modals/MessageModal";
 import Webcam from "react-webcam";
 import ImageUploading from "react-images-uploading";
 import Button from "../../../../../components/Button";
+import { useDispatch, useSelector } from "react-redux";
+import { handleUtilityBill } from "../../../../../store/slices/settingsUpdateKycSlice";
 
 const videoConstraints = {
   width: 220,
@@ -16,13 +18,53 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-const WebcamCapture = ({ handleCloseUploadModals }) => {
+const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
+  const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
+  const dispatch = useDispatch();
   const [image, setImage] = useState("");
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
   const webcamRef = React.useRef(null);
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
+    console.log(imageSrc);
     setImage(imageSrc);
   }, [webcamRef]);
+
+  const utilityBillSefie = async () => {
+    const containsJpeg = "data:image/jpeg;base64,";
+    const constainsPng = "data:image/png;base64,";
+    let result;
+
+    if (image.includes(containsJpeg)) {
+      result = image.replace(containsJpeg, "");
+    } else if (image.includes(constainsPng)) {
+      result = image.replace(constainsPng, "");
+    } else {
+      result = image;
+    }
+
+    const data = {
+      utility_bill_base64: result,
+    };
+    await dispatch(handleUtilityBill(data))
+      .unwrap()
+      .then((res) => {
+        setTimeout(() => {
+          handleCloseWebCaptureUploadModals();
+          setMessage("");
+        }, 2000);
+        setMessage(res?.data?.message);
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 2000);
+        setErrorMessage(error?.data?.message);
+      });
+  };
+
   return (
     <div className="flex flex-col gap-3 items-center justify-center">
       {image === "" && (
@@ -41,24 +83,45 @@ const WebcamCapture = ({ handleCloseUploadModals }) => {
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
           <Button
-            onClick={() => handleCloseUploadModals()}
+            onClick={() => utilityBillSefie()}
             title="Save Picture"
             className="cursor-pointer w-full"
             type="button"
+            isLoading={updateKycSliceReducer?.isLoading}
           />
         </>
+      )}
+      {message !== "" && (
+        <div className="w-full text-center mt-4">
+          <Text variant="h4" color="text-green-600">
+            {message}
+          </Text>
+        </div>
+      )}
+      {errorMessage !== "" && (
+        <div className="w-full text-center mt-4">
+          <Text variant="h4" color="text-red-500">
+            {errorMessage}
+          </Text>
+        </div>
       )}
     </div>
   );
 };
 
 export default function UploadUtilityBill({ handleCloseModals }) {
+  const dispatch = useDispatch();
+  const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
+
   const [openModal, setOpenMpdal] = useState({
     take_picture: false,
     upload_picture: false,
   });
 
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [images, setImages] = useState("");
+
   const onChange = (imageList) => {
     setImages(imageList[0].data_url);
   };
@@ -99,6 +162,40 @@ export default function UploadUtilityBill({ handleCloseModals }) {
       default:
         break;
     }
+  };
+
+  const utilityBillUpload = async () => {
+    const containsJpeg = "data:image/jpeg;base64,";
+    const constainsPng = "data:image/png;base64,";
+    let result;
+
+    if (images.includes(containsJpeg)) {
+      result = images.replace("data:image/jpeg;base64,", "");
+    } else if (images.includes(constainsPng)) {
+      result = images.replace("data:image/png;base64,", "");
+    } else {
+      result = images;
+    }
+
+    const data = {
+      utility_bill_base64: result,
+    };
+    await dispatch(handleUtilityBill(data))
+      .unwrap()
+      .then((res) => {
+        setTimeout(() => {
+          handleCloseUploadModals("take_picture");
+          handleCloseModals("utility_bill");
+          setMessage("");
+        }, 2000);
+        setMessage(res?.data?.message);
+      })
+      .catch((error) => {
+        setTimeout(() => {
+          setErrorMessage("");
+        }, 2000);
+        setErrorMessage(error?.data?.message);
+      });
   };
 
   return (
@@ -170,13 +267,27 @@ export default function UploadUtilityBill({ handleCloseModals }) {
                     <img src={imageList} alt="img_preview" className="h-[300px] w-[300px]" />
                     <Button
                       onClick={() => {
-                        handleCloseUploadModals("take_picture");
-                        handleCloseModals("utility_bill");
+                        utilityBillUpload();
                       }}
+                      isLoading={updateKycSliceReducer?.isLoading}
                       title="Save Picture"
                       className="cursor-pointer w-full"
                       type="button"
                     />
+                  </div>
+                )}
+                {message !== "" && (
+                  <div className="w-full text-center mt-4">
+                    <Text variant="h4" color="text-green-600">
+                      {message}
+                    </Text>
+                  </div>
+                )}
+                {errorMessage !== "" && (
+                  <div className="w-full text-center mt-4">
+                    <Text variant="h4" color="text-red-500">
+                      {errorMessage}
+                    </Text>
                   </div>
                 )}
               </MessageModal>
@@ -203,7 +314,7 @@ export default function UploadUtilityBill({ handleCloseModals }) {
           </Text>
         </div>
         <WebcamCapture
-          handleCloseUploadModals={() => {
+          handleCloseWebCaptureUploadModals={() => {
             handleCloseUploadModals("take_picture");
             handleCloseModals("utility_bill");
           }}

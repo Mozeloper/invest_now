@@ -30,6 +30,27 @@ export const handleSlidingRating = createAsyncThunk("dashboard/rating", async (_
   }
 });
 
+export const handleGetReferralProduct = createAsyncThunk(
+  "dashboard/referralProduct",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await api.get(appUrls.activeReferralProductURL);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const handleGetReferralCode = createAsyncThunk("dashboard/referralCode", async (_, { rejectWithValue }) => {
+  try {
+    const data = await api.post(appUrls.referralCodeLinkURL);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
 const initialState = {
   dashboardSummary: null,
   dashboardSummaryIsLoading: false,
@@ -72,6 +93,26 @@ export const dashboardSlice = createSlice({
     },
     [handleSlidingRating.rejected]: (state) => {
       state.slidingRateIsLoading = false;
+    },
+    [handleGetReferralProduct.pending]: (state) => {
+      state.activeProductReferralIsLoading = true;
+    },
+    [handleGetReferralProduct.fulfilled]: (state, action) => {
+      state.activeProductReferralIsLoading = false;
+      state.referralProduct = action;
+    },
+    [handleGetReferralProduct.rejected]: (state) => {
+      state.activeProductReferralIsLoading = false;
+    },
+    [handleGetReferralCode.pending]: (state) => {
+      state.referralCodeIsLoading = true;
+    },
+    [handleGetReferralCode.fulfilled]: (state, action) => {
+      state.referralCodeIsLoading = false;
+      state.referralCodeData = action;
+    },
+    [handleGetReferralCode.rejected]: (state) => {
+      state.referralCodeIsLoading = false;
     },
   },
 });

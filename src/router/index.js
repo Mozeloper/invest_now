@@ -27,6 +27,11 @@ import Accounts from "../pages/dashboard/settings/account";
 import ContactUs from "../pages/dashboard/settings/contactUs";
 import Faq from "../pages/dashboard/settings/faq";
 import Security from "../pages/dashboard/settings/security";
+import OpenAccount from "../pages/dashboard/products/openAccount";
+import AllProducts from "../pages/dashboard/products/allProducts";
+import MutualFunds from "../pages/dashboard/products/mutualFunds";
+import Trust from "../pages/dashboard/products/trust";
+import Securities from "../pages/dashboard/products/securities";
 
 function InappPrivateRoute() {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
@@ -73,7 +78,13 @@ export default function AppRoute() {
         <Route element={<AppLayout />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/portfolio" element={<Portfolio />} />
-          <Route path="/products" element={<Products />} />
+          <Route element={<Products />}>
+            <Route path="/products/all" exact element={<AllProducts />} />
+            <Route path="/products/mutual_funds" element={<MutualFunds />} />
+            <Route path="/products/trust" element={<Trust />} />
+            <Route path="/products/securities" element={<Securities />} />
+          </Route>
+          <Route path="/products/open_account/*" element={<OpenAccount />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/loans" element={<Loans />} />
           <Route path="/live_trading" element={<LiveTrading />} />

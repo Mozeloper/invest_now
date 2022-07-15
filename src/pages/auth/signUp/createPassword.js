@@ -50,8 +50,8 @@ export default function CreatePassword() {
       .min(8, "Too Short!")
       .max(50, "Too Long!")
       .matches(
-        "^(?=.*[A-Za-z])(?=.*d)(?=.*[@$!%*#?&])[A-Za-zd@$!%*#?&]{8,}$",
-        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character"
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#/$%/^&/*])(?=.{8,})/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
       )
       .required("Password is required"),
     confirm_password: Yup.string()
@@ -85,12 +85,11 @@ export default function CreatePassword() {
           confirm_password: "",
         }}
         validationSchema={passwordSchema}
-        onSubmit={async (values, errors) => {
+        onSubmit={async (values) => {
           const data = {
             password: values.password,
           };
-          console.log(errors);
-          // handlePasswordUserCreation(data);
+          handlePasswordUserCreation(data);
         }}
       >
         {({ handleSubmit, handleChange, isSubmitting, values, touched, errors }) => (
@@ -117,7 +116,7 @@ export default function CreatePassword() {
                 />
               </div>
               {errors.password && touched.password ? (
-                <Text variant="h4" weight="normal" color="text-red-700">
+                <Text variant="body" weight="normal" color="text-red-700">
                   {errors.password}
                 </Text>
               ) : null}

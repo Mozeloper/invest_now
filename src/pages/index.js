@@ -207,7 +207,7 @@ export default function Index() {
                 Invest your money in money in profitable assets{" "}
               </Text>
               <Text variant="h3" format="font-normal my-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                Enjoy competitive returns when you invest with us.
               </Text>
               <div onClick={() => navigate("/login")} className="flex gap-2">
                 <Text variant="h4" color="text-primary" format="cursor-pointer self-start font-bold">
@@ -233,7 +233,7 @@ export default function Index() {
                 Track and monitor your portfolio with ease
               </Text>
               <Text variant="h3" format="font-normal my-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                Get real-time information on your investments in one place.
               </Text>
               <div onClick={() => navigate("/login")} className="flex gap-2">
                 <Text variant="h4" color="text-primary" format="cursor-pointer self-start font-bold">
@@ -253,7 +253,8 @@ export default function Index() {
                 Never run out of cash to keep your business running
               </Text>
               <Text variant="h3" format="font-normal my-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                With Asset-Backed Loan, you can access a loan of up to 95% of your investment value to meet your urgent
+                needs.
               </Text>
               <div onClick={() => navigate("/login")} className="flex gap-2">
                 <Text variant="h4" color="text-primary" format="cursor-pointer self-start font-bold">
@@ -276,7 +277,7 @@ export default function Index() {
                 Start today
               </Text>
               <Text variant="h4" format="text-[#000000] lg:w-[40%] w-[80%] text-center font-normal">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                Looking to do more with your money? Let’s help you kickstart your investment journey.
               </Text>
             </div>
             <div className="w-full flex md:flex-row flex-col items-center justify-center gap-2 my-4 md:my-8">
@@ -287,7 +288,7 @@ export default function Index() {
                   Choose a product
                 </Text>
                 <Text variant="h4" format="text-[#000000] text-center md:text-left w-[60%] font-normal">
-                  Select a product from our robust investment menu.
+                  Select a product from our array of Investment offerings.
                 </Text>
               </div>
               <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
@@ -297,7 +298,7 @@ export default function Index() {
                   Open an account
                 </Text>
                 <Text variant="h4" format="text-[#000000] text-center md:text-left w-[60%] font-normal">
-                  Simply provide us with some information about you to open your investment account
+                  Simply provide us with some information about you.
                 </Text>
               </div>
               <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
@@ -307,7 +308,7 @@ export default function Index() {
                   Fund your account
                 </Text>
                 <Text variant="h4" format="text-[#000000] text-center md:text-left w-[60%] font-normal">
-                  Fund your account with a simple click with either your debit card or bank acount!
+                  Put funds into your account with your debit card or bank account.
                 </Text>
               </div>
               <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
@@ -343,7 +344,7 @@ export default function Index() {
                   Mutual funds
                 </Text>
                 <Text variant="h4" format="text-[#000000] my-3 w-[60%] font-normal">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                  Put your money to work with our Mutual Funds and start earning competitive returns.
                 </Text>
                 <div onClick={() => navigate("/login")} className="flex gap-2">
                   <Text variant="h3" color="text-primary" format="cursor-pointer self-start font-bold">
@@ -358,7 +359,7 @@ export default function Index() {
                   Trust
                 </Text>
                 <Text variant="h4" format="text-[#000000] my-3 w-[60%] font-normal">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                  Build your wealth and preserve your legacy to last for generations.
                 </Text>
                 <div onClick={() => navigate("/login")} className="flex gap-2">
                   <Text variant="h3" color="text-primary" format="cursor-pointer self-start font-bold">
@@ -373,7 +374,7 @@ export default function Index() {
                   Securities
                 </Text>
                 <Text variant="h4" format="text-[#000000] my-3 w-[60%] font-normal">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                  Trade stocks like a pro on the floor of the Nigerian Stock Exchange.
                 </Text>
                 <div onClick={() => navigate("/login")} className="flex gap-2">
                   <Text variant="h3" color="text-primary" format="cursor-pointer self-start font-bold">
@@ -395,38 +396,38 @@ export default function Index() {
             >
               <div className="bg-BACKGROUND_WHITE min-w-[420px] h-full p-4">
                 <Text variant="h4" format="w-[90%] font-extrabold mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer. Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                  They pay good attention to me. They also provide quality and timely service which has, in no small
+                  measure, enabled me to achieve the much-needed objective of good returns on investment.
                 </Text>
                 <div className="flex gap-2">
                   <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" />
                   <Text variant="small" format="mt-4 font-extrabold mb-4">
-                    Ted Lasso
+                    Jimmy Oshinowo
                   </Text>
                 </div>
               </div>
               <div className="bg-BACKGROUND_WHITE min-w-[420px] h-full p-4">
                 <Text variant="h4" format="w-[90%] font-extrabold mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer. Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                  I’ve had a very good experience with United Capital Plc. The company has related with me very well and
+                  has really added value to my business. They take pride in putting your interests first.
                 </Text>
                 <div className="flex gap-2">
                   <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" />
                   <Text variant="small" format="mt-4 font-extrabold mb-4">
-                    Ted Lasso
+                    Mrs Aremu Ejiro
                   </Text>
                 </div>
               </div>
               <div className="bg-BACKGROUND_WHITE min-w-[420px] h-full p-4">
                 <Text variant="h4" format="w-[90%] font-extrabold mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer. Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                  I’ve invested with United Capital for a while now, and I’ve been telling others to join in. If they
+                  weren’t good at what they do, I wouldn’t have been transacting with them for over eight years.
                 </Text>
 
                 <div className="flex gap-2">
                   <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" />
                   <Text variant="small" format="mt-4 font-extrabold mb-4">
-                    Ted Lasso
+                    Chief Chimezie Eleberi
                   </Text>
                 </div>
               </div>
@@ -450,8 +451,7 @@ export default function Index() {
                   4/5 ratings on app stores
                 </Text>
                 <Text color="text-white" variant="h4" format="w-[90%] font-extrabold mb-4">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer. Lorem
-                  ipsum dolor sit amet, consectetur adipiscing elit. Vel, morbi nulla est tellus integer.
+                  Enjoy an optimized user-experience with the InvestNow app.
                 </Text>
                 <div className="flex gap-3 mt-6">
                   <button

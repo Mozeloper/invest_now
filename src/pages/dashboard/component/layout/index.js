@@ -11,7 +11,7 @@ export default function AppLayout() {
       </div>
       <div className="lg:ml-[16%] lg:w-[84%] w-full">
         <Header />
-        <div className="w-full mt-[88px] p-6">
+        <div className="w-full mt-[88px] px-6 py-4">
           <Outlet />
         </div>
       </div>

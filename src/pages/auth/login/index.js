@@ -48,7 +48,7 @@ export default function LoginLayout() {
         <div className="lg:w-[43%] hidden lg:block fixed top-0 right-0 h-screen">
           <Slide arrows={false}>
             {slideImages.map((fadeImage, index) => (
-              <img key={index} src={fadeImage.url} loading="lazy" alt="logo" className="h-screen w-full" />
+              <img key={index} src={fadeImage.url} loading="lazy" alt="logo" className="h-screen w-full object-cover" />
             ))}
           </Slide>
         </div>

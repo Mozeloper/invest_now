@@ -3,13 +3,13 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Logosmall from "../../../../assets/icons/logo.svg";
 import ProfileImg from "../../../../assets/icons/profile_img.svg";
-import dashboard from "../../../../assets/icons/dashboard.svg";
-import portfolio from "../../../../assets/icons/portfolio.svg";
-import products from "../../../../assets/icons/products.svg";
-import transactions from "../../../../assets/icons/transactions.svg";
-import loans from "../../../../assets/icons/loans.svg";
-import trading from "../../../../assets/icons/live_trading.svg";
-import reports from "../../../../assets/icons/reports.svg";
+import Dashboard from "../../../../assets/icons/dashboard.svg";
+import Portfolio from "../../../../assets/icons/portfolio.svg";
+import Products from "../../../../assets/icons/products.svg";
+import Transactions from "../../../../assets/icons/transactions.svg";
+import Loans from "../../../../assets/icons/loans.svg";
+import Trading from "../../../../assets/icons/live_trading.svg";
+import Reports from "../../../../assets/icons/reports.svg";
 import Settings from "../../../../assets/icons/settings.svg";
 import embassy from "../../../../assets/icons/embassy_statement.svg";
 import contact from "../../../../assets/icons/contact.svg";
@@ -27,37 +27,37 @@ export default function SideBar() {
   const SideBarList = [
     {
       title: "Dashboard",
-      img: dashboard,
+      img: Dashboard,
       path: "/dashboard",
     },
     {
       title: "Portfolio",
-      img: portfolio,
+      img: Portfolio,
       path: "/portfolio",
     },
     {
       title: "Products",
-      img: products,
-      path: "/products",
+      img: Products,
+      path: "/products/all",
     },
     {
       title: "Transactions",
-      img: transactions,
+      img: Transactions,
       path: "/transactions",
     },
     {
       title: "Loans",
-      img: loans,
+      img: Loans,
       path: "/loans",
     },
     {
       title: "Live Trading",
-      img: trading,
+      img: Trading,
       path: "/live_trading",
     },
     {
       title: "Reports",
-      img: reports,
+      img: Reports,
       path: "/reports",
     },
     {

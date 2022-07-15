@@ -2,12 +2,12 @@ import React from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Text from "../../../components/Typography/Typography";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import Button from "../../../components/Button";
 import Input from "../../../components/formFields/inputs";
 
 export default function ForgetPassword() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const forgetPasswordSchema = Yup.object().shape({
     email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
