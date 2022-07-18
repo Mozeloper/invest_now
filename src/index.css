@@ -12,6 +12,13 @@ body {
   font-family: "Century Gothic", "Roboto", "sans-serif";
 }
 
+.signatureCanvas {
+  border: 1px solid black;
+  width: 340px;
+  min-height: 320px;
+  background-color: #fff;
+}
+
 .wrapper {
   @apply px-[5%] md:px-[6%];
 }

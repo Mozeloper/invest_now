@@ -89,7 +89,7 @@ export const dashboardSlice = createSlice({
     },
     [handleSlidingRating.fulfilled]: (state, action) => {
       state.slidingRateIsLoading = false;
-      state.slidingRate = action.payload;
+      state.slidingRate = action;
     },
     [handleSlidingRating.rejected]: (state) => {
       state.slidingRateIsLoading = false;

@@ -32,6 +32,8 @@ import AllProducts from "../pages/dashboard/products/allProducts";
 import MutualFunds from "../pages/dashboard/products/mutualFunds";
 import Trust from "../pages/dashboard/products/trust";
 import Securities from "../pages/dashboard/products/securities";
+import OtpForgetPassword from "../pages/auth/forgetPassword/otpForgetPassword";
+import ChangePasswordForgetPassword from "../pages/auth/forgetPassword/changePasswordForgetPassword";
 
 function InappPrivateRoute() {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
@@ -66,6 +68,8 @@ export default function AppRoute() {
         <Route element={<LoginLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/forget_password" element={<ForgetPassword />} />
+          <Route path="/forget_password/otp" element={<OtpForgetPassword />} />
+          <Route path="/forget_password/change_password" element={<ChangePasswordForgetPassword />} />
         </Route>
         <Route element={<SignUpLayout />}>
           <Route path="/bvn_verification" element={<BvnVerify />} />
@@ -84,7 +88,6 @@ export default function AppRoute() {
             <Route path="/products/trust" element={<Trust />} />
             <Route path="/products/securities" element={<Securities />} />
           </Route>
-          <Route path="/products/open_account/*" element={<OpenAccount />} />
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/loans" element={<Loans />} />
           <Route path="/live_trading" element={<LiveTrading />} />
@@ -96,6 +99,8 @@ export default function AppRoute() {
             <Route path="contact_us" element={<ContactUs />} />
           </Route>
         </Route>
+        <Route path="/products/open_account/*" element={<OpenAccount />} />
+
         <Route path="/Not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/Not-found" replace={true} />} />
       </Routes>

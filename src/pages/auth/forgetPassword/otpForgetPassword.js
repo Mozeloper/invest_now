@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
@@ -8,86 +8,75 @@ import Text from "../../../components/Typography/Typography";
 import Button from "../../../components/Button";
 import OtpInput from "react-otp-input";
 import "react-phone-input-2/lib/style.css";
-import { handleValidateOtpCode, handleResetVerificationCode } from "../../../store/slices/authSlices";
 import MessageModal from "../../../components/modals/MessageModal";
+import { handleForgetPasswordOtp } from "../../../store/slices/authSlices";
 
-export default function OTPverify() {
-  const [counter, setCounter] = useState(60);
-  const [openStatusMessage, setOpenStatusMessage] = useState(false);
-  const [statusMessage, setStatusMessage] = useState({
+export default function OtpForgetPassword() {
+  //   const [counter, setCounter] = useState(60);
+  const [openModal, setOpenModal] = useState(false);
+  const [alertMessage, setAlertMessage] = useState({
     reason: "",
     message: "",
   });
-  const [isTimeOver, setIsTimeOver] = useState(false);
+  //   const [isTimeOver, setIsTimeOver] = useState(false);
+  const forgetPasswordState = useSelector((state) => state.authReducer.forgetPasswordState);
+  console.log(forgetPasswordState);
   const dispatch = useDispatch();
-  const state = useLocation();
   const navigate = useNavigate();
-  const authReducer = useSelector((state) => state.authReducer);
 
-  const handleValidateCode = async (values) => {
+  //   const checkTime = () => {
+  //     if (counter === 0) {
+  //       setIsTimeOver(true);
+  //     }
+  //   };
+
+  //   useEffect(() => {
+  //     counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
+  //     checkTime();
+  //   }, [counter]);
+
+  const forgetPasswordOtpHandler = async (otp, resetForm) => {
     const data = {
-      bvn: authReducer?.user?.data?.bvn,
-      code: { code: values.otp },
+      email: forgetPasswordState.data.data.email,
+      otp: {
+        code: otp,
+      },
     };
-    console.log(data);
-    await dispatch(handleValidateOtpCode(data))
+    await dispatch(handleForgetPasswordOtp(data))
       .unwrap()
       .then((res) => {
         console.log(res);
-        // route user to create password page
-        navigate("/create_password", { state: state?.state?.email });
+        if (res.status === 200 && res?.data?.success) {
+          resetForm();
+          navigate("/forget_password/change_password");
+        }
       })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  const handleResetVerificationOtpCode = async () => {
-    const bvn = authReducer?.user?.data?.bvn;
-    await dispatch(handleResetVerificationCode(bvn))
-      .unwrap()
-      .then((res) => {})
-      .catch((err) => {
-        setOpenStatusMessage(true);
-        setStatusMessage((prev) => ({
+      .catch((error) => {
+        setAlertMessage((prev) => ({
           ...prev,
-          reason: "OTP NOT SENT",
-          message: err?.data?.message,
+          reason: "Failed...",
+          message: error?.data?.message,
         }));
+        setOpenModal(true);
       });
   };
-
-  const checkTime = () => {
-    if (counter === 0) {
-      setIsTimeOver(true);
-    }
-  };
-
-  useEffect(() => {
-    counter > 0 && setTimeout(() => setCounter(counter - 1), 1000);
-    checkTime();
-  }, [counter]);
 
   const otpSchema = Yup.object().shape({
     otp: Yup.string().required("OTP is Required"),
   });
+
   return (
     <>
-      <MessageModal isOpen={openStatusMessage} modalWidth="300px" modalHeight="auto">
+      <MessageModal isOpen={openModal} modalWidth="300px" modalHeight="auto">
         <div className="flex flex-col justify-center items-center w-full">
-          <Text format="text-center mt-3 whitespace-nowrap" variant="h2" color="text-[#465174]" weight="bold">
-            {statusMessage?.reason}
+          <Text format="text-center mt-3 whitespace-nowrap" variant="h3" color="text-[#465174]" weight="bold">
+            {alertMessage?.reason}
           </Text>
-          <Text format="text-center mt-3" variant="h3" color="text-[#465174]" weight="bold">
-            {statusMessage?.message}
+          <Text format="text-center mt-3" variant="h4" color="text-[#465174]" weight="bold">
+            {alertMessage?.message}
           </Text>
           <div className="mt-4 w-full">
-            <Button
-              onClick={() => setOpenStatusMessage(false)}
-              title="close"
-              className="cursor-pointer w-full"
-              type="button"
-            />
+            <Button onClick={() => setOpenModal(false)} title="Close" className="cursor-pointer w-full" type="button" />
           </div>
         </div>
       </MessageModal>
@@ -96,16 +85,13 @@ export default function OTPverify() {
           otp: "",
         }}
         validationSchema={otpSchema}
-        onSubmit={async (values) => {
-          await handleValidateCode(values);
+        onSubmit={async (values, { resetForm }) => {
+          await forgetPasswordOtpHandler(values?.otp, resetForm);
         }}
       >
         {({ handleSubmit, resetForm, setFieldValue, isSubmitting, values, touched, errors }) => (
-          <Form
-            onSubmit={handleSubmit}
-            className="bg-BACKGROUND_WHITE rounded-xl md:p-10 p-4 w-full h-auto flex flex-col md:w-[70%] mt-6"
-          >
-            <div className="mt-3 text-center flex justify-center flex-col items-center">
+          <Form onSubmit={handleSubmit} className="rounded-xl md:p-10 p-4 w-full h-auto flex flex-col md:w-[80%] mt-6">
+            <div className="mt-3 text-start flex justify-start flex-col items-start">
               <Text weight="bold" color="text-[#65666A]" variant="h2">
                 Verification code
               </Text>
@@ -126,12 +112,12 @@ export default function OTPverify() {
                 {errors.otp}
               </Text>
             ) : null}
-            {!isTimeOver && (
+            {/* {!isTimeOver && (
               <Text format="mt-4" variant="h4">
                 <p>If you didnt receive the code, resend code in {counter}secs </p>
               </Text>
-            )}
-            {isTimeOver && !!!values?.otp.length >= 1 && (
+            )} */}
+            {/* {isTimeOver && !!!values?.otp.length >= 1 && (
               <div className="items-start w-[50%] mt-4">
                 <Button
                   title="Resend Otp"
@@ -142,15 +128,14 @@ export default function OTPverify() {
                   isLoading={isSubmitting}
                   style={{ borderRadius: "20px", border: "3px solid #E32526" }}
                   onClick={() => {
-                    handleResetVerificationOtpCode();
                     resetForm();
                   }}
                 />
               </div>
-            )}
+            )} */}
             {values?.otp.length === 5 && (
               <div className="mt-8">
-                <Button title="Submit" className="cursor-pointer w-full" type="submit" isLoading={isSubmitting} />
+                <Button title="Continue" className="cursor-pointer w-full" type="submit" isLoading={isSubmitting} />
               </div>
             )}
           </Form>

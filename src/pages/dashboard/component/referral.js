@@ -7,6 +7,23 @@ import { handleGetReferralCode, handleGetReferralProduct } from "../../../store/
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../components/loader";
 
+const colourStyles = {
+  control: (styles) => ({
+    ...styles,
+    backgroundColor: "#f2f5fa",
+    // width: "100%",
+    minHeight: 56,
+  }),
+  option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+    return {
+      ...styles,
+      backgroundColor: isFocused ? "#FE0000" : "#FFF",
+      color: isFocused ? "#FFF" : "#000",
+      cursor: isDisabled ? "not-allowed" : "default",
+    };
+  },
+};
+
 export default function Referral({ setIsReferralModalOpen }) {
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const [referralLink, setReferralLink] = useState("");
@@ -115,6 +132,7 @@ export default function Referral({ setIsReferralModalOpen }) {
         onChange={handleGetProduct}
         name="product"
         options={activeProduct}
+        styles={colourStyles}
       />
       {dashboardReducer?.referralCodeIsLoading && (
         <div className="w-full h-full flex justify-center">

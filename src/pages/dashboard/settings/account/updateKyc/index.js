@@ -9,11 +9,13 @@ import UploadValidId from "./uploadValidId";
 import UpdateBioData from "./updateBioData";
 import EmploymentDetails from "./employmentDetails";
 import SelfCertification from "./selfCertification";
+import SignatureSetup from "./signatureSetup";
 
 export default function UpdateKyc({ handleCloseItemRouting }) {
   const [openModal, setOpenMpdal] = useState({
     utility_bill: false,
     valid_id: false,
+    signature_setup: false,
     bio_data: false,
     employment_details: false,
     self_certification: false,
@@ -28,6 +30,12 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
         }));
         break;
       case "valid_id":
+        setOpenMpdal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "signature_setup":
         setOpenMpdal((prev) => ({
           ...prev,
           [type]: true,
@@ -65,6 +73,12 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
         }));
         break;
       case "valid_id":
+        setOpenMpdal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "signature_setup":
         setOpenMpdal((prev) => ({
           ...prev,
           [type]: false,
@@ -149,6 +163,22 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
           Accepted file type are PDF , PNG or JPEG. File size must not be more than 5mb
         </Text>
       </div>
+      <div className="w-full flex flex-col gap-2">
+        <Text variant="sub" weight="bold">
+          Your Signature *
+        </Text>
+        <div
+          onClick={() => handleOpenModals("signature_setup")}
+          className="flex items-center justify-between w-full cursor-pointer px-4 py-3 bg-[#f2f2f2]"
+        >
+          <Text variant="sub" weight="normal">
+            Upload your signature
+          </Text>
+        </div>
+        <Text format="w-[70%]" variant="sub" weight="normal">
+          Accepted file type are PDF , PNG or JPEG. File size must not be more than 5mb
+        </Text>
+      </div>
       <div className="flex flex-col gap-3">
         <div
           onClick={() => handleOpenModals("bio_data")}
@@ -183,6 +213,9 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
       </MessageModal>
       <MessageModal bgColor={true} modalHeight="625px" isOpen={openModal?.valid_id}>
         <UploadValidId handleCloseModals={handleCloseModals} />
+      </MessageModal>
+      <MessageModal bgColor={true} modalHeight="720px" isOpen={openModal?.signature_setup}>
+        <SignatureSetup handleCloseModals={handleCloseModals} />
       </MessageModal>
       <MessageModal modalHeight="auto" isOpen={openModal?.bio_data}>
         <UpdateBioData handleCloseModals={handleCloseModals} />

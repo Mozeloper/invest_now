@@ -11,7 +11,7 @@ import PurpleIcon from "../../assets/icons/bg_purple.svg";
 import setupIcon from "../../assets/icons/set_icon.svg";
 import checked from "../../assets/icons/checked.svg";
 import profit from "../../assets/icons/profit.svg";
-import loss from "../../assets/icons/loss.svg";
+// import loss from "../../assets/icons/loss.svg";
 import empty from "../../assets/icons/empty.svg";
 import redFrame from "../../assets/icons/red_frame.svg";
 import purpleFrame from "../../assets/icons/purple_frame.svg";
@@ -80,38 +80,18 @@ export default function Dashboard() {
   const dashboardSummaryDetails = useSelector((state) => state?.dashboardReducer);
   const completion_statuses = dashboardSummaryDetails?.completionSummary?.data?.data;
   const account_summary = dashboardSummaryDetails?.dashboardSummary?.payload?.data?.data;
+  const slidingRate = dashboardSummaryDetails?.slidingRate;
 
   const dashboardSummary = async () => {
-    await dispatch(handleDashboardSummary())
-      .unwrap()
-      .then((res) => {
-        console.log("success for dash summary", res);
-      })
-      .catch((error) => {
-        console.log("err in dash summary", error);
-      });
+    await dispatch(handleDashboardSummary());
   };
 
   const completionSummary = async () => {
-    await dispatch(handlecompletionSummary(customerId))
-      .unwrap()
-      .then((res) => {
-        console.log("success for completion summary", res);
-      })
-      .catch((error) => {
-        console.log("err in completion summary", error);
-      });
+    await dispatch(handlecompletionSummary(customerId));
   };
 
   const slidingRating = async () => {
-    await dispatch(handleSlidingRating())
-      .unwrap()
-      .then((res) => {
-        console.log("success for slidingRating", res);
-      })
-      .catch((error) => {
-        console.log("err in slidingRating", error);
-      });
+    await dispatch(handleSlidingRating());
   };
 
   useEffect(() => {
@@ -338,70 +318,38 @@ export default function Dashboard() {
               </ResponsiveContainer>
             </div>
           </div>
-          <div className="bg-[#FFFBF0] W-[100%] lg:basis-1/3 lg:h-[full] p-6">
-            <div className="w-full mb-10">
-              <Text weight="bold" variant="h3">
-                Daily Market rates
-              </Text>
+          {dashboardSummaryDetails?.slidingRateIsLoading ? (
+            <div className="">
+              <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="100%" height={118} />
             </div>
-            <div className="flex flex-col gap-6">
-              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-                <Text format="self-center" weight="bold" variant="h4">
-                  Money Market Fund
+          ) : (
+            <div className="bg-[#FFFBF0] W-[100%] lg:basis-1/3 lg:h-[full] p-6">
+              <div className="w-full mb-10">
+                <Text weight="bold" variant="h3">
+                  Daily Market rates
                 </Text>
-                <div className="flex items-center gap-2">
-                  <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
-                  <Text format="text-[#009A49]" weight="bold" variant="body">
-                    17.2%
-                  </Text>
-                </div>
               </div>
-              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-                <Text format="self-center" weight="bold" variant="h4">
-                  Nigerian Diaspora Trust
-                </Text>
-                <div className="flex items-center gap-2">
-                  <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
-                  <Text format="text-[#009A49]" weight="bold" variant="body">
-                    7.2%
-                  </Text>
-                </div>
-              </div>
-              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-                <Text format="self-center" weight="bold" variant="h4">
-                  Education Trust
-                </Text>
-                <div className="flex items-center gap-2">
-                  <img src={loss} alt="profit" className="w-[15px] h-[7px]" />
-                  <Text format="text-[#FE0000]" weight="bold" variant="body">
-                    7.2%
-                  </Text>
-                </div>
-              </div>
-              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-                <Text format="self-center" weight="bold" variant="h4">
-                  Nigerian Eurobond fund
-                </Text>
-                <div className="flex items-center gap-2">
-                  <img src={loss} alt="profit" className="w-[15px] h-[7px]" />
-                  <Text format="text-[#FE0000]" weight="bold" variant="body">
-                    7.2%
-                  </Text>
-                </div>
-              </div>
-              <div className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
-                <Text format="self-center" weight="bold" variant="h4">
-                  Equity Fund
-                </Text>
-                <div className="flex items-center gap-2">
-                  <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
-                  <Text format="text-[#009A49]" weight="bold" variant="body">
-                    7.2%
-                  </Text>
-                </div>
+              <div className="flex flex-col gap-6">
+                {slidingRate?.type === "dashboard/rating/fulfilled" &&
+                  slidingRate?.payload?.data?.data.map((list, index) => {
+                    return (
+                      <div key={index} className="bg-[#F8F0F0] w-full py-4 px-3 rounded-lg flex justify-between">
+                        <Text format="self-center" weight="bold" variant="h4">
+                          {list?.fundName}
+                        </Text>
+                        <div className="flex items-center gap-2">
+                          {/* <img src={loss} alt="profit" className="w-[15px] h-[7px]" /> */}
+                          <img src={profit} alt="profit" className="w-[15px] h-[7px]" />
+                          <Text format="text-[#009A49]" weight="bold" variant="body">
+                            {list?.rate}%
+                          </Text>
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             </div>
-          </div>
+          )}
         </div>
         <div className="w-full mt-4 flex lg:flex-row flex-col gap-2">
           <div className="bg-BACKGROUND_WHITE h-[400px] p-6 lg:basis-1/2 basis-1">

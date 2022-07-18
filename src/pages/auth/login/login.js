@@ -94,7 +94,7 @@ export default function Login() {
                   handleChange={handleChange}
                 />
                 {errors.email && touched.email ? (
-                  <Text variant="h4" weight="normal" color="text-red-700">
+                  <Text variant="small" weight="normal" color="text-red">
                     {errors.email}
                   </Text>
                 ) : null}
@@ -112,7 +112,7 @@ export default function Login() {
                 />
               </div>
               {errors.password && touched.password ? (
-                <Text variant="body" weight="normal" color="text-red-700">
+                <Text variant="small" weight="normal" color="text-red">
                   {errors.password}
                 </Text>
               ) : null}

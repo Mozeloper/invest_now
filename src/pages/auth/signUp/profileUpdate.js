@@ -224,7 +224,7 @@ export default function ProfileUpdate() {
                   disabled
                 />
                 {errors.phone_number && touched.phone_number ? (
-                  <Text variant="h4" weight="normal" color="text-red-700">
+                  <Text variant="h4" weight="normal" color="text-red">
                     {errors.phone_number}
                   </Text>
                 ) : null}
@@ -256,7 +256,7 @@ export default function ProfileUpdate() {
                   defaultValue={values.gender_type}
                 />
                 {errors.gender_type && touched.gender_type ? (
-                  <Text variant="small" weight="normal" color="text-red-700">
+                  <Text variant="small" weight="normal" color="text-red">
                     {errors.gender_type}
                   </Text>
                 ) : null}
@@ -277,7 +277,7 @@ export default function ProfileUpdate() {
                   extraFunction={handleGetStateList}
                 />
                 {errors.country_code && touched.country_code ? (
-                  <Text variant="small" weight="normal" color="text-red-700">
+                  <Text variant="small" weight="normal" color="text-red">
                     {errors.country_code}
                   </Text>
                 ) : null}
@@ -295,7 +295,7 @@ export default function ProfileUpdate() {
                   placeholder="Select State"
                 />
                 {errors.state_id && touched.state_id ? (
-                  <Text variant="small" weight="normal" color="text-red-700">
+                  <Text variant="small" weight="normal" color="text-red">
                     {errors.state_id}
                   </Text>
                 ) : null}
@@ -319,7 +319,7 @@ export default function ProfileUpdate() {
               </label>
               <Input placeholder="code" type="text" name="referral_code" handleChange={handleChange} />
               {errors.referral_code && touched.referral_code ? (
-                <Text variant="h4" weight="normal" color="text-red-700">
+                <Text variant="h4" weight="normal" color="text-red">
                   {errors.referral_code}
                 </Text>
               ) : null}

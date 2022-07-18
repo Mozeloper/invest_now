@@ -30,6 +30,15 @@ export const handleValidId = createAsyncThunk("settings/validId", async (values,
   }
 });
 
+export const handleSignatureUpload = createAsyncThunk("settings/signature", async (values, { rejectWithValue }) => {
+  try {
+    const data = await api.put(appUrls.uploadSignatureURL, values);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
 export const getcustomerTitle = createAsyncThunk("settings/customerTitles", async (_, { rejectWithValue }) => {
   try {
     const data = await api.get(appUrls.customerTitlesURL);
@@ -122,6 +131,7 @@ const initialState = {
   utilityBillState: null,
   identityTypeState: null,
   validIdState: null,
+  signatureData: null,
   customerTitle: null,
   religion: null,
   maritalStatus: null,
@@ -166,6 +176,17 @@ export const updateKycSlice = createSlice({
     [handleValidId.rejected]: (state, action) => {
       state.isLoading = false;
       state.validIdState = action;
+    },
+    [handleSignatureUpload.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [handleSignatureUpload.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.signatureData = action;
+    },
+    [handleSignatureUpload.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.signatureData = action;
     },
     [getcustomerTitle.pending]: (state) => {
       state.isLoading = true;

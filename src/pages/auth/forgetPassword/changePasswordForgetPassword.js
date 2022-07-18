@@ -9,9 +9,9 @@ import Button from "../../../components/Button";
 import "react-phone-input-2/lib/style.css";
 import MessageModal from "../../../components/modals/MessageModal";
 import { useSelector, useDispatch } from "react-redux";
-import { handlePasswordCreation } from "../../../store/slices/authSlices";
+import { handleForgetPasswordChangePassword } from "../../../store/slices/authSlices";
 
-export default function CreatePassword() {
+export default function ChangePasswordForgetPassword() {
   const [openModal, setOpenModal] = useState(false);
   const [openStatusMessage, setOpenStatusMessage] = useState(false);
   const [statusMessage, setStatusMessage] = useState({
@@ -24,14 +24,15 @@ export default function CreatePassword() {
 
   const handlePasswordUserCreation = async (data) => {
     const values = {
-      bvn: authReducer?.user?.data?.bvn,
-      password: { password: data.password },
+      email: authReducer?.forgetPasswordState?.data?.data?.email,
+      password: data,
     };
-    await dispatch(handlePasswordCreation(values))
+    await dispatch(handleForgetPasswordChangePassword(values))
       .unwrap()
       .then((res) => {
-        setOpenModal(true);
-        localStorage.setItem("access_token", res?.data?.data?.user?.access_token);
+        if (res.status === 200 && res?.data?.success) {
+          setOpenModal(true);
+        }
       })
       .catch((error) => {
         if (!error?.data?.success) {
@@ -86,10 +87,7 @@ export default function CreatePassword() {
         }}
         validationSchema={passwordSchema}
         onSubmit={async (values) => {
-          const data = {
-            password: values.password,
-          };
-          handlePasswordUserCreation(data);
+          handlePasswordUserCreation(values.password);
         }}
       >
         {({ handleSubmit, handleChange, isSubmitting, values, touched, errors }) => (
@@ -99,7 +97,7 @@ export default function CreatePassword() {
                 Set up your password
               </Text>
               <Text variant="h4">
-                Create a password for your Investnow app. This code is for your eyes only and unique to only you
+                Create a new password for your account, once successful, you will be asked to log in again
               </Text>
             </div>
             <Form onSubmit={handleSubmit}>
@@ -149,19 +147,19 @@ export default function CreatePassword() {
           </div>
         )}
       </Formik>
-      <MessageModal isOpen={openModal} modalWidth="400px" modalHeight="300px">
+      <MessageModal isOpen={openModal} modalWidth="400px" modalHeight="auto">
         <div className="flex flex-col justify-center items-center w-full">
-          <img src={Correct} alt="check-img" />
+          <img src={Correct} alt="check-img" className="w-[50px] h-[50px]" />
           <Text format="text-center mt-3" variant="h3" color="text-[#465174]" weight="bold">
-            Sign up successful
+            Password reset successful
           </Text>
           <Text format="text-center mt-3" variant="body" color="text-[#465174]" weight="bold">
-            Your profile has been created, click “next” to open account and start investing.
+            You can now log in with your new pasword
           </Text>
           <div className="mt-2 w-full">
             <Button
-              onClick={() => navigate("/dashboard")}
-              title="Login"
+              onClick={() => navigate("/login")}
+              title="Continue to Login"
               className="cursor-pointer w-full"
               type="button"
             />

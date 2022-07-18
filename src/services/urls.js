@@ -1,5 +1,8 @@
 export const appUrls = {
   loginURL: "auth/app-login",
+  forgetPasswordURL: "api/v2/customers/generate-verification-code?",
+  forgetPasswordOtpURL: "api/v2/customers/validate-verification-code?",
+  forgetPasswordChangePasswordURL: "auth/forgot-password?",
   customerExistURL: "api/v2/onboarding/check-if-bvn-exists",
   smileIdentityURL: "v1/id_verification",
   genderURL: "api/v2/onboarding/get-gender-types",
@@ -15,6 +18,7 @@ export const appUrls = {
   activeReferralProductURL: "investnow/get-all-active-referral-by-product",
   referralCodeLinkURL: "investnow/referral-client-code",
   uploadUtilityBillURL: "api/v2/customers/upload-utility-bill",
+  uploadSignatureURL: "api/v2/customers/upload-signature",
   identityTypesURL: "api/v2/onboarding/get-identity-types",
   uploadCustomerIdentity: "api/v2/customers/upload-id?",
   customerTitlesURL: "api/v2/title-type/list",

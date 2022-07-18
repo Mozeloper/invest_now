@@ -11,6 +11,39 @@ export const handleLogin = createAsyncThunk("auth/login", async (values, { rejec
   }
 });
 
+export const handleForgetPassword = createAsyncThunk("auth/forgetPassword", async (values, { rejectWithValue }) => {
+  try {
+    const data = await api.put(appUrls.forgetPasswordURL + `email=${values}`);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
+export const handleForgetPasswordOtp = createAsyncThunk(
+  "auth/forgetPasswordOTP",
+  async (values, { rejectWithValue }) => {
+    try {
+      const data = await api.put(appUrls.forgetPasswordOtpURL + `email=${values.email}`, values?.otp);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const handleForgetPasswordChangePassword = createAsyncThunk(
+  "auth/forgetPasswordChangePassword",
+  async (values, { rejectWithValue }) => {
+    try {
+      const data = await api.put(appUrls.forgetPasswordChangePasswordURL, values);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const handleCustomerExist = createAsyncThunk("auth/customerExist", async (values, { rejectWithValue }) => {
   try {
     const data = await api.get(appUrls.customerExistURL + `?bvn=${values}`);
@@ -109,6 +142,9 @@ const initialState = {
   isLoading: false,
   authedUser: null,
   isLoggedIn: false,
+  forgetPasswordState: null,
+  forgetPasswordOtpState: null,
+  forgetPasswordChangePasswordState: null,
 };
 
 export const authSlice = createSlice({
@@ -125,7 +161,7 @@ export const authSlice = createSlice({
       state.user = action.payload;
       state.isLoggedIn = true;
     },
-    logout: (state, action) => {
+    logout: (state) => {
       state.user = null;
       state.isLoggedIn = false;
     },
@@ -143,6 +179,39 @@ export const authSlice = createSlice({
     [handleLogin.rejected]: (state, action) => {
       state.isLoggedIn = false;
       state.authedUser = action?.payload?.data;
+    },
+    [handleForgetPassword.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [handleForgetPassword.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.forgetPasswordState = action.payload;
+    },
+    [handleForgetPassword.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.forgetPasswordState = action.payload;
+    },
+    [handleForgetPasswordOtp.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [handleForgetPasswordOtp.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.forgetPasswordOtpState = action.payload;
+    },
+    [handleForgetPasswordOtp.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.forgetPasswordOtpState = action.payload;
+    },
+    [handleForgetPasswordChangePassword.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [handleForgetPasswordChangePassword.fulfilled]: (state, action) => {
+      state.isLoading = false;
+      state.forgetPasswordChangePasswordState = action.payload;
+    },
+    [handleForgetPasswordChangePassword.rejected]: (state, action) => {
+      state.isLoading = false;
+      state.forgetPasswordChangePasswordState = action.payload;
     },
     [handleCustomerExist.pending]: (state) => {
       state.isLoading = true;

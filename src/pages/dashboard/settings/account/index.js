@@ -4,13 +4,12 @@ import Text from "../../../../components/Typography/Typography";
 import rightArrow from "../../../../assets/icons/right_arrow.svg";
 import MessageModal from "../../../../components/modals/MessageModal";
 import UpdateKyc from "./updateKyc";
-import GetStatement from "./getStatement";
 import PaymentCards from "./paymentCards";
 import LinkInvestmentaccount from "./linkInvestmentAccount";
 
 export default function Accounts() {
   const navigate = useNavigate();
-  const [openModal, setOpenMpdal] = useState({
+  const [openModal, setOpenModal] = useState({
     update_kyc: false,
     get_statement: false,
     payment_card: false,
@@ -52,22 +51,19 @@ export default function Accounts() {
   const handleOpenItemRouting = (type) => {
     switch (type) {
       case "update_kyc":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
         break;
       case "get_statement":
-        setOpenMpdal((prev) => ({
-          ...prev,
-          [type]: true,
-        }));
+        navigate("/reports");
         break;
       case "transaction_history":
         navigate("/transactions");
         break;
       case "payment_card":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
@@ -76,13 +72,13 @@ export default function Accounts() {
         navigate("/transactions");
         break;
       case "link_investment_accounts":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
         break;
       case "information_update":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
@@ -95,31 +91,31 @@ export default function Accounts() {
   const handleCloseItemRouting = (type) => {
     switch (type) {
       case "update_kyc":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
         break;
       case "get_statement":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
         break;
       case "payment_card":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
         break;
       case "link_investment_accounts":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
         break;
       case "information_update":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
@@ -154,9 +150,7 @@ export default function Accounts() {
       <MessageModal isOpen={openModal?.update_kyc} modalHeight="auto" minWidth="320px">
         <UpdateKyc handleCloseItemRouting={handleCloseItemRouting} />
       </MessageModal>
-      <MessageModal isOpen={openModal?.get_statement} modalHeight="auto" minWidth="320px">
-        <GetStatement handleCloseItemRouting={handleCloseItemRouting} />
-      </MessageModal>
+
       <MessageModal isOpen={openModal?.payment_card} modalHeight="auto" minWidth="300px">
         <PaymentCards handleCloseItemRouting={handleCloseItemRouting} />
       </MessageModal>

@@ -39,6 +39,7 @@ export default function BvnVerify() {
 
   useEffect(() => {
     getSignature();
+    dispatch(resetInitialState());
   }, []);
 
   const bvnSchema = Yup.object().shape({
@@ -209,7 +210,7 @@ export default function BvnVerify() {
                 </label>
                 <Input placeholder="Enter BVN" type="text" name="bvn" handleChange={handleChange} />
                 {errors.bvn && touched.bvn ? (
-                  <Text variant="h4" weight="normal" color="text-red-700">
+                  <Text variant="small" weight="normal" color="text-red">
                     {errors.bvn}
                   </Text>
                 ) : null}
