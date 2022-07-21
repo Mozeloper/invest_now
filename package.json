@@ -33,6 +33,7 @@
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.5",
+    "use-debounce": "^8.0.2",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
   },

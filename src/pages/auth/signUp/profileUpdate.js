@@ -250,7 +250,7 @@ export default function ProfileUpdate() {
                 <SearchableSelect
                   options={genderType}
                   name="gender_type"
-                  isLoading={authReducer?.isLoading}
+                  isLoading={authReducer?.isGenderLoading}
                   setFieldValue={setFieldValue}
                   placeholder="Select gender"
                   defaultValue={values.gender_type}

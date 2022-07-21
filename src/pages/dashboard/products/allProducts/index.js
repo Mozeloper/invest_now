@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import Text from "../../../../components/Typography/Typography";
 import Button from "../../../../components/Button";
 import { handleGetAllProducts } from "../../../../store/slices/productsSlice";
@@ -10,6 +10,7 @@ import SideRightModal from "../../../../components/modals/SideRightModal";
 import ProductDetails from "../components/productDetails";
 
 export default function AllProducts() {
+  const { setShowModal } = useOutletContext();
   const productsReducer = useSelector((state) => state.productsReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,6 +39,10 @@ export default function AllProducts() {
     setIsModalOpen(!isModalOpen);
   };
 
+  const handleShowKycMessage = () => {
+    setShowModal(true);
+  };
+
   return (
     <>
       <div data-aos="fade-up" data-aos-duration="2000">
@@ -52,9 +57,9 @@ export default function AllProducts() {
         {!!!productsReducer?.allProductIsLoading &&
           productsReducer?.allProductData?.type === "products/allProducts/fulfilled" && (
             <>
-              {productsReducer?.allProductData?.payload?.data?.data.map((product) => {
+              {productsReducer?.allProductData?.payload?.data?.data.map((product, i) => {
                 return (
-                  <>
+                  <div key={i}>
                     <div key={product?.id} className="w-full mt-4 flex justify-between md:pr-[1%]">
                       <Text color="text-red" weight="bold" variant="h3">
                         {product?.name}
@@ -131,14 +136,18 @@ export default function AllProducts() {
                         })}
                       </>
                     </div>
-                  </>
+                  </div>
                 );
               })}
             </>
           )}
       </div>
       <SideRightModal isOpen={isModalOpen}>
-        <ProductDetails handleOpenProductDetailsModal={handleOpenProductDetailsModal} productCode={productCode} />
+        <ProductDetails
+          handleShowKycMessage={() => handleShowKycMessage()}
+          handleOpenProductDetailsModal={handleOpenProductDetailsModal}
+          productCode={productCode}
+        />
       </SideRightModal>
     </>
   );

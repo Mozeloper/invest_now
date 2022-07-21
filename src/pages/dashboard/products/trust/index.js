@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import Text from "../../../../components/Typography/Typography";
 import Button from "../../../../components/Button";
 import { handleGetAllProducts } from "../../../../store/slices/productsSlice";
@@ -9,6 +10,7 @@ import SideRightModal from "../../../../components/modals/SideRightModal";
 import ProductDetails from "../components/productDetails";
 
 export default function Trust() {
+  const { setShowModal } = useOutletContext();
   const productsReducer = useSelector((state) => state.productsReducer);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -31,6 +33,10 @@ export default function Trust() {
     };
   }, []);
 
+  const handleShowKycMessage = () => {
+    setShowModal(true);
+  };
+
   const handleOpenProductDetailsModal = (code) => {
     setProductCode(code);
     setIsModalOpen(!isModalOpen);
@@ -52,9 +58,9 @@ export default function Trust() {
             <>
               {productsReducer?.allProductData?.payload?.data?.data
                 .filter((d) => d.name === "Trust")
-                .map((product) => {
+                .map((product, i) => {
                   return (
-                    <>
+                    <div key={i}>
                       <div key={product?.id} className="w-full mt-4 flex justify-between md:pr-[1%]">
                         <Text color="text-red" weight="bold" variant="h3">
                           {product?.name}
@@ -110,14 +116,18 @@ export default function Trust() {
                           })}
                         </>
                       </div>
-                    </>
+                    </div>
                   );
                 })}
             </>
           )}
       </div>
       <SideRightModal isOpen={isModalOpen}>
-        <ProductDetails handleOpenProductDetailsModal={handleOpenProductDetailsModal} productCode={productCode} />
+        <ProductDetails
+          handleShowKycMessage={() => handleShowKycMessage()}
+          handleOpenProductDetailsModal={handleOpenProductDetailsModal}
+          productCode={productCode}
+        />
       </SideRightModal>
     </>
   );

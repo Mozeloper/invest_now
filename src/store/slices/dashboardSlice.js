@@ -51,6 +51,24 @@ export const handleGetReferralCode = createAsyncThunk("dashboard/referralCode", 
   }
 });
 
+export const handleUploadProfilePic = createAsyncThunk("dashboard/profilePic", async (values, { rejectWithValue }) => {
+  try {
+    const data = await api.put(appUrls.uploadProfilePicURL, values);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
+export const handleCustomerDetails = createAsyncThunk("dashboard/customerDetails", async (_, { rejectWithValue }) => {
+  try {
+    const data = await api.get(appUrls.customerDetails);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
 const initialState = {
   dashboardSummary: null,
   dashboardSummaryIsLoading: false,
@@ -58,6 +76,10 @@ const initialState = {
   completionSummaryIsLoading: false,
   slidingRate: null,
   slidingRateIsLoading: false,
+  profilePicData: null,
+  profileIsUploading: false,
+  customerDetails: null,
+  customerIsLoading: false,
 };
 
 export const dashboardSlice = createSlice({
@@ -93,6 +115,26 @@ export const dashboardSlice = createSlice({
     },
     [handleSlidingRating.rejected]: (state) => {
       state.slidingRateIsLoading = false;
+    },
+    [handleUploadProfilePic.pending]: (state) => {
+      state.profileIsUploading = true;
+    },
+    [handleUploadProfilePic.fulfilled]: (state, action) => {
+      state.profileIsUploading = false;
+      state.profilePicData = action;
+    },
+    [handleUploadProfilePic.rejected]: (state) => {
+      state.profileIsUploading = false;
+    },
+    [handleCustomerDetails.pending]: (state) => {
+      state.customerIsLoading = true;
+    },
+    [handleCustomerDetails.fulfilled]: (state, action) => {
+      state.customerIsLoading = false;
+      state.customerDetails = action;
+    },
+    [handleCustomerDetails.rejected]: (state) => {
+      state.customerIsLoading = false;
     },
     [handleGetReferralProduct.pending]: (state) => {
       state.activeProductReferralIsLoading = true;

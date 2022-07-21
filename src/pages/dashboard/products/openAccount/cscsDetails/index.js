@@ -1,4 +1,5 @@
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import arrowLeft from "../../../../../assets/icons/arrow-left.svg";
@@ -6,22 +7,63 @@ import Button from "../../../../../components/Button";
 import Input from "../../../../../components/formFields/inputs";
 import MyInput from "../../../../../components/formFields/inputs/MyInput";
 import Text from "../../../../../components/Typography/Typography";
+import { getIdentityTypes } from "../../../../../store/slices/settingsUpdateKycSlice";
+import SearchableSelect from "../../../../../components/formFields/selectField";
 
-export default function CscsDetails({ handleDispatchNextStep, handleDispatchPreviousStep }) {
-  const bvnDetailsSchema = Yup.object().shape({
+export default function CscsDetails({
+  handleDispatchNextStep,
+  handleDispatchPreviousStep,
+  isBothTrue,
+  isBothFalse,
+  isbeneficiaryTrue,
+  isCHNTrue,
+}) {
+  const dispatch = useDispatch();
+  const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
+  const idType = [];
+  const chnDetailsSchema = Yup.object().shape({
     cscsNumber: Yup.string()
       .required("This field is Required")
       .matches(
         /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
         "cscs Number is not valid"
       ),
+    id_number: Yup.string()
+      .required("This field is Required")
+      .matches(
+        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+        "cscs Number is not valid"
+      ),
+    id_type: Yup.string().required("This field is Required"),
   });
+  console.log(updateKycSliceReducer);
+  useEffect(() => {
+    let mounted = false;
+    (async () => {
+      mounted = true;
+      if (mounted) {
+        dispatch(getIdentityTypes());
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [dispatch]);
+
+  if (updateKycSliceReducer?.identityTypeState?.type === "settings/identityTypes/fulfilled") {
+    updateKycSliceReducer?.identityTypeState?.payload?.data?.data.map((list) => {
+      return idType.push({
+        label: list.identity_type_name,
+        value: list.id,
+      });
+    });
+  }
 
   return (
     <div className="w-full">
       <div className="w-full">
         <img
-          onClick={() => handleDispatchPreviousStep()}
+          onClick={() => handleDispatchPreviousStep(1, "chn")}
           src={arrowLeft}
           alt="arrow-left"
           className="w-[24px] h-[24px] cursor-pointer"
@@ -60,11 +102,14 @@ export default function CscsDetails({ handleDispatchNextStep, handleDispatchPrev
             id_number: "",
             exp_date: "",
           }}
-          validationSchema={bvnDetailsSchema}
+          validationSchema={chnDetailsSchema}
           enableReinitialize={true}
           onSubmit={async (values) => {
-            console.log(values);
-            handleDispatchNextStep();
+            if (isBothTrue) {
+              handleDispatchNextStep(null, values, 3, "chn");
+            } else if (isCHNTrue) {
+              handleDispatchNextStep(null, values, 4, "chn");
+            }
           }}
         >
           {({ handleSubmit, handleChange, setFieldValue, isSubmitting, values, touched, errors }) => (
@@ -89,14 +134,22 @@ export default function CscsDetails({ handleDispatchNextStep, handleDispatchPrev
               </div>
               <div className="flex md:flex-row flex-col gap-3 w-full mt-4">
                 <div className="w-full">
-                  <MyInput
-                    className="w-full"
-                    placeholder="*Enter 9 digit"
-                    label="ID Type"
+                  <label htmlFor="bank" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
+                    Id Type
+                  </label>
+                  <SearchableSelect
+                    options={idType}
+                    isLoading={updateKycSliceReducer?.isLoading}
                     name="id_type"
-                    type="text"
-                    handleChange={handleChange}
+                    setFieldValue={setFieldValue}
+                    value={values.id_type}
+                    placeholder="Select id"
                   />
+                  {errors.id_type && touched.id_type ? (
+                    <Text variant="small" weight="normal" color="text-red">
+                      {errors.id_type}
+                    </Text>
+                  ) : null}
                 </div>
                 <div className="w-full">
                   <MyInput
@@ -118,15 +171,13 @@ export default function CscsDetails({ handleDispatchNextStep, handleDispatchPrev
                     label="ID Exp Date"
                     name="exp_date"
                     type="date"
-                    readOnly
-                    disabled
                     handleChange={handleChange}
                   />
                 </div>
               </div>
               <div className="mt-10 w-full flex justify-center">
                 <div className="w-[30%]">
-                  <Button title="Next" className="cursor-pointer" type="submit" isLoading={isSubmitting} />
+                  <Button title="Next" className="cursor-pointer" type="submit" isLoading={false} />
                 </div>
               </div>
             </Form>

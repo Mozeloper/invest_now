@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Text from "../../../components/Typography/Typography";
@@ -8,6 +9,8 @@ import { resetInitialState } from "../../../store/slices/authSlices";
 
 export default function Settings() {
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
+  const dashboardReducer = useSelector((state) => state?.dashboardReducer);
+  const customerPic = dashboardReducer?.customerDetails?.payload?.data?.data?.profile_pic;
   const firstName = userDetails?.data?.customer?.firstname;
   const lastName = userDetails?.data?.customer?.lastname;
 
@@ -38,6 +41,7 @@ export default function Settings() {
     localStorage.removeItem("access_token");
     navigate("/login");
   };
+
   return (
     <div data-aos="fade-up" data-aos-duration="2000">
       <Text variant="h1" weight="bold">
@@ -45,7 +49,11 @@ export default function Settings() {
       </Text>
       <div className="md:w-[90%] w-full max-h-[100px] flex justify-between mt-3">
         <div className="flex gap-2 mb-5 p-3 rounded-md">
-          <img src={ProfileImg} alt="logo" className="lg:h-[96px] lg:w-[96px] h-[80px] w-[80px]" />
+          <img
+            src={customerPic !== null ? customerPic : ProfileImg}
+            alt="logo"
+            className="lg:h-[96px] lg:w-[96px] h-[80px] w-[80px] rounded-full"
+          />
           <Text color="text-[#465174]" variant="h3" format="whitespace-nowrap mt-3 font-bold">
             {firstName} {lastName}
           </Text>

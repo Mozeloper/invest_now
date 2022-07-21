@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState } from "react";
 import closeBtn from "../../../../../assets/icons/close_btn.svg";
 import Selfie from "../../../../../assets/icons/selfie.svg";
@@ -10,7 +11,7 @@ import Webcam from "react-webcam";
 import ImageUploading from "react-images-uploading";
 import Button from "../../../../../components/Button";
 import { useDispatch, useSelector } from "react-redux";
-import { handleUtilityBill } from "../../../../../store/slices/settingsUpdateKycSlice";
+import { handleCustomerDetails, handleUploadProfilePic } from "../../../../../store/slices/dashboardSlice";
 
 const videoConstraints = {
   width: 220,
@@ -19,7 +20,7 @@ const videoConstraints = {
 };
 
 const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
-  const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
+  const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const dispatch = useDispatch();
   const [image, setImage] = useState("");
   const [message, setMessage] = useState("");
@@ -28,6 +29,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
   const webcamRef = React.useRef(null);
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
+    console.log(imageSrc);
     setImage(imageSrc);
   }, [webcamRef]);
 
@@ -45,15 +47,16 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
     }
 
     const data = {
-      utility_bill_base64: result,
+      profile_pic_base64: result,
     };
-    await dispatch(handleUtilityBill(data))
+    await dispatch(handleUploadProfilePic(data))
       .unwrap()
       .then((res) => {
         setTimeout(() => {
           handleCloseWebCaptureUploadModals();
           setMessage("");
         }, 2000);
+        dispatch(handleCustomerDetails());
         setMessage(res?.data?.message);
       })
       .catch((error) => {
@@ -81,13 +84,15 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
       {image !== "" && (
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <Button
-            onClick={() => utilityBillSefie()}
-            title="Save Picture"
-            className="cursor-pointer w-full"
-            type="button"
-            isLoading={updateKycSliceReducer?.isLoading}
-          />
+          <div className="w-[50%]">
+            <Button
+              onClick={() => utilityBillSefie()}
+              title="Save Picture"
+              className="cursor-pointer w-full"
+              type="button"
+              isLoading={dashboardReducer?.profileIsUploading}
+            />
+          </div>
         </>
       )}
       {message !== "" && (
@@ -99,7 +104,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
       )}
       {errorMessage !== "" && (
         <div className="w-full text-center mt-4">
-          <Text variant="h4" color="text-red-500">
+          <Text variant="h4" color="text-red">
             {errorMessage}
           </Text>
         </div>
@@ -110,8 +115,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
 
 export default function UploadUtilityBill({ handleCloseModals }) {
   const dispatch = useDispatch();
-  const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
-
+  const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const [openModal, setOpenMpdal] = useState({
     take_picture: false,
     upload_picture: false,
@@ -163,7 +167,7 @@ export default function UploadUtilityBill({ handleCloseModals }) {
     }
   };
 
-  const utilityBillUpload = async () => {
+  const uploadProfilePicture = async () => {
     const containsJpeg = "data:image/jpeg;base64,";
     const constainsPng = "data:image/png;base64,";
     let result;
@@ -177,16 +181,18 @@ export default function UploadUtilityBill({ handleCloseModals }) {
     }
 
     const data = {
-      utility_bill_base64: result,
+      profile_pic_base64: result,
     };
-    await dispatch(handleUtilityBill(data))
+
+    await dispatch(handleUploadProfilePic(data))
       .unwrap()
       .then((res) => {
         setTimeout(() => {
           handleCloseUploadModals("take_picture");
-          handleCloseModals("utility_bill");
+          handleCloseModals("upload_profile_pic");
           setMessage("");
         }, 2000);
+        dispatch(handleCustomerDetails());
         setMessage(res?.data?.message);
       })
       .catch((error) => {
@@ -201,7 +207,7 @@ export default function UploadUtilityBill({ handleCloseModals }) {
     <div>
       <div className="flex justify-end w-full">
         <img
-          onClick={() => handleCloseModals("utility_bill")}
+          onClick={() => handleCloseModals("upload_profile_pic")}
           src={closeBtn}
           alt="close_btn"
           className="h-[40px] w-[40px] cursor-pointer"
@@ -209,10 +215,10 @@ export default function UploadUtilityBill({ handleCloseModals }) {
       </div>
       <div className="w-full flex flex-col gap-2 mb-10">
         <Text variant="h2" weight="bold">
-          Upload Utility Bill
+          Profile Setup
         </Text>
         <Text variant="h4" weight="normal">
-          Select Select File type you want to Upload
+          Select the option you want for your profile image
         </Text>
       </div>
       <div
@@ -221,7 +227,7 @@ export default function UploadUtilityBill({ handleCloseModals }) {
       >
         <img src={Selfie} alt="upload_icon" />
         <Text variant="body" weight="normal" format="self-center">
-          Take a picture
+          Take a selfie
         </Text>
       </div>
 
@@ -255,24 +261,26 @@ export default function UploadUtilityBill({ handleCloseModals }) {
                 </div>
                 <div className="w-full flex flex-col gap-2 mb-10">
                   <Text variant="h2" weight="bold">
-                    Upload Utility Bill
+                    Profile Setup
                   </Text>
                   <Text variant="h4" weight="normal">
-                    Select the picture you want to use as your utility bill
+                    Make sure your face is centralised in the circle. When you are ready, click the camera button
                   </Text>
                 </div>
                 {images !== "" && (
                   <div className="flex flex-col items-center justify-center gap-4">
                     <img src={imageList} alt="img_preview" className="h-[300px] w-[300px]" />
-                    <Button
-                      onClick={() => {
-                        utilityBillUpload();
-                      }}
-                      isLoading={updateKycSliceReducer?.isLoading}
-                      title="Save Picture"
-                      className="cursor-pointer w-full"
-                      type="button"
-                    />
+                    <div className="w-[50%]">
+                      <Button
+                        onClick={() => {
+                          uploadProfilePicture();
+                        }}
+                        isLoading={dashboardReducer?.profileIsUploading}
+                        title="Save Picture"
+                        className="cursor-pointer w-full"
+                        type="button"
+                      />
+                    </div>
                   </div>
                 )}
                 {message !== "" && (
@@ -284,7 +292,7 @@ export default function UploadUtilityBill({ handleCloseModals }) {
                 )}
                 {errorMessage !== "" && (
                   <div className="w-full text-center mt-4">
-                    <Text variant="h4" color="text-red-500">
+                    <Text variant="h4" color="text-red">
                       {errorMessage}
                     </Text>
                   </div>
@@ -306,7 +314,7 @@ export default function UploadUtilityBill({ handleCloseModals }) {
         </div>
         <div className="w-full flex flex-col gap-2 mb-10">
           <Text variant="h2" weight="bold">
-            Upload Utility Bill
+            Profile Setup
           </Text>
           <Text variant="h4" weight="normal">
             Make sure your picture is centralised in the circle. When you are ready, click the camera button
@@ -315,7 +323,7 @@ export default function UploadUtilityBill({ handleCloseModals }) {
         <WebcamCapture
           handleCloseWebCaptureUploadModals={() => {
             handleCloseUploadModals("take_picture");
-            handleCloseModals("utility_bill");
+            handleCloseModals("upload_profile_pic");
           }}
         />
       </MessageModal>

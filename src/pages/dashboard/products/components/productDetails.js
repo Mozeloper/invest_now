@@ -7,10 +7,14 @@ import Loader from "../../../../components/loadingSkeleton";
 import Text from "../../../../components/Typography/Typography";
 import { handleGetProductDetails } from "../../../../store/slices/productsSlice";
 import Skeleton from "@mui/material/Skeleton";
+import { handleCustomerDetails } from "../../../../store/slices/dashboardSlice";
 
-export default function ProductDetails({ handleOpenProductDetailsModal, productCode }) {
+export default function ProductDetails({ handleShowKycMessage, handleOpenProductDetailsModal, productCode }) {
   const productsReducer = useSelector((state) => state.productsReducer);
+  const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const productData = productsReducer?.productDetailsData?.payload?.data?.data;
+  const customerKycStep = dashboardReducer?.customerDetails?.payload?.data?.data?.kycStep;
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -20,6 +24,7 @@ export default function ProductDetails({ handleOpenProductDetailsModal, productC
       mounted = true;
       if (mounted && productCode !== null) {
         try {
+          dispatch(handleCustomerDetails());
           dispatch(handleGetProductDetails(productCode));
         } catch (error) {
           console.log(error);
@@ -30,6 +35,18 @@ export default function ProductDetails({ handleOpenProductDetailsModal, productC
       mounted = false;
     };
   }, [productCode, dispatch]);
+
+  const handleRouting = () => {
+    switch (customerKycStep) {
+      case "KYC_NOT_STARTED":
+        handleShowKycMessage();
+        handleOpenProductDetailsModal(null);
+        break;
+      default:
+        navigate("/products/open_account", { state: productCode });
+        break;
+    }
+  };
 
   return (
     <>
@@ -98,7 +115,7 @@ export default function ProductDetails({ handleOpenProductDetailsModal, productC
               {productData?.data !== null && (
                 <div className="md:w-[50%] w-full flex self-start justify-start my-6">
                   <Button
-                    onClick={() => navigate("/products/open_account", { state: productCode })}
+                    onClick={() => handleRouting()}
                     title="Open Account"
                     textColor="#fff"
                     className="px-3 font-bold outline-none self-start"

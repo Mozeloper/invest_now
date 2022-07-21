@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
 import PhoneInput from "react-phone-input-2";
@@ -7,8 +8,57 @@ import Button from "../../../../../components/Button";
 import MyInput from "../../../../../components/formFields/inputs/MyInput";
 import SearchableSelect from "../../../../../components/formFields/selectField";
 import Text from "../../../../../components/Typography/Typography";
+import { handleGetGender } from "../../../../../store/slices/authSlices";
+import { getRelationShipStatus } from "../../../../../store/slices/openAccountSlice";
 
-export default function NextOfKin({ handleDispatchNextStep, handleDispatchPreviousStep }) {
+export default function NextOfKin({
+  handleDispatchNextStep,
+  handleDispatchPreviousStep,
+  isBothTrue,
+  isBothFalse,
+  isbeneficiaryTrue,
+  isCHNTrue,
+  handleCreatingaccount,
+}) {
+  const authReducer = useSelector((state) => state.authReducer);
+  const openAccountReducer = useSelector((state) => state.openAccountReducer);
+  const genderType = authReducer?.gender;
+  const genders = [];
+  const relationship = [];
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    let mounted = false;
+    (async () => {
+      mounted = true;
+      if (mounted) {
+        dispatch(handleGetGender());
+        dispatch(getRelationShipStatus());
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [dispatch]);
+
+  if (genderType?.success && genderType?.message === "Retrieved successfully") {
+    genderType?.data.map((list) => {
+      return genders.push({
+        label: list?.name,
+        value: list?.code,
+      });
+    });
+  }
+
+  if (openAccountReducer?.relationshipData?.type === "openaccount/relationShipStatus/fulfilled") {
+    openAccountReducer?.relationshipData?.payload?.data?.data.map((list) => {
+      return relationship.push({
+        label: list.next_of_kin_relation,
+        value: list.id,
+      });
+    });
+  }
+
   const nextOfKinSchema = Yup.object().shape({
     phone_number: Yup.string(),
     fullName: Yup.string().required("Full Name is Required"),
@@ -22,7 +72,17 @@ export default function NextOfKin({ handleDispatchNextStep, handleDispatchPrevio
     <div className="w-full">
       <div className="w-full">
         <img
-          onClick={() => handleDispatchPreviousStep()}
+          onClick={() => {
+            if (isBothTrue) {
+              handleDispatchPreviousStep(3, "nextOfKin");
+            } else if (isBothFalse) {
+              handleDispatchPreviousStep(1, "nextOfKin");
+            } else if (isbeneficiaryTrue) {
+              handleDispatchPreviousStep(3, "nextOfKin");
+            } else if (isCHNTrue) {
+              handleDispatchPreviousStep(2, "nextOfKin");
+            }
+          }}
           src={arrowLeft}
           alt="arrow-left"
           className="w-[24px] h-[24px] cursor-pointer"
@@ -30,7 +90,7 @@ export default function NextOfKin({ handleDispatchNextStep, handleDispatchPrevio
       </div>
       <div className="flex flex-col mt-2">
         <Text weight="bold" variant="body" color="text-red">
-          Step 5
+          Step {isBothTrue ? "4" : isBothFalse ? "2" : "3"}
         </Text>
         <Text weight="bold" variant="h4" color="text-red">
           Next Of Kin
@@ -57,8 +117,8 @@ export default function NextOfKin({ handleDispatchNextStep, handleDispatchPrevio
           validationSchema={nextOfKinSchema}
           enableReinitialize={true}
           onSubmit={async (values) => {
-            console.log(values);
-            handleDispatchNextStep("last_step");
+            handleCreatingaccount(values);
+            handleDispatchNextStep("last_step", values, 5, "nextOfKin");
           }}
         >
           {({ handleSubmit, handleChange, setFieldValue, isSubmitting, values, touched, errors }) => (
@@ -79,8 +139,8 @@ export default function NextOfKin({ handleDispatchNextStep, handleDispatchPrevio
                     Relationship
                   </label>
                   <SearchableSelect
-                    options={[{ label: "Sister", value: "sister" }]}
-                    isLoading={false}
+                    options={relationship}
+                    isLoading={openAccountReducer?.relationshipIsLoading}
                     name="relationship"
                     setFieldValue={setFieldValue}
                     value={values.relationship}
@@ -111,8 +171,7 @@ export default function NextOfKin({ handleDispatchNextStep, handleDispatchPrevio
                     }}
                     country={"ng"}
                     value={values.phone_number}
-                    onChange={handleChange}
-                    // disabled
+                    onChange={(e) => setFieldValue("phone_number", e)}
                   />
                   {errors.phone_number && touched.phone_number ? (
                     <Text variant="small" weight="normal" color="text-red">
@@ -125,8 +184,8 @@ export default function NextOfKin({ handleDispatchNextStep, handleDispatchPrevio
                     Gender
                   </label>
                   <SearchableSelect
-                    options={[{ label: "Sister", value: "sister" }]}
-                    isLoading={false}
+                    options={genders}
+                    isLoading={authReducer?.isGenderLoading}
                     name="gender"
                     setFieldValue={setFieldValue}
                     value={values.gender}
@@ -162,7 +221,12 @@ export default function NextOfKin({ handleDispatchNextStep, handleDispatchPrevio
               ) : null}
               <div className="mt-6 w-full flex justify-center">
                 <div className="w-[30%]">
-                  <Button title="Next" className="cursor-pointer" type="submit" isLoading={isSubmitting} />
+                  <Button
+                    title="Next"
+                    className="cursor-pointer"
+                    type="submit"
+                    isLoading={openAccountReducer?.createAccountIsLoading}
+                  />
                 </div>
               </div>
             </Form>

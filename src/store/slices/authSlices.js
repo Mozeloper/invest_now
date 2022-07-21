@@ -237,15 +237,15 @@ export const authSlice = createSlice({
       state.smileDetails = action.payload;
     },
     [handleGetGender.pending]: (state) => {
-      state.isLoading = true;
+      state.isGenderLoading = true;
       state.gender = null;
     },
     [handleGetGender.fulfilled]: (state, action) => {
-      state.isLoading = false;
+      state.isGenderLoading = false;
       state.gender = action?.payload?.data;
     },
     [handleGetGender.rejected]: (state, action) => {
-      state.isLoading = false;
+      state.isGenderLoading = false;
       state.gender = action.payload.data;
     },
     [handleGetCountry.pending]: (state) => {

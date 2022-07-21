@@ -323,7 +323,7 @@ export default function Dashboard() {
               <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="100%" height={118} />
             </div>
           ) : (
-            <div className="bg-[#FFFBF0] W-[100%] lg:basis-1/3 lg:h-[full] p-6">
+            <div className="bg-[#FFFBF0] overflow-y-auto overflow-hidden no-scrollbar W-[100%] lg:basis-1/3 h-[529px] p-6">
               <div className="w-full mb-10">
                 <Text weight="bold" variant="h3">
                   Daily Market rates

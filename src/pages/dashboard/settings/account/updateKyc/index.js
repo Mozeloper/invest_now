@@ -10,12 +10,14 @@ import UpdateBioData from "./updateBioData";
 import EmploymentDetails from "./employmentDetails";
 import SelfCertification from "./selfCertification";
 import SignatureSetup from "./signatureSetup";
+import UploadPassport from "./uploadPassport";
 
 export default function UpdateKyc({ handleCloseItemRouting }) {
-  const [openModal, setOpenMpdal] = useState({
+  const [openModal, setOpenModal] = useState({
     utility_bill: false,
     valid_id: false,
     signature_setup: false,
+    upload_passport: false,
     bio_data: false,
     employment_details: false,
     self_certification: false,
@@ -24,37 +26,43 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
   const handleOpenModals = (type) => {
     switch (type) {
       case "utility_bill":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
         break;
       case "valid_id":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
         break;
       case "signature_setup":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "upload_passport":
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
         break;
       case "bio_data":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
         break;
       case "employment_details":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
         break;
       case "self_certification":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: true,
         }));
@@ -67,37 +75,43 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
   const handleCloseModals = (type) => {
     switch (type) {
       case "utility_bill":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
         break;
       case "valid_id":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
         break;
       case "signature_setup":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "upload_passport":
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
         break;
       case "bio_data":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
         break;
       case "employment_details":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
         break;
       case "self_certification":
-        setOpenMpdal((prev) => ({
+        setOpenModal((prev) => ({
           ...prev,
           [type]: false,
         }));
@@ -179,6 +193,22 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
           Accepted file type are PDF , PNG or JPEG. File size must not be more than 5mb
         </Text>
       </div>
+      <div className="w-full flex flex-col gap-2">
+        <Text variant="sub" weight="bold">
+          Your Passport *
+        </Text>
+        <div
+          onClick={() => handleOpenModals("upload_passport")}
+          className="flex items-center justify-between w-full cursor-pointer px-4 py-3 bg-[#f2f2f2]"
+        >
+          <Text variant="sub" weight="normal">
+            Upload your Passport photograph
+          </Text>
+        </div>
+        <Text format="w-[70%]" variant="sub" weight="normal">
+          Accepted file type are PDF , PNG or JPEG. File size must not be more than 5mb
+        </Text>
+      </div>
       <div className="flex flex-col gap-3">
         <div
           onClick={() => handleOpenModals("bio_data")}
@@ -216,6 +246,9 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
       </MessageModal>
       <MessageModal bgColor={true} modalHeight="720px" isOpen={openModal?.signature_setup}>
         <SignatureSetup handleCloseModals={handleCloseModals} />
+      </MessageModal>
+      <MessageModal bgColor={true} modalHeight="720px" isOpen={openModal?.upload_passport}>
+        <UploadPassport handleCloseModals={handleCloseModals} />
       </MessageModal>
       <MessageModal modalHeight="auto" isOpen={openModal?.bio_data}>
         <UpdateBioData handleCloseModals={handleCloseModals} />

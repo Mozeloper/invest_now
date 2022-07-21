@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import closeBtn from "../../../../../assets/icons/close_btn.svg";
-import Button from "../../../../../components/Button";
-import MessageModal from "../../../../../components/modals/MessageModal";
-import Text from "../../../../../components/Typography/Typography";
-import Loader from "../../../../../components/loader";
-import Selfie from "../../../../../assets/icons/selfie.svg";
-import UploadJpeg from "../../../../../assets/icons/upload_doc.svg";
-import pictureIcon from "../../../../../assets/icons/picture_taker.svg";
+import closeBtn from "../../../../../../assets/icons/close_btn.svg";
+import Button from "../../../../../../components/Button";
+import MessageModal from "../../../../../../components/modals/MessageModal";
+import Text from "../../../../../../components/Typography/Typography";
+import Loader from "../../../../../../components/loader";
+import Selfie from "../../../../../../assets/icons/selfie.svg";
+import UploadJpeg from "../../../../../../assets/icons/upload_doc.svg";
+import pictureIcon from "../../../../../../assets/icons/picture_taker.svg";
 import Webcam from "react-webcam";
 import ImageUploading from "react-images-uploading";
 import { useDispatch, useSelector } from "react-redux";
-import { getIdentityTypes, handleValidId } from "../../../../../store/slices/settingsUpdateKycSlice";
+import { getIdentityTypes, handleValidId } from "../../../../../../store/slices/settingsUpdateKycSlice";
 
 const videoConstraints = {
   width: 220,
@@ -109,7 +109,7 @@ const WebcamCapture = ({ handleCloseUploadModals, validId, customerId, isLoading
   );
 };
 
-export default function UploadValidId({ handleCloseModals }) {
+export default function BeneficiaryId({ handleCloseModals }) {
   const [validId, setValidId] = useState(null);
   const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
   const identityType = updateKycSliceReducer?.identityTypeState?.payload?.data?.data;

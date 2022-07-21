@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import UploadIcon from "../../../../../assets/icons/upload_icon.svg";
@@ -6,9 +6,62 @@ import arrowLeft from "../../../../../assets/icons/arrow-left.svg";
 import Button from "../../../../../components/Button";
 import MyInput from "../../../../../components/formFields/inputs/MyInput";
 import Text from "../../../../../components/Typography/Typography";
+import MessageModal from "../../../../../components/modals/MessageModal";
+import BeneficiaryId from "./components/beneficiaryId";
+import BeneficiaryPassport from "./components/beneficiaryPassport";
 
-export default function BeneficiaryDetails({ handleDispatchNextStep, handleDispatchPreviousStep }) {
-  const nextOfKinSchema = Yup.object().shape({
+export default function BeneficiaryDetails({
+  handleDispatchNextStep,
+  handleDispatchPreviousStep,
+  isBothTrue,
+  isBothFalse,
+  isbeneficiaryTrue,
+  isCHNTrue,
+}) {
+  const [openModal, setOpenModal] = useState({
+    valid_id: false,
+    passport_photography: false,
+  });
+
+  const handleOpenModals = (type) => {
+    switch (type) {
+      case "valid_id":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "passport_photography":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleCloseModals = (type) => {
+    switch (type) {
+      case "valid_id":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "passport_photography":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      default:
+        break;
+    }
+  };
+
+  const beneficiarySchema = Yup.object().shape({
     fullName: Yup.string().required("Full Name is Required"),
     date_of_birth: Yup.string().required("Date Of Birth is Required"),
   });
@@ -17,7 +70,13 @@ export default function BeneficiaryDetails({ handleDispatchNextStep, handleDispa
     <div className="w-full">
       <div className="w-full">
         <img
-          onClick={() => handleDispatchPreviousStep()}
+          onClick={() => {
+            if (isBothTrue) {
+              handleDispatchPreviousStep(2, "beneficiary");
+            } else if (isbeneficiaryTrue) {
+              handleDispatchPreviousStep(1, "beneficiary");
+            }
+          }}
           src={arrowLeft}
           alt="arrow-left"
           className="w-[24px] h-[24px] cursor-pointer"
@@ -25,7 +84,7 @@ export default function BeneficiaryDetails({ handleDispatchNextStep, handleDispa
       </div>
       <div className="flex flex-col mt-2">
         <Text weight="bold" variant="body" color="text-red">
-          Step 7
+          Step {isBothTrue ? "3" : isbeneficiaryTrue ? "2" : ""}
         </Text>
         <Text weight="bold" variant="h4" color="text-red">
           Beneficiary details
@@ -45,11 +104,11 @@ export default function BeneficiaryDetails({ handleDispatchNextStep, handleDispa
             fullName: "",
             date_of_birth: "",
           }}
-          validationSchema={nextOfKinSchema}
+          validationSchema={beneficiarySchema}
           enableReinitialize={true}
           onSubmit={async (values) => {
             console.log(values);
-            handleDispatchNextStep();
+            handleDispatchNextStep(null, values, 4, "beneficiary");
           }}
         >
           {({ handleSubmit, handleChange, isSubmitting }) => (
@@ -81,7 +140,10 @@ export default function BeneficiaryDetails({ handleDispatchNextStep, handleDispa
                   <Text variant="sub" weight="bold">
                     Valid means of identification
                   </Text>
-                  <div className="flex items-center justify-between w-full cursor-pointer px-4 py-3 bg-[#f2f2f2]">
+                  <div
+                    onClick={() => handleOpenModals("valid_id")}
+                    className="flex items-center justify-between w-full cursor-pointer px-4 py-3 bg-[#f2f2f2]"
+                  >
                     <Text variant="sub" weight="normal">
                       Upload your valid ID
                     </Text>
@@ -95,7 +157,10 @@ export default function BeneficiaryDetails({ handleDispatchNextStep, handleDispa
                   <Text variant="sub" weight="bold">
                     Passport photograph
                   </Text>
-                  <div className="flex items-center justify-between w-full cursor-pointer px-4 py-3 bg-[#f2f2f2]">
+                  <div
+                    onClick={() => handleOpenModals("passport_photography")}
+                    className="flex items-center justify-between w-full cursor-pointer px-4 py-3 bg-[#f2f2f2]"
+                  >
                     <Text variant="sub" weight="normal">
                       Upload your Passport Photograph
                     </Text>
@@ -115,6 +180,12 @@ export default function BeneficiaryDetails({ handleDispatchNextStep, handleDispa
           )}
         </Formik>
       </div>
+      <MessageModal bgColor={true} modalHeight="90vh" isOpen={openModal?.valid_id}>
+        <BeneficiaryId handleCloseModals={handleCloseModals} />
+      </MessageModal>
+      <MessageModal bgColor={true} modalHeight="auto" isOpen={openModal?.passport_photography}>
+        <BeneficiaryPassport handleCloseModals={handleCloseModals} />
+      </MessageModal>
     </div>
   );
 }

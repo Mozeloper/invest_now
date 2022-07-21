@@ -12,6 +12,18 @@ export const handleUtilityBill = createAsyncThunk("settings/uploadUtilityBill", 
   }
 });
 
+export const handleUploadPassport = createAsyncThunk(
+  "settings/uploadUtilityBill",
+  async (values, { rejectWithValue }) => {
+    try {
+      const data = await api.put(appUrls.uploadPassport, values);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const getIdentityTypes = createAsyncThunk("settings/identityTypes", async (_, { rejectWithValue }) => {
   try {
     const data = await api.get(appUrls.identityTypesURL);
@@ -126,6 +138,15 @@ export const handleSaveSelfCertification = createAsyncThunk(
   }
 );
 
+export const handleResetPassword = createAsyncThunk("settings/resetPassword", async (values, { rejectWithValue }) => {
+  try {
+    const data = await api.put(appUrls.resetPasswordURL, values);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
 const initialState = {
   isLoading: false,
   utilityBillState: null,
@@ -154,6 +175,17 @@ export const updateKycSlice = createSlice({
     [handleUtilityBill.rejected]: (state, action) => {
       state.isLoading = false;
       state.utilityBillState = action.payload;
+    },
+    [handleUploadPassport.pending]: (state) => {
+      state.isLoadingPassport = true;
+    },
+    [handleUploadPassport.fulfilled]: (state, action) => {
+      state.isLoadingPassport = false;
+      state.passportData = action.payload;
+    },
+    [handleUploadPassport.rejected]: (state, action) => {
+      state.isLoadingPassport = false;
+      state.passportData = action.payload;
     },
     [getIdentityTypes.pending]: (state) => {
       state.isLoading = true;
@@ -277,6 +309,15 @@ export const updateKycSlice = createSlice({
     },
     [handleSaveSelfCertification.rejected]: (state, action) => {
       state.selfCertificationIsLoading = false;
+    },
+    [handleResetPassword.pending]: (state) => {
+      state.resetPasswordIsLoading = true;
+    },
+    [handleResetPassword.fulfilled]: (state) => {
+      state.resetPasswordIsLoading = false;
+    },
+    [handleResetPassword.rejected]: (state, action) => {
+      state.resetPasswordIsLoading = false;
     },
   },
 });

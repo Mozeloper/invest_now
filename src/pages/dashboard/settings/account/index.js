@@ -6,6 +6,7 @@ import MessageModal from "../../../../components/modals/MessageModal";
 import UpdateKyc from "./updateKyc";
 import PaymentCards from "./paymentCards";
 import LinkInvestmentaccount from "./linkInvestmentAccount";
+import ResetPassword from "./resetPassword";
 
 export default function Accounts() {
   const navigate = useNavigate();
@@ -14,6 +15,7 @@ export default function Accounts() {
     get_statement: false,
     payment_card: false,
     link_investment_accounts: false,
+    change_password: false,
     information_update: false,
   });
 
@@ -45,6 +47,10 @@ export default function Accounts() {
     {
       title: "Customer information update",
       type: "information_update",
+    },
+    {
+      title: "Change Password",
+      type: "change_password",
     },
   ];
 
@@ -78,6 +84,12 @@ export default function Accounts() {
         }));
         break;
       case "information_update":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "change_password":
         setOpenModal((prev) => ({
           ...prev,
           [type]: true,
@@ -120,6 +132,12 @@ export default function Accounts() {
           [type]: false,
         }));
         break;
+      case "change_password":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
       default:
         break;
     }
@@ -141,7 +159,7 @@ export default function Accounts() {
                   </Text>
                   <img src={rightArrow} alt="right_arrow" />
                 </div>
-                {index !== 6 && <div className="border-b border-[#BCBCBC] w-full my-5"></div>}
+                {index !== 7 && <div className="border-b border-[#BCBCBC] w-full my-5"></div>}
               </div>
             );
           })}
@@ -150,12 +168,14 @@ export default function Accounts() {
       <MessageModal isOpen={openModal?.update_kyc} modalHeight="auto" minWidth="320px">
         <UpdateKyc handleCloseItemRouting={handleCloseItemRouting} />
       </MessageModal>
-
       <MessageModal isOpen={openModal?.payment_card} modalHeight="auto" minWidth="300px">
         <PaymentCards handleCloseItemRouting={handleCloseItemRouting} />
       </MessageModal>
       <MessageModal isOpen={openModal?.link_investment_accounts} modalHeight="auto" minWidth="300px">
         <LinkInvestmentaccount handleCloseItemRouting={handleCloseItemRouting} />
+      </MessageModal>
+      <MessageModal isOpen={openModal?.change_password} modalHeight="auto" minWidth="300px">
+        <ResetPassword handleCloseItemRouting={handleCloseItemRouting} />
       </MessageModal>
     </>
   );
