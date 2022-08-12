@@ -1,4 +1,6 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Form, Formik } from "formik";
 import * as Yup from "yup";
 import PhoneInput from "react-phone-input-2";
@@ -6,7 +8,6 @@ import Button from "../../../../../components/Button";
 import MyInput from "../../../../../components/formFields/inputs/MyInput";
 import SearchableSelect from "../../../../../components/formFields/selectField";
 import Text from "../../../../../components/Typography/Typography";
-import { useDispatch, useSelector } from "react-redux";
 import { handleGetGender } from "../../../../../store/slices/authSlices";
 import { getRelationShipStatus } from "../../../../../store/slices/openAccountSlice";
 
@@ -15,6 +16,8 @@ export default function DependentInfo() {
   const genderType = authReducer?.gender;
   const genders = [];
   const dispatch = useDispatch();
+  const { state } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = false;
@@ -39,12 +42,12 @@ export default function DependentInfo() {
     });
   }
   const dependentInfoSchema = Yup.object().shape({
-    phone_number: Yup.string(),
+    phone_number: Yup.string().required("Phone Number is Required"),
     firstName: Yup.string().required("First Name is Required"),
     lastName: Yup.string().required("Last Name is Required"),
     middleName: Yup.string(),
-    dateOfBirth: Yup.string(),
-    bvn: Yup.string(),
+    dateOfBirth: Yup.string().required("Date Of Birth is Required"),
+    bvn: Yup.string().required("Bvn is Required"),
     gender: Yup.string().required("Gender is Required"),
     email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
   });
@@ -74,6 +77,11 @@ export default function DependentInfo() {
           enableReinitialize={true}
           onSubmit={async (values) => {
             console.log(values);
+            if (state === "adult") {
+              navigate("/products/dependent_information/id_card");
+            } else if (state === "minor") {
+              navigate("/products/dependent_information/birth_certificate");
+            } else return null;
           }}
         >
           {({ handleSubmit, handleChange, setFieldValue, values, touched, errors }) => (

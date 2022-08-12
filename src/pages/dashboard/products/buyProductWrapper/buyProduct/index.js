@@ -147,7 +147,7 @@ export default function BuyProducts() {
               <div
                 style={{ background: "linear-gradient(to right, #2B2B2B, 70%, #606161)" }}
                 className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer"
-                onClick={() => navigate("/products/dependent_information")}
+                onClick={() => navigate("/products/dependent_information", { state: "minor" })}
               >
                 <Text color="text-white" weight="bold" variant="h4">
                   Minor (Less than 18 years)
@@ -156,7 +156,7 @@ export default function BuyProducts() {
               <div
                 style={{ background: "linear-gradient(to right, #2B2B2B, 70%, #606161)" }}
                 className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer"
-                onClick={() => navigate("/products/dependent_information")}
+                onClick={() => navigate("/products/dependent_information", { state: "adult" })}
               >
                 <Text color="text-white" weight="bold" variant="h4">
                   Adult

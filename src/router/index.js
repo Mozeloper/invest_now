@@ -41,6 +41,8 @@ import BuyProducts from "../pages/dashboard/products/buyProductWrapper/buyProduc
 import NewBankAccount from "../pages/dashboard/products/buyProductWrapper/newBankAccount";
 import NextOfKin from "../pages/dashboard/products/buyProductWrapper/nextOfKin";
 import DependentInfo from "../pages/dashboard/products/buyProductWrapper/dependentInfo";
+import IdCardUpload from "../pages/dashboard/products/buyProductWrapper/idCardUpload";
+import BirthCertificateUpload from "../pages/dashboard/products/buyProductWrapper/birthCertificateUpload";
 
 function InappPrivateRoute() {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
@@ -100,6 +102,8 @@ export default function AppRoute() {
             <Route path="/products/new_bank_account" element={<NewBankAccount />} />
             <Route path="/products/next_of_kin" element={<NextOfKin />} />
             <Route path="/products/dependent_information" element={<DependentInfo />} />
+            <Route path="/products/dependent_information/id_card" element={<IdCardUpload />} />
+            <Route path="/products/dependent_information/birth_certificate" element={<BirthCertificateUpload />} />
           </Route>
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/loans" element={<Loans />} />
