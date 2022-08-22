@@ -11,6 +11,7 @@ import ImageUploading from "react-images-uploading";
 import Button from "../../../../../components/Button";
 import { useDispatch, useSelector } from "react-redux";
 import { handleUtilityBill } from "../../../../../store/slices/settingsUpdateKycSlice";
+import { handleCustomerDetails } from "../../../../../store/slices/dashboardSlice";
 
 const videoConstraints = {
   width: 220,
@@ -50,6 +51,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
     await dispatch(handleUtilityBill(data))
       .unwrap()
       .then((res) => {
+        dispatch(handleCustomerDetails());
         setTimeout(() => {
           handleCloseWebCaptureUploadModals();
           setMessage("");
@@ -182,6 +184,7 @@ export default function UploadUtilityBill({ handleCloseModals }) {
     await dispatch(handleUtilityBill(data))
       .unwrap()
       .then((res) => {
+        dispatch(handleCustomerDetails());
         setTimeout(() => {
           handleCloseUploadModals("take_picture");
           handleCloseModals("utility_bill");

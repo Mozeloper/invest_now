@@ -10,19 +10,16 @@ import pictureIcon from "../../../../../assets/icons/picture_taker.svg";
 import Webcam from "react-webcam";
 import ImageUploading from "react-images-uploading";
 import { useDispatch, useSelector } from "react-redux";
-import { getIdentityTypes, handleValidId } from "../../../../../store/slices/settingsUpdateKycSlice";
-import { handleCustomerDetails } from "../../../../../store/slices/dashboardSlice";
-
+import { getIdentityTypes } from "../../../../../store/slices/settingsUpdateKycSlice";
+import { setCscsValidIdentity, setcscsValidIdentityType } from "../../../../../store/slices/buyProductSlice";
 const videoConstraints = {
   width: 220,
   height: 200,
   facingMode: "user",
 };
 
-const WebcamCapture = ({ handleCloseUploadModals, validId, customerId, isLoading }) => {
+const WebcamCapture = ({ handleCloseUploadModals, validId }) => {
   const [image, setImage] = useState("");
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const webcamRef = React.useRef(null);
   const capture = React.useCallback(() => {
@@ -43,29 +40,8 @@ const WebcamCapture = ({ handleCloseUploadModals, validId, customerId, isLoading
       result = image;
     }
 
-    const data = {
-      id: customerId,
-      data: {
-        identity_type_id: validId,
-        id_base64: result,
-      },
-    };
-    await dispatch(handleValidId(data))
-      .unwrap()
-      .then((res) => {
-        dispatch(handleCustomerDetails());
-        setTimeout(() => {
-          handleCloseUploadModals();
-          setMessage("");
-        }, 2000);
-        setMessage(res?.data?.message);
-      })
-      .catch((error) => {
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 2000);
-        setErrorMessage(error?.data?.message);
-      });
+    dispatch(setCscsValidIdentity(result));
+    handleCloseUploadModals();
   };
   return (
     <div className="flex flex-col gap-3 items-center justify-center">
@@ -84,47 +60,23 @@ const WebcamCapture = ({ handleCloseUploadModals, validId, customerId, isLoading
       {image !== "" && (
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <Button
-            isLoading={isLoading}
-            onClick={() => uploadValid()}
-            title="Save Picture"
-            className="cursor-pointer w-full"
-            type="button"
-          />
+          <Button onClick={() => uploadValid()} title="Save Picture" className="cursor-pointer w-full" type="button" />
         </>
-      )}
-      {message !== "" && (
-        <div className="w-full text-center mt-4">
-          <Text variant="h4" color="text-green-600">
-            {message}
-          </Text>
-        </div>
-      )}
-      {errorMessage !== "" && (
-        <div className="w-full text-center mt-4">
-          <Text variant="h4" color="text-red-500">
-            {errorMessage}
-          </Text>
-        </div>
       )}
     </div>
   );
 };
 
-export default function UploadValidId({ handleCloseModals }) {
+export default function CscsValidIdentity({ handleCloseModal }) {
   const [validId, setValidId] = useState(null);
   const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
   const identityType = updateKycSliceReducer?.identityTypeState?.payload?.data?.data;
-  const authReducer = useSelector((state) => state.authReducer);
-  const customerId = authReducer?.authedUser?.data?.customer?.id;
 
   const dispatch = useDispatch();
   const [openModal, setOpenModal] = useState({
     valid_id: false,
     take_picture: false,
   });
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     let mounted = false;
@@ -200,9 +152,10 @@ export default function UploadValidId({ handleCloseModals }) {
 
   const handleValidIdenty = (e) => {
     setValidId(e.target.value);
+    dispatch(setcscsValidIdentityType(e.target.value));
   };
 
-  const uploadValid = async () => {
+  const uploadValid = () => {
     const containsJpeg = "data:image/jpeg;base64,";
     const constainsPng = "data:image/png;base64,";
     let result;
@@ -215,31 +168,9 @@ export default function UploadValidId({ handleCloseModals }) {
       result = images;
     }
 
-    const data = {
-      id: customerId,
-      data: {
-        identity_type_id: validId,
-        id_base64: result,
-      },
-    };
-    await dispatch(handleValidId(data))
-      .unwrap()
-      .then((res) => {
-        dispatch(handleCustomerDetails());
-        setTimeout(() => {
-          handleCloseIdUpload("upload_picture");
-          handleCloseIdUpload("valid_id");
-          handleCloseModals("valid_id");
-          setMessage("");
-        }, 2000);
-        setMessage(res?.data?.message);
-      })
-      .catch((error) => {
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 2000);
-        setErrorMessage(error?.data?.message);
-      });
+    dispatch(setCscsValidIdentity(result));
+    handleCloseIdUpload("valid_id");
+    handleCloseModal();
   };
 
   const loadingState = () => {
@@ -252,7 +183,7 @@ export default function UploadValidId({ handleCloseModals }) {
     <>
       <div className="flex justify-end w-full">
         <img
-          onClick={() => handleCloseModals("valid_id")}
+          onClick={() => handleCloseModal()}
           src={closeBtn}
           alt="close_btn"
           className="h-[40px] w-[40px] cursor-pointer"
@@ -372,20 +303,6 @@ export default function UploadValidId({ handleCloseModals }) {
                       />
                     </div>
                   )}
-                  {message !== "" && (
-                    <div className="w-full text-center mt-4">
-                      <Text variant="h4" color="text-green-600">
-                        {message}
-                      </Text>
-                    </div>
-                  )}
-                  {errorMessage !== "" && (
-                    <div className="w-full text-center mt-4">
-                      <Text variant="h4" color="text-red-500">
-                        {errorMessage}
-                      </Text>
-                    </div>
-                  )}
                 </MessageModal>
               </div>
             </>
@@ -413,11 +330,9 @@ export default function UploadValidId({ handleCloseModals }) {
           handleCloseUploadModals={() => {
             handleCloseIdUpload("take_picture");
             handleCloseIdUpload("valid_id");
-            handleCloseModals("valid_id");
+            handleCloseModal("valid_id");
           }}
-          customerId={customerId}
           validId={validId}
-          isLoading={updateKycSliceReducer?.isLoading}
         />
       </MessageModal>
     </>

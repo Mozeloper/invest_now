@@ -8,6 +8,7 @@ import Text from "../../../../components/Typography/Typography";
 import { handleGetProductDetails } from "../../../../store/slices/productsSlice";
 import Skeleton from "@mui/material/Skeleton";
 import { handleCustomerDetails } from "../../../../store/slices/dashboardSlice";
+import { setProductCode } from "../../../../store/slices/buyProductSlice";
 
 export default function ProductDetails({ handleShowKycMessage, handleOpenProductDetailsModal, productCode }) {
   const productsReducer = useSelector((state) => state.productsReducer);
@@ -44,7 +45,8 @@ export default function ProductDetails({ handleShowKycMessage, handleOpenProduct
         handleOpenProductDetailsModal(null);
         break;
       case false:
-        navigate("/products/buy_product", { state: productCode });
+        navigate("/products/buy_product");
+        dispatch(setProductCode(productCode));
         // navigate("/products/open_account", { state: productCode });
         break;
       default:

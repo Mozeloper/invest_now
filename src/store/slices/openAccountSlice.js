@@ -90,6 +90,7 @@ const initialState = {
   mybeneficiaryDetails: null,
   mybeneficiaryPassport: null,
   mybeneficiaryId: null,
+  mybeneficiaryIdType: null,
   mynextOfKinDetails: null,
   bankListData: null,
   verifiedBankAccount: null,
@@ -175,6 +176,7 @@ export const openAccountSlice = createSlice({
           break;
         case "beneficiary_id":
           state.mybeneficiaryId = action.payload?.data?.beneficiary_id;
+          state.mybeneficiaryIdType = action.payload?.data?.validId;
           break;
         default:
           break;

@@ -10,6 +10,7 @@ import SearchableSelect from "../../../../../components/formFields/selectField";
 import Text from "../../../../../components/Typography/Typography";
 import { handleGetGender } from "../../../../../store/slices/authSlices";
 import { getRelationShipStatus } from "../../../../../store/slices/openAccountSlice";
+import { setDependentDetails } from "../../../../../store/slices/buyProductSlice";
 
 export default function DependentInfo() {
   const authReducer = useSelector((state) => state.authReducer);
@@ -76,7 +77,7 @@ export default function DependentInfo() {
           validationSchema={dependentInfoSchema}
           enableReinitialize={true}
           onSubmit={async (values) => {
-            console.log(values);
+            dispatch(setDependentDetails(values));
             if (state === "adult") {
               navigate("/products/dependent_information/id_card");
             } else if (state === "minor") {

@@ -13,6 +13,7 @@ import {
   getReligion,
   handleSaveBioData,
 } from "../../../../../store/slices/settingsUpdateKycSlice";
+import { handleCustomerDetails } from "../../../../../store/slices/dashboardSlice";
 
 export default function UpdateBioData({ handleCloseModals }) {
   const [message, setMessage] = useState("");
@@ -75,6 +76,7 @@ export default function UpdateBioData({ handleCloseModals }) {
     await dispatch(handleSaveBioData(data))
       .unwrap()
       .then((res) => {
+        dispatch(handleCustomerDetails());
         setTimeout(() => {
           handleCloseModals("bio_data");
           setMessage("");
@@ -108,7 +110,7 @@ export default function UpdateBioData({ handleCloseModals }) {
       </div>
       <div className="w-full flex flex-col gap-2 mb-10">
         <Text variant="h2" weight="bold">
-          Update Kyc
+          Update Bio Data
         </Text>
         <Text variant="h4" weight="normal">
           Select which of the following you will like to update
@@ -148,7 +150,7 @@ export default function UpdateBioData({ handleCloseModals }) {
                   defaultValue={values.title}
                 />
                 {errors.title && touched.title ? (
-                  <Text variant="small" weight="normal" color="text-red">
+                  <Text variant="body" weight="normal" color="text-red">
                     {errors.title}
                   </Text>
                 ) : null}
@@ -156,11 +158,11 @@ export default function UpdateBioData({ handleCloseModals }) {
 
               <div className="w-full mt-4">
                 <label htmlFor="maidenName" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
-                  Mother Maiden Name
+                  Mother's Maiden Name
                 </label>
-                <Input placeholder="Maiden name" type="text" name="maidenName" handleChange={handleChange} />
+                <Input placeholder="Mother's maiden name" type="text" name="maidenName" handleChange={handleChange} />
                 {errors.maidenName && touched.maidenName ? (
-                  <Text variant="h4" weight="normal" color="text-red">
+                  <Text variant="body" weight="normal" color="text-red">
                     {errors.maidenName}
                   </Text>
                 ) : null}
@@ -178,7 +180,7 @@ export default function UpdateBioData({ handleCloseModals }) {
                   defaultValue={values.religion}
                 />
                 {errors.religion && touched.religion ? (
-                  <Text variant="small" weight="normal" color="text-red">
+                  <Text variant="body" weight="normal" color="text-red">
                     {errors.religion}
                   </Text>
                 ) : null}
@@ -197,7 +199,7 @@ export default function UpdateBioData({ handleCloseModals }) {
                   defaultValue={values.marital_status}
                 />
                 {errors.marital_status && touched.marital_status ? (
-                  <Text variant="small" weight="normal" color="text-red">
+                  <Text variant="body" weight="normal" color="text-red">
                     {errors.marital_status}
                   </Text>
                 ) : null}

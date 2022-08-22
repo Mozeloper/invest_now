@@ -20,7 +20,6 @@ import Portfolio from "../pages/dashboard/portfolio";
 import Products from "../pages/dashboard/products";
 import Transactions from "../pages/dashboard/transactions";
 import Loans from "../pages/dashboard/loans";
-import LiveTrading from "../pages/dashboard/liveTrading";
 import Reports from "../pages/dashboard/reports";
 import Settings from "../pages/dashboard/settings";
 import Accounts from "../pages/dashboard/settings/account";
@@ -43,6 +42,7 @@ import NextOfKin from "../pages/dashboard/products/buyProductWrapper/nextOfKin";
 import DependentInfo from "../pages/dashboard/products/buyProductWrapper/dependentInfo";
 import IdCardUpload from "../pages/dashboard/products/buyProductWrapper/idCardUpload";
 import BirthCertificateUpload from "../pages/dashboard/products/buyProductWrapper/birthCertificateUpload";
+import FurtherProductsUpload from "../pages/dashboard/products/buyProductWrapper/furtherInfo";
 
 function InappPrivateRoute() {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
@@ -101,13 +101,13 @@ export default function AppRoute() {
             <Route path="/products/buy_product" element={<BuyProducts />} />
             <Route path="/products/new_bank_account" element={<NewBankAccount />} />
             <Route path="/products/next_of_kin" element={<NextOfKin />} />
+            <Route path="/products/:productType" element={<FurtherProductsUpload />} />
             <Route path="/products/dependent_information" element={<DependentInfo />} />
             <Route path="/products/dependent_information/id_card" element={<IdCardUpload />} />
             <Route path="/products/dependent_information/birth_certificate" element={<BirthCertificateUpload />} />
           </Route>
           <Route path="/transactions" element={<Transactions />} />
           <Route path="/loans" element={<Loans />} />
-          <Route path="/live_trading" element={<LiveTrading />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings/*" element={<Settings />}>
             <Route path="accounts" element={<Accounts />} />
@@ -119,7 +119,6 @@ export default function AppRoute() {
           <Route path="/contact_relationship_manager" element={<RelationshipManager />} />
         </Route>
         <Route path="/products/open_account/*" element={<OpenAccount />} />
-
         <Route path="/Not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/Not-found" replace={true} />} />
       </Routes>

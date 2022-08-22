@@ -44,4 +44,8 @@ export const appUrls = {
   bankListURL: "api/v2/onboarding/get-all-banks",
   verifyBankAccountURL: "api/v2/onboarding/resolve-account-number?",
   getPortfolioTransactionURL: "investnow/paystack-deposits?page=1&perPage=10",
+  initializePaymentURL: "payment-tokenize/initialize",
+  recurrentPaymentURL: "payment-tokenize/setup-recurrent",
+  verifyPaymentURL: "payment-tokenize/verify",
+  existingCashAccountUrl: "api/v2/customers/get-cash-accounts",
 };

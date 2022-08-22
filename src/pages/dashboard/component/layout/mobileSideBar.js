@@ -25,6 +25,7 @@ export default function MobileSideBar() {
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const customerPic = dashboardReducer?.customerDetails?.payload?.data?.data?.profile_pic;
+  const tierStatus = dashboardReducer?.customerDetails?.payload?.data?.data?.tier_status;
   const firstName = userDetails?.data?.customer?.firstname;
   const lastName = userDetails?.data?.customer?.lastname;
   const dispatch = useDispatch();
@@ -103,11 +104,6 @@ export default function MobileSideBar() {
       path: "/loans",
     },
     {
-      title: "Live Trading",
-      img: Trading,
-      path: "/live_trading",
-    },
-    {
       title: "Reports",
       img: Reports,
       path: "/reports",
@@ -139,15 +135,20 @@ export default function MobileSideBar() {
             alt="logo"
             className="h-[40px] w-[40px] rounded-full"
           />
-          <Text color="text-[#465174]" variant="h3" format="whitespace-nowrap font-bold">
-            {firstName} {lastName}
-          </Text>
+          <div className="flex flex-col gap-1">
+            <Text color="text-[#465174]" variant="h4" format="whitespace-nowrap font-bold">
+              {firstName} {lastName}
+            </Text>
+            <Text color="text-red" variant="body" format="whitespace-nowrap font-bold">
+              {tierStatus?.replace("_", " ")}
+            </Text>
+          </div>
         </div>
         <div className="w-full">
           <div className="border-b border-[#BCBCBC] w-full">
             <Text variant="h4">Menu</Text>
           </div>
-          <div className="w-full mt-4 mb-6">
+          <div className="w-full mt-4">
             {SideBarList.map((list, index) => {
               return (
                 <NavLink
@@ -169,6 +170,25 @@ export default function MobileSideBar() {
                 </NavLink>
               );
             })}
+          </div>
+          <div className="w-full mb-6 mt-[10px]">
+            <a
+              href="https://trade.investnow.ng"
+              target="_blank"
+              rel="noreferrer"
+              style={{
+                width: "100%",
+                padding: "10px",
+                borderRadius: "8px",
+                display: "flex",
+                gap: "1rem",
+              }}
+            >
+              <img src={Trading} alt="dashboard_icon" />
+              <Text format="whitespace-nowrap" variant="body">
+                Live Trading
+              </Text>
+            </a>
           </div>
           <div className="border-b border-[#BCBCBC] w-full m-4"></div>
           <div className="w-full">

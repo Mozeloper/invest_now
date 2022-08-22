@@ -12,7 +12,7 @@ export default function BuyProductWrapper() {
         </Text>
         <img src={logo} alt="logo" loading="lazy" className="h-[24px] w-[148px]" />
       </div>
-      <div className="absolute lg:w-[900px] md:w-[700px] w-full bg-[#FFF8F8] min-h-[667px] h-auto inset-x-0 shadow-md  mx-auto lg:-mt-10 md:-mt-12 -mt-16 rounded-lg p-[4%]">
+      <div className="absolute xl:w-[900px] lg:w-[700px] md:w-[600px] w-full bg-[#FFF8F8] min-h-[667px] h-auto inset-x-0 shadow-md  mx-auto lg:-mt-10 md:-mt-12 -mt-16 rounded-lg p-[4%]">
         <Outlet />
       </div>
     </div>

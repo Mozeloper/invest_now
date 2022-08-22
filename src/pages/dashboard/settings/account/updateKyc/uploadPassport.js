@@ -6,6 +6,7 @@ import pictureIcon from "../../../../../assets/icons/picture_taker.svg";
 import Webcam from "react-webcam";
 import Button from "../../../../../components/Button";
 import { handleUploadPassport } from "../../../../../store/slices/settingsUpdateKycSlice";
+import { handleCustomerDetails } from "../../../../../store/slices/dashboardSlice";
 
 const videoConstraints = {
   width: 220,
@@ -44,6 +45,7 @@ export default function UploadPassport({ handleCloseModals }) {
     await dispatch(handleUploadPassport(data))
       .unwrap()
       .then((res) => {
+        dispatch(handleCustomerDetails());
         setTimeout(() => {
           handleCloseModals("upload_passport");
           setMessage("");

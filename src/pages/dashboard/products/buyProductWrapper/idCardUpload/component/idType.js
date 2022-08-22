@@ -4,6 +4,7 @@ import closeBtn from "../../../../../../assets/icons/close_btn.svg";
 import Button from "../../../../../../components/Button";
 import Loader from "../../../../../../components/loader";
 import Text from "../../../../../../components/Typography/Typography";
+import { setIdentityTypeId } from "../../../../../../store/slices/buyProductSlice";
 import { getIdentityTypes } from "../../../../../../store/slices/settingsUpdateKycSlice";
 
 export default function IdType({ handleCloseModals, handleOpenModals }) {
@@ -31,6 +32,7 @@ export default function IdType({ handleCloseModals, handleOpenModals }) {
 
   const handleValidIdenty = (e) => {
     setValidId(e.target.value);
+    dispatch(setIdentityTypeId(e.target.value));
   };
 
   const loadingState = () => {

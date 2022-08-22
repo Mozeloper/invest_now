@@ -8,9 +8,9 @@ import UploadJpeg from "../../../../../../assets/icons/upload_doc.svg";
 import pictureIcon from "../../../../../../assets/icons/picture_taker.svg";
 import Webcam from "react-webcam";
 import ImageUploading from "react-images-uploading";
-import { useDispatch, useSelector } from "react-redux";
-import { handleValidId } from "../../../../../../store/slices/settingsUpdateKycSlice";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setBirthCertificate } from "../../../../../../store/slices/buyProductSlice";
 
 const videoConstraints = {
   width: 220,
@@ -18,10 +18,8 @@ const videoConstraints = {
   facingMode: "user",
 };
 
-const WebcamCapture = ({ handleCloseUploadModals, customerId, isLoading }) => {
+const WebcamCapture = ({ handleCloseUploadModals }) => {
   const [image, setImage] = useState("");
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const webcamRef = React.useRef(null);
@@ -43,27 +41,9 @@ const WebcamCapture = ({ handleCloseUploadModals, customerId, isLoading }) => {
       result = image;
     }
 
-    const data = {
-      id: customerId,
-      data: {
-        id_base64: result,
-      },
-    };
-    await dispatch(handleValidId(data))
-      .unwrap()
-      .then((res) => {
-        setTimeout(() => {
-          handleCloseUploadModals();
-          setMessage("");
-        }, 2000);
-        setMessage(res?.data?.message);
-      })
-      .catch((error) => {
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 2000);
-        setErrorMessage(error?.data?.message);
-      });
+    dispatch(setBirthCertificate(result));
+    handleCloseUploadModals();
+    navigate("/products/new_bank_account");
   };
 
   return (
@@ -84,10 +64,8 @@ const WebcamCapture = ({ handleCloseUploadModals, customerId, isLoading }) => {
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
           <Button
-            isLoading={isLoading}
             onClick={() => {
-              // uploadValid();
-              navigate("/products/new_bank_account");
+              uploadValid();
             }}
             title="Save Picture"
             className="cursor-pointer w-full"
@@ -95,28 +73,11 @@ const WebcamCapture = ({ handleCloseUploadModals, customerId, isLoading }) => {
           />
         </>
       )}
-      {message !== "" && (
-        <div className="w-full text-center mt-4">
-          <Text variant="h4" color="text-green-600">
-            {message}
-          </Text>
-        </div>
-      )}
-      {errorMessage !== "" && (
-        <div className="w-full text-center mt-4">
-          <Text variant="h4" color="text-red-500">
-            {errorMessage}
-          </Text>
-        </div>
-      )}
     </div>
   );
 };
 
 export default function Uploader({ handleCloseModals }) {
-  const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
-  const authReducer = useSelector((state) => state.authReducer);
-  const customerId = authReducer?.authedUser?.data?.customer?.id;
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
@@ -124,8 +85,6 @@ export default function Uploader({ handleCloseModals }) {
     valid_id: false,
     take_picture: false,
   });
-  const [message, setMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
   const [images, setImages] = useState("");
   const onChange = (imageList) => {
@@ -174,7 +133,6 @@ export default function Uploader({ handleCloseModals }) {
     const containsJpeg = "data:image/jpeg;base64,";
     const constainsPng = "data:image/png;base64,";
     let result;
-
     if (images.includes(containsJpeg)) {
       result = images.replace("data:image/jpeg;base64,", "");
     } else if (images.includes(constainsPng)) {
@@ -183,30 +141,11 @@ export default function Uploader({ handleCloseModals }) {
       result = images;
     }
 
-    const data = {
-      id: customerId,
-      data: {
-        id_base64: result,
-      },
-    };
-    await dispatch(handleValidId(data))
-      .unwrap()
-      .then((res) => {
-        setTimeout(() => {
-          handleCloseIdUpload("upload_picture");
-          handleCloseIdUpload("valid_id");
-          handleCloseModals("open_birthCertificate_Uploader");
-
-          setMessage("");
-        }, 2000);
-        setMessage(res?.data?.message);
-      })
-      .catch((error) => {
-        setTimeout(() => {
-          setErrorMessage("");
-        }, 2000);
-        setErrorMessage(error?.data?.message);
-      });
+    dispatch(setBirthCertificate(result));
+    handleCloseIdUpload("upload_picture");
+    handleCloseIdUpload("valid_id");
+    handleCloseModals("open_birthCertificate_Uploader");
+    navigate("/products/new_bank_account");
   };
 
   return (
@@ -278,29 +217,13 @@ export default function Uploader({ handleCloseModals }) {
                     <div className="w-[50%] mx-auto">
                       <Button
                         onClick={() => {
-                          // uploadValid();
-                          navigate("/products/new_bank_account");
+                          uploadValid();
                         }}
                         title="Save Picture"
                         className="cursor-pointer w-full mx-auto"
                         type="button"
-                        isLoading={updateKycSliceReducer?.isLoading}
                       />
                     </div>
-                  </div>
-                )}
-                {message !== "" && (
-                  <div className="w-full text-center mt-4">
-                    <Text variant="h4" color="text-green-600">
-                      {message}
-                    </Text>
-                  </div>
-                )}
-                {errorMessage !== "" && (
-                  <div className="w-full text-center mt-4">
-                    <Text variant="h4" color="text-red-500">
-                      {errorMessage}
-                    </Text>
                   </div>
                 )}
               </MessageModal>
@@ -331,8 +254,6 @@ export default function Uploader({ handleCloseModals }) {
             handleCloseIdUpload("valid_id");
             handleCloseModals("open_birthCertificate_Uploader");
           }}
-          customerId={customerId}
-          isLoading={updateKycSliceReducer?.isLoading}
         />
       </MessageModal>
     </>

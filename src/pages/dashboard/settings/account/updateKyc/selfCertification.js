@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { handleGetCountry } from "../../../../../store/slices/authSlices";
 import { getReasonList, handleSaveSelfCertification } from "../../../../../store/slices/settingsUpdateKycSlice";
 import MessageModal from "../../../../../components/modals/MessageModal";
+import { handleCustomerDetails } from "../../../../../store/slices/dashboardSlice";
 
 export default function SelfCertification({ handleCloseModals }) {
   const [openNoReasonModal, setNoReasonModal] = useState(false);
@@ -78,6 +79,7 @@ export default function SelfCertification({ handleCloseModals }) {
     await dispatch(handleSaveSelfCertification(result))
       .unwrap()
       .then((res) => {
+        dispatch(handleCustomerDetails());
         setTimeout(() => {
           handleCloseModals("self_certification");
           setMessage("");

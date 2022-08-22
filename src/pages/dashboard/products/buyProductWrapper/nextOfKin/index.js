@@ -1,22 +1,49 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field } from "formik";
 import * as Yup from "yup";
+import { handleGetGender } from "../../../../../store/slices/authSlices";
+import { getRelationShipStatus, handleCreateAccount } from "../../../../../store/slices/openAccountSlice";
+import { handleGetProductDetails } from "../../../../../store/slices/productsSlice";
 import Text from "../../../../../components/Typography/Typography";
 import MyInput from "../../../../../components/formFields/inputs/MyInput";
 import SearchableSelect from "../../../../../components/formFields/selectField";
 import PhoneInput from "react-phone-input-2";
-import { handleGetGender } from "../../../../../store/slices/authSlices";
-import { getRelationShipStatus } from "../../../../../store/slices/openAccountSlice";
 import Button from "../../../../../components/Button";
+import { useNavigate } from "react-router-dom";
+import { handleCustomerDetails } from "../../../../../store/slices/dashboardSlice";
+import MessageModal from "../../../../../components/modals/MessageModal";
+import SuccessAccountModal from "../components/successAccountModal";
+import RatingModal from "../components/ratingModal";
+import { setNextOfkin, setNextStep } from "../../../../../store/slices/buyProductSlice";
+import FundAccount from "../components/FundAccount";
 
 export default function NextOfKin() {
+  const [isModalOpen, setIsModalOpen] = useState({
+    error: false,
+    success: false,
+    showRating: false,
+    showFundAccount: false,
+    details: null,
+  });
+
+  const dashboardReducer = useSelector((state) => state?.dashboardReducer);
+  const customerDetails = dashboardReducer?.customerDetails?.payload?.data?.data;
   const authReducer = useSelector((state) => state.authReducer);
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
+  const buyProductReducer = useSelector((state) => state.buyProductReducer);
+  const productsReducer = useSelector((state) => state.productsReducer);
+  const productData = productsReducer?.productDetailsData?.payload?.data?.data;
+  const isBothTrue = productData?.category?.hasBeneficiary && productData?.category?.hasChnNumber;
+  const isBothFalse = !productData?.category?.hasBeneficiary && !productData?.category?.hasChnNumber;
+  const isbeneficiaryTrue = productData?.category?.hasBeneficiary && !productData?.category?.hasChnNumber;
+  const isCHNTrue = productData?.category?.hasChnNumber && !productData?.category?.hasBeneficiary;
+  const productCode = buyProductReducer?.productCode;
   const genderType = authReducer?.gender;
   const genders = [];
   const relationship = [];
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     let mounted = false;
@@ -25,18 +52,20 @@ export default function NextOfKin() {
       if (mounted) {
         dispatch(handleGetGender());
         dispatch(getRelationShipStatus());
+        dispatch(handleGetProductDetails(productCode));
+        dispatch(handleCustomerDetails());
       }
     })();
     return () => {
       mounted = false;
     };
-  }, [dispatch]);
+  }, [dispatch, productCode]);
 
   if (genderType?.success && genderType?.message === "Retrieved successfully") {
     genderType?.data.map((list) => {
       return genders.push({
         label: list?.name,
-        value: list?.code,
+        value: list?.name,
       });
     });
   }
@@ -50,9 +79,82 @@ export default function NextOfKin() {
     });
   }
 
+  const handleBuyProductAccount = async (values) => {
+    const data = {
+      title: customerDetails?.title ?? "",
+      first_name: customerDetails?.firstname ?? "",
+      middle_name: customerDetails?.middlename ?? "",
+      last_name: customerDetails?.lastname ?? "",
+      mothers_maiden_name: customerDetails?.mothers_maiden_name ?? "",
+      terms_and_conditions: 1,
+      id_type: Number(customerDetails?.kycDetail[1]?.identity_type) ?? "",
+      passport: customerDetails?.kycDetail[0]?.location ?? "",
+      id_card: customerDetails?.kycDetail[1]?.location ?? "",
+      signature_specimen: customerDetails?.kycDetail[2]?.location ?? "",
+      utility_bill: customerDetails?.kycDetail[3]?.location ?? "",
+      bank_id: buyProductReducer?.bankDetails?.bankSelected?.id ?? null,
+      bank_acct_no: buyProductReducer?.bankDetails?.accountNumber ?? null,
+      bank_acct_name: buyProductReducer?.bankDetails?.account_name ?? null,
+      is_pep: customerDetails?.pep_status ?? false,
+      is_minor: false,
+      owner: true,
+      nok_first_name: values?.firstName,
+      nok_middle_name: values?.middleName,
+      nok_last_name: values?.lastName,
+      nok_gender: values?.gender,
+      nok_relationship: values?.relationship,
+      nok_address: values?.address,
+      nok_phone: values?.phone_number,
+      nok_email: values?.email,
+      date_of_birth: customerDetails?.dob ?? "",
+      birth_certificate_base64: "",
+      beneficiary_fullname: "",
+      beneficiary_dob: "",
+      beneficiary_id_type: "",
+      beneficiary_id: "",
+      beneficiary_passport: "",
+      chn_account_number: "",
+      id_number: "",
+      id_expiration_date: "",
+      referral: buyProductReducer?.referralCode,
+      account_type: productData?.code ?? "",
+    };
+    await dispatch(handleCreateAccount(data))
+      .unwrap()
+      .then((res) => {
+        if (res?.data?.success) {
+          setIsModalOpen((prev) => ({
+            ...prev,
+            success: true,
+            details: res?.data?.message,
+          }));
+        }
+      })
+      .catch((error) => {
+        setIsModalOpen((prev) => ({
+          ...prev,
+          error: true,
+          details: error?.data?.message,
+        }));
+      });
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen((prev) => ({
+      ...prev,
+      error: false,
+      success: false,
+      showRating: false,
+      showFundAccount: false,
+      details: null,
+    }));
+  };
+
   const nextOfKinSchema = Yup.object().shape({
-    phone_number: Yup.string(),
-    fullName: Yup.string().required("Full Name is Required"),
+    phone_number: Yup.string().required("Phone Number is Required"),
+    firstName: Yup.string().required("Full Name is Required"),
+    lastName: Yup.string().required("Last Name is Required"),
+    middleName: Yup.string(),
     gender: Yup.string().required("Gender is Required"),
     email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
     relationship: Yup.string().required("Relationship is Required"),
@@ -72,7 +174,9 @@ export default function NextOfKin() {
       <div className="mt-8">
         <Formik
           initialValues={{
-            fullName: "",
+            firstName: "",
+            lastName: "",
+            middleName: "",
             relationship: "",
             phone_number: "",
             gender: "",
@@ -82,7 +186,21 @@ export default function NextOfKin() {
           validationSchema={nextOfKinSchema}
           enableReinitialize={true}
           onSubmit={async (values) => {
-            console.log(values);
+            dispatch(setNextOfkin(values));
+            if (isBothTrue) {
+              dispatch(setNextStep(1));
+              navigate(`/products/${productData?.name.toLowerCase().replaceAll(" ", "_")}`);
+            } else if (isBothFalse) {
+              handleBuyProductAccount(values);
+            } else if (isbeneficiaryTrue) {
+              dispatch(setNextStep(1));
+              navigate(`/products/${productData?.name.toLowerCase().replaceAll(" ", "_")}`);
+            } else if (isCHNTrue) {
+              dispatch(setNextStep(2));
+              navigate(`/products/${productData?.name.toLowerCase().replaceAll(" ", "_")}`);
+            } else {
+              return null;
+            }
           }}
         >
           {({ handleSubmit, handleChange, setFieldValue, values, touched, errors }) => (
@@ -92,8 +210,30 @@ export default function NextOfKin() {
                   <MyInput
                     className="w-full"
                     placeholder="Enter Name"
-                    label="Full Name"
-                    name="fullName"
+                    label="First Name"
+                    name="firstName"
+                    type="text"
+                    handleChange={handleChange}
+                  />
+                </div>
+                <div className="w-full">
+                  <MyInput
+                    className="w-full"
+                    placeholder="Enter Last Name"
+                    label="Last Name"
+                    name="lastName"
+                    type="text"
+                    handleChange={handleChange}
+                  />
+                </div>
+              </div>
+              <div className="flex md:flex-row flex-col gap-3 w-full mt-4">
+                <div className="w-full">
+                  <MyInput
+                    className="w-full"
+                    placeholder="Enter Name"
+                    label="Middle Name"
+                    name="middleName"
                     type="text"
                     handleChange={handleChange}
                   />
@@ -197,6 +337,25 @@ export default function NextOfKin() {
           )}
         </Formik>
       </div>
+      <MessageModal bgColor={true} isOpen={isModalOpen?.error} modalWidth="300px" modalHeight="auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          <Text format="text-center mt-3" variant="h4" color="text-[#465174]" weight="bold">
+            {isModalOpen?.details}
+          </Text>
+          <div className="mt-4 w-full">
+            <Button onClick={() => handleCloseModal()} title="Close" className="cursor-pointer w-full" type="button" />
+          </div>
+        </div>
+      </MessageModal>
+      <MessageModal bgColor={true} isOpen={isModalOpen?.success}>
+        <SuccessAccountModal handleCloseModal={handleCloseModal} setIsModalOpen={setIsModalOpen} />
+      </MessageModal>
+      <MessageModal modalHeight="auto" bgColor={true} isOpen={isModalOpen?.showRating}>
+        <RatingModal handleCloseModal={handleCloseModal} setIsModalOpen={setIsModalOpen} />
+      </MessageModal>
+      <MessageModal modalHeight="100vh" bgColor={true} isOpen={isModalOpen?.showFundAccount}>
+        <FundAccount handleCloseModal={handleCloseModal} setIsModalOpen={setIsModalOpen} />
+      </MessageModal>
     </div>
   );
 }

@@ -12,6 +12,7 @@ import {
   getSalaryBand,
   handleSaveEmployementDetails,
 } from "../../../../../store/slices/settingsUpdateKycSlice";
+import { handleCustomerDetails } from "../../../../../store/slices/dashboardSlice";
 
 export default function EmploymentDetails({ handleCloseModals }) {
   const updateKycSliceReducer = useSelector((state) => state.updateKycSliceReducer);
@@ -67,6 +68,7 @@ export default function EmploymentDetails({ handleCloseModals }) {
     await dispatch(handleSaveEmployementDetails(data))
       .unwrap()
       .then((res) => {
+        dispatch(handleCustomerDetails());
         setTimeout(() => {
           handleCloseModals("employment_details");
           setMessage("");

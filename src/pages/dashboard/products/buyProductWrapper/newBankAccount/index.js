@@ -10,6 +10,7 @@ import { getBankList, verifyBankAccount } from "../../../../../store/slices/open
 import Loader from "../../../../../components/loader";
 import checked from "../../../../../assets/icons/correct.svg";
 import { useNavigate } from "react-router-dom";
+import { setBankDetails, setReferralCode } from "../../../../../store/slices/buyProductSlice";
 
 const colourStyles = {
   control: (styles) => ({
@@ -41,9 +42,10 @@ export default function NewBankAccount() {
 
   const bankList = [];
   const [isSelected, setIsSelected] = useState({
-    new_bank_details: false,
+    new_bank_details: true,
     existing_bank_details: false,
   });
+  const [referralStateCode, setReferralStateCode] = useState("");
 
   const [error, setError] = useState({
     bank: false,
@@ -133,7 +135,6 @@ export default function NewBankAccount() {
 
   const handleBankDetails = () => {
     if (isSelected?.new_bank_details) {
-      console.log("New Bank");
       if (bankSelected === null || bankSelected === undefined) {
         setError((prev) => ({
           ...prev,
@@ -147,11 +148,11 @@ export default function NewBankAccount() {
         }));
       }
       if (bankSelected !== null && accountNumber !== null && accountNumber.length === 10 && account_name !== "") {
-        console.log(accountNumber, bankSelected, account_name);
+        dispatch(setBankDetails({ accountNumber, bankSelected, account_name }));
+        dispatch(setReferralCode(referralStateCode));
         navigate("/products/next_of_kin");
       }
     } else if (isSelected?.existing_bank_details) {
-      console.log("Exisiting Bank");
       if (selectedExistingBank === null) {
         setError((prev) => ({
           ...prev,
@@ -188,11 +189,11 @@ export default function NewBankAccount() {
                 }`,
               }}
               className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer flex justify-between items-center"
-              onClick={() => {
-                !!!isSelected?.new_bank_details
-                  ? handleToggleAccordion("new_bank_details")
-                  : handleToggleCloseAccordion("new_bank_details");
-              }}
+              // onClick={() => {
+              //   !!!isSelected?.new_bank_details
+              //     ? handleToggleAccordion("new_bank_details")
+              //     : handleToggleCloseAccordion("new_bank_details");
+              // }}
             >
               <Text color={`${isSelected?.new_bank_details ? "text-white" : null}`} weight="bold" variant="h4">
                 Provide new bank details
@@ -272,7 +273,7 @@ export default function NewBankAccount() {
                   </div>
                 )}
                 {!!!openAccountReducer?.verifyAccountIsLoading && account_name !== null && account_name !== "" && (
-                  <div className="flex gap-2 mt-4">
+                  <div className="flex gap-2 mt-2">
                     <Text variant="body" weight="bold" color="text-black" format="text-left tracking-wide">
                       {account_name}
                     </Text>
@@ -289,6 +290,17 @@ export default function NewBankAccount() {
               </>
             )}
           </>
+          <div className="mt-4 lg:w-[534px] md:w-full w-full">
+            <label htmlFor="referral_code" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
+              Referral Code
+            </label>
+            <Input
+              placeholder="code"
+              type="text"
+              name="referral_code"
+              handleChange={(e) => setReferralStateCode(e.target.value)}
+            />
+          </div>
           {!!!isSelected?.new_bank_details && (
             <div className="flex flex-col gap3">
               <div

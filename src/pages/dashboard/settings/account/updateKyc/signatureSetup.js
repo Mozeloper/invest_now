@@ -9,6 +9,7 @@ import Button from "../../../../../components/Button";
 import MessageModal from "../../../../../components/modals/MessageModal";
 import { useDispatch, useSelector } from "react-redux";
 import { handleSignatureUpload } from "../../../../../store/slices/settingsUpdateKycSlice";
+import { handleCustomerDetails } from "../../../../../store/slices/dashboardSlice";
 
 export default function SignatureSetup({ handleCloseModals }) {
   const dispatch = useDispatch();
@@ -79,6 +80,7 @@ export default function SignatureSetup({ handleCloseModals }) {
     await dispatch(handleSignatureUpload(data))
       .unwrap()
       .then((res) => {
+        dispatch(handleCustomerDetails());
         setMessage(res?.data?.message);
         setTimeout(() => {
           handleCloseUploadModals("take_signature");
@@ -107,6 +109,7 @@ export default function SignatureSetup({ handleCloseModals }) {
     await dispatch(handleSignatureUpload(data))
       .unwrap()
       .then((res) => {
+        dispatch(handleCustomerDetails());
         setMessage(res?.data?.message);
         setTimeout(() => {
           handleCloseModals("signature_setup");

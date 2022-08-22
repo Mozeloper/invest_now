@@ -1,7 +1,7 @@
-import { useDispatch, useSelector } from "react-redux";
 import React, { useEffect } from "react";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
 import arrowLeft from "../../../../../assets/icons/arrow-left.svg";
 import Button from "../../../../../components/Button";
 import Input from "../../../../../components/formFields/inputs";
@@ -36,7 +36,6 @@ export default function CscsDetails({
       ),
     id_type: Yup.string().required("This field is Required"),
   });
-  console.log(updateKycSliceReducer);
   useEffect(() => {
     let mounted = false;
     (async () => {
