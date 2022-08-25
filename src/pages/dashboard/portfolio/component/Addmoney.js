@@ -1,13 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { DateRange } from "react-date-range";
 import Select from "react-select";
 import close from "../../../../assets/icons/close_btn.svg";
-import PayCard from "../../../../assets/icons/portfolio_add_money.svg";
-import PayBank from "../../../../assets/icons/portfolio_card_payment.svg";
-// import Button from "../../../../components/Button";
 import Input from "../../../../components/formFields/inputs";
 import Text from "../../../../components/Typography/Typography";
 import { handlePaymentFrequency } from "../../../../store/slices/openAccountSlice";
+import { weekNumber, weekDays } from "../../../../helper";
+import Button from "../../../../components/Button";
+import moment from "moment";
+import { usePaystackPayment } from "react-paystack";
+import {
+  handleInitializePayment,
+  handleRecurrentPayment,
+  handleVerifyPayment,
+} from "../../../../store/slices/buyProductSlice";
+import MessageModal from "../../../../components/modals/MessageModal";
+import BlankModal from "../../../../components/modals/blankModal";
 
 const colourStyles = {
   control: (styles) => ({
@@ -29,10 +38,31 @@ export default function Addmoney({ handleCloseModal }) {
   const dispatch = useDispatch();
   const [amount, setAmount] = useState("");
   const [howFrequentState, setHowFrequentState] = useState("");
+  const userDetails = useSelector((state) => state?.authReducer.authedUser);
+  const emailAddress = userDetails?.data?.customer?.email;
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
+  const buyProductReducer = useSelector((state) => state.buyProductReducer);
+  const portfolioReducer = useSelector((state) => state.portfolioReducer);
+  const portfolioDetails = portfolioReducer?.portfolioDetailsData?.payload?.data?.data;
+  const attemptId = useRef(null);
+
   const [error, setError] = useState({
     amount: false,
     frequent: false,
+  });
+
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: null,
+      key: "selection",
+    },
+  ]);
+  const [dayOfWeek, setDayOfWeek] = useState(null);
+  const [showErrorModals, setShowErrorModals] = useState({
+    verifyPayment: false,
+    initializePayment: false,
+    details: null,
   });
 
   useEffect(() => {
@@ -40,7 +70,6 @@ export default function Addmoney({ handleCloseModal }) {
     (async () => {
       mounted = true;
       if (mounted) {
-        // dispatch(handlePortfolioItem());
         dispatch(handlePaymentFrequency());
       }
     })();
@@ -55,10 +84,42 @@ export default function Addmoney({ handleCloseModal }) {
     openAccountReducer?.paymentFrequencyData?.payload?.data?.data.map((list) => {
       return howFrequent.push({
         label: list.name,
-        value: list.name,
+        value: list.code,
       });
     });
   }
+
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: emailAddress,
+    amount: Number(amount * 100),
+    metadata: portfolioDetails?.deposit_account?.paystack_custom_data,
+    publicKey: process.env.REACT_APP_PAYSTACK_KEY,
+  };
+
+  const onSuccess = () => {
+    const data = {
+      payment_attempt_id: attemptId.current,
+    };
+    dispatch(handleVerifyPayment(data))
+      .unwrap()
+      .then((res) => {
+        if (res?.data?.success) {
+          handleCloseModal("add_money");
+        }
+      })
+      .catch((err) => {
+        setShowErrorModals((prev) => ({
+          ...prev,
+          verifyPayment: true,
+          details: err?.data?.message,
+        }));
+      });
+  };
+
+  const onClose = () => {
+    console.log("closed");
+  };
 
   const handlePaymentMethod = () => {
     if (amount === "") {
@@ -74,8 +135,87 @@ export default function Addmoney({ handleCloseModal }) {
       }));
     }
     if (amount !== "" && howFrequentState !== "") {
-      console.log(amount, howFrequentState);
+      if (howFrequentState === "S") {
+        initializePayment();
+      } else {
+        recurrentPayment();
+      }
     }
+  };
+  const initializePaymentsToPaystack = usePaystackPayment(config);
+  const initializePayment = async () => {
+    const data = {
+      customer_id: portfolioDetails?.deposit_account?.payment_options?.customer_id,
+      core_system: portfolioDetails?.deposit_account?.payment_options?.core_system,
+      core_system_options: portfolioDetails?.deposit_account?.payment_options?.core_system_options,
+      sub_account: portfolioDetails?.deposit_account?.paystack_sub_account,
+      product_code: portfolioDetails?.deposit_account?.product_code,
+      gateway_metadata: portfolioDetails?.deposit_account?.paystack_custom_data,
+      payment_authorization_id: null,
+      items: [
+        {
+          name: `One Off payment for ${portfolioDetails?.deposit_account?.display}`,
+          description: `One Off payment for ${portfolioDetails?.deposit_account?.display}`,
+          value: parseFloat(amount).toFixed(2),
+        },
+      ],
+      save_authorization: true,
+      no_vat: true,
+      description: `One Off payment for ${portfolioDetails?.deposit_account?.display}`,
+    };
+
+    await dispatch(handleInitializePayment(data))
+      .unwrap()
+      .then((res) => {
+        if (res?.data?.success) {
+          initializePaymentsToPaystack(onSuccess, onClose);
+          attemptId.current = res?.data?.data?.id;
+        }
+      })
+      .catch((err) => {
+        setShowErrorModals((prev) => ({
+          ...prev,
+          initializePayment: true,
+          details: err?.data?.message,
+        }));
+      });
+  };
+
+  const recurrentPayment = async () => {
+    let frequentOption = [];
+    frequentOption.push(dayOfWeek);
+    const data = {
+      customer_id: portfolioDetails?.deposit_account?.payment_options?.customer_id,
+      core_system: portfolioDetails?.deposit_account?.payment_options?.core_system,
+      core_system_options: portfolioDetails?.deposit_account?.payment_options?.core_system_options,
+      sub_account: portfolioDetails?.deposit_account?.paystack_sub_account,
+      product_code: portfolioDetails?.deposit_account?.product_code,
+      gateway_metadata: portfolioDetails?.deposit_account?.paystack_custom_data,
+      payment_authorization_id: null,
+      recurrent_options: {
+        start_date: moment(dateRange[0]?.startDate.toISOString()).format()?.split("T")[0],
+        end_date: moment(dateRange[0].endDate.toISOString()).format()?.split("T")[0],
+        frequency_code: howFrequentState,
+        frequency_options: howFrequentState === "D" ? [] : frequentOption,
+        amount: parseFloat(amount).toFixed(2),
+      },
+      amount: parseFloat(amount).toFixed(2),
+    };
+    await dispatch(handleRecurrentPayment(data))
+      .unwrap()
+      .then((res) => {
+        if (res?.data?.success) {
+          initializePaymentsToPaystack(onSuccess, onClose);
+          attemptId.current = res?.data?.data?.id;
+        }
+      })
+      .catch((err) => {
+        setShowErrorModals((prev) => ({
+          ...prev,
+          initializePayment: true,
+          details: err?.data?.message,
+        }));
+      });
   };
 
   return (
@@ -139,39 +279,99 @@ export default function Addmoney({ handleCloseModal }) {
           please tell us how frequent
         </Text>
       )}
+      {howFrequentState === "S" && (
+        <div className="mt-2 w-[80%] flex justify-center">
+          <Text variant="body" weight="normal" color="text-black">
+            10.00 NGN will be debited from your Account and Credited into your portfolio account to validate your Debit
+            Card
+          </Text>
+        </div>
+      )}
+      {howFrequentState !== "S" && howFrequentState !== "" && (
+        <>
+          {howFrequentState !== "S" && howFrequentState !== "D" && howFrequentState !== "" && (
+            <div className="w-[70%] mt-4">
+              <Select
+                className="w-full bg-[#f2f2f2]"
+                onChange={(e) => {
+                  const data =
+                    howFrequentState === "W" ? { field_id: 5, value: e.value } : { field_id: 6, value: e.value };
+                  setDayOfWeek(data);
+                  setError((prev) => ({
+                    ...prev,
+                    weekDays: false,
+                  }));
+                }}
+                name="frequent"
+                options={howFrequentState === "W" ? weekDays : weekNumber}
+                styles={colourStyles}
+                isLoading={false}
+              />
+            </div>
+          )}
+          <div className="w-full mt-4">
+            <DateRange
+              editableDateInputs={true}
+              onChange={(item) => setDateRange([item.selection])}
+              moveRangeOnFirstSelection={false}
+              ranges={dateRange}
+            />
+          </div>
+        </>
+      )}
 
-      <div className="w-[50%] mt-6">
-        <Text variant="h2" weight="normal">
-          How would you like to make your payment?
-        </Text>
-      </div>
-
-      <div className="w-full flex justify-center gap-2 mt-6">
-        <img
-          onClick={() => handlePaymentMethod()}
-          className="cursor-pointer md:w-[200px] md:h-[172px] w-[130px] h-[150px]"
-          src={PayCard}
-          alt="debit_card"
-        />
-        <img
-          onClick={() => handlePaymentMethod()}
-          className="cursor-pointer md:w-[200px] md:h-[172px] w-[130px] h-[150px]"
-          src={PayBank}
-          alt="debit_card"
-        />
-      </div>
-
-      {/* <div className="mt-10 w-full flex justify-center">
+      <div className="mt-10 w-full flex justify-center">
         <div className="w-[70%]">
           <Button
             title="Continue"
             className="cursor-pointer"
             type="button"
             onClick={() => handlePaymentMethod()}
-            isLoading={false}
+            isLoading={buyProductReducer?.isInitializePaymentLoading}
           />
         </div>
-      </div> */}
+      </div>
+
+      <BlankModal isOpen={buyProductReducer?.isVerifyPaymentLoading}>
+        <div className="ldss-spinner">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </BlankModal>
+      <MessageModal isOpen={showErrorModals?.verifyPayment} modalWidth="300px" modalHeight="auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          <Text format="text-center mt-3 whitespace-nowrap" variant="h3" color="text-[#465174]" weight="bold">
+            Oops!
+          </Text>
+          <Text format="text-center mt-3" variant="body" color="text-[#465174]" weight="bold">
+            {showErrorModals?.details}
+          </Text>
+          <div className="mt-4 w-full">
+            <Button
+              onClick={() =>
+                setShowErrorModals((prev) => ({
+                  ...prev,
+                  verifyPayment: false,
+                  details: null,
+                }))
+              }
+              title="Close"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
+        </div>
+      </MessageModal>
     </div>
   );
 }

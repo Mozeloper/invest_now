@@ -142,14 +142,14 @@ export default function FundAccount({ handleCloseModal }) {
       payment_authorization_id: null,
       items: [
         {
-          name: `One Off payment for Mikey ${portfolio?.display}`,
-          description: `One Off payment for Mikey ${portfolio?.display}`,
+          name: `One Off payment for ${portfolio?.display}`,
+          description: `One Off payment for ${portfolio?.display}`,
           value: parseFloat(amount).toFixed(2),
         },
       ],
       save_authorization: true,
       no_vat: true,
-      description: `One Off payment for Mikey ${portfolio?.display}`,
+      description: `One Off payment for ${portfolio?.display}`,
     };
     await dispatch(handleInitializePayment(data))
       .unwrap()

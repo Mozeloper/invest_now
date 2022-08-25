@@ -75,7 +75,7 @@ export default function Accounts() {
         }));
         break;
       case "recurring_fundings":
-        navigate("/transactions");
+        navigate("/active_reccurent_payments");
         break;
       case "link_investment_accounts":
         setOpenModal((prev) => ({

@@ -43,6 +43,8 @@ import DependentInfo from "../pages/dashboard/products/buyProductWrapper/depende
 import IdCardUpload from "../pages/dashboard/products/buyProductWrapper/idCardUpload";
 import BirthCertificateUpload from "../pages/dashboard/products/buyProductWrapper/birthCertificateUpload";
 import FurtherProductsUpload from "../pages/dashboard/products/buyProductWrapper/furtherInfo";
+import ReccuringFunding from "../pages/dashboard/reccuringFunding";
+import SingleReccuringFunding from "../pages/dashboard/reccuringFunding/singleReccuringFunding";
 
 function InappPrivateRoute() {
   const { isLoggedIn } = useSelector((state) => state.authReducer);
@@ -107,6 +109,8 @@ export default function AppRoute() {
             <Route path="/products/dependent_information/birth_certificate" element={<BirthCertificateUpload />} />
           </Route>
           <Route path="/transactions" element={<Transactions />} />
+          <Route path="/active_reccurent_payments" element={<ReccuringFunding />} />
+          <Route path="/active_reccurent_payments/:id/:customer_id" element={<SingleReccuringFunding />} />
           <Route path="/loans" element={<Loans />} />
           <Route path="/reports" element={<Reports />} />
           <Route path="/settings/*" element={<Settings />}>

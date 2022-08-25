@@ -15,9 +15,78 @@ export const handleGetPortfolioTransaction = createAsyncThunk(
   }
 );
 
+export const handleGetPortfolioPerfomance = createAsyncThunk(
+  "portfolio/portfolioPerfomance",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await api.get(appUrls.getPortfolioPerfomanceURL);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const handleGetPortfolioDetails = createAsyncThunk(
+  "portfolio/portfolioDetails",
+  async (values, { rejectWithValue }) => {
+    try {
+      const data = await api.get(appUrls.getPortfolioDetailsURL + `?cash_account_id=${values}`);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const handleWithdrawalRequest = createAsyncThunk(
+  "portfolio/withdrawalRequest",
+  async (values, { rejectWithValue }) => {
+    try {
+      const data = await api.post(appUrls.saveWithdrawalRequestURL, values);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const handleGetPortfolioSummary = createAsyncThunk(
+  "portfolio/portfolioSummary",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await api.get(appUrls.getPortfolioSummaryURL);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
+export const handleGetPortfolioStatistics = createAsyncThunk(
+  "portfolio/portfolioStatistics",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await api.get(appUrls.getPortfolioStatisticsURL);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const initialState = {
   portfolioTransaction: null,
   portfolioTransactionIsLoading: false,
+  portfolioPerformanceData: null,
+  portfolioPerformanceIsLoading: false,
+  portfolioDetailsData: null,
+  portfolioDetailsIsLoading: false,
+  portfolioWithdrawalIsLoading: false,
+  portfolioSummaryData: null,
+  portfolioSummaryIsLoading: false,
+  portfolioStatisticsData: null,
+  portfolioStatisticsIsLoading: false,
 };
 
 export const portfolioSlice = createSlice({
@@ -33,6 +102,57 @@ export const portfolioSlice = createSlice({
     },
     [handleGetPortfolioTransaction.rejected]: (state) => {
       state.portfolioTransactionIsLoading = false;
+    },
+    [handleGetPortfolioPerfomance.pending]: (state) => {
+      state.portfolioPerformanceIsLoading = true;
+    },
+    [handleGetPortfolioPerfomance.fulfilled]: (state, action) => {
+      state.portfolioPerformanceIsLoading = false;
+      state.portfolioPerformanceData = action;
+    },
+    [handleGetPortfolioPerfomance.rejected]: (state) => {
+      state.portfolioPerformanceIsLoading = false;
+    },
+    [handleGetPortfolioDetails.pending]: (state) => {
+      state.portfolioDetailsIsLoading = true;
+    },
+    [handleGetPortfolioDetails.fulfilled]: (state, action) => {
+      state.portfolioDetailsIsLoading = false;
+      state.portfolioDetailsData = action;
+    },
+    [handleGetPortfolioDetails.rejected]: (state) => {
+      state.portfolioDetailsIsLoading = false;
+    },
+    [handleWithdrawalRequest.pending]: (state) => {
+      state.portfolioWithdrawalIsLoading = true;
+    },
+    [handleWithdrawalRequest.fulfilled]: (state) => {
+      state.portfolioWithdrawalIsLoading = false;
+    },
+    [handleWithdrawalRequest.rejected]: (state) => {
+      state.portfolioWithdrawalIsLoading = false;
+    },
+    [handleGetPortfolioSummary.pending]: (state) => {
+      state.portfolioSummaryIsLoading = true;
+    },
+    [handleGetPortfolioSummary.fulfilled]: (state, action) => {
+      state.portfolioSummaryIsLoading = false;
+      state.portfolioSummaryData = action.payload;
+    },
+    [handleGetPortfolioSummary.rejected]: (state, action) => {
+      state.portfolioSummaryIsLoading = false;
+      state.portfolioSummaryData = action.payload;
+    },
+    [handleGetPortfolioStatistics.pending]: (state) => {
+      state.portfolioStatisticsIsLoading = true;
+    },
+    [handleGetPortfolioStatistics.fulfilled]: (state, action) => {
+      state.portfolioStatisticsIsLoading = false;
+      state.portfolioStatisticsData = action.payload;
+    },
+    [handleGetPortfolioStatistics.rejected]: (state, action) => {
+      state.portfolioStatisticsIsLoading = false;
+      state.portfolioSummaryData = action.payload;
     },
   },
 });

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
 import moment from "moment";
-// import { useNavigate } from "react-router-dom";
+import { Skeleton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { ResponsiveContainer, LineChart, Line, XAxis, CartesianGrid, Tooltip } from "recharts";
-
+import { currencyEntities } from "../../../helper";
+import Correct from "../../../assets/icons/correct.svg";
 import Button from "../../../components/Button";
 import Text from "../../../components/Typography/Typography";
 import RedIcon from "../../../assets/icons/bg_red.svg";
@@ -16,7 +18,6 @@ import totalWithdrawals from "../../../assets/icons/total_withdrawals.svg";
 import totalDeposits from "../../../assets/icons/total_deposits.svg";
 import totalAssests from "../../../assets/icons/total_assets.svg";
 import arrowDeposit from "../../../assets/icons/arrow_deposit.svg";
-// import arrowWithdrawal from "../../../assets/icons/arrow_withdrawal.svg";
 import SideRightModal from "../../../components/modals/SideRightModal";
 import { SearchBar } from "../../../components/SearchBar";
 import Loader from "../../../components/loader";
@@ -24,8 +25,14 @@ import Addmoney from "./component/Addmoney";
 import Withdrawal from "./component/Withdrawal";
 import ViewDetails from "./component/ViewDetails";
 import { useDispatch, useSelector } from "react-redux";
-import { handleGetPortfolioTransaction } from "../../../store/slices/portfolioSlice";
-// import EmptyState from "../../../assets/images/empty_state.svg";
+import {
+  handleGetPortfolioPerfomance,
+  handleGetPortfolioStatistics,
+  handleGetPortfolioSummary,
+  handleGetPortfolioTransaction,
+} from "../../../store/slices/portfolioSlice";
+import EmptyState from "../../../assets/images/empty_state.svg";
+import MessageModal from "../../../components/modals/MessageModal";
 
 const data = [
   null,
@@ -92,15 +99,23 @@ const data = [
 ];
 
 export default function Portfolio() {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const portfolioReducer = useSelector((state) => state.portfolioReducer);
-  console.log(portfolioReducer);
+  const portfolioSummary = portfolioReducer?.portfolioSummaryData;
+  const portfolio_items = portfolioReducer?.portfolioPerformanceData?.payload?.data?.data?.portfolio_items;
+  console.log(portfolioSummary);
+  const [cashAccountId, setCashAccountId] = useState("");
 
   const [showModal, setShowModal] = useState({
     add_money: false,
     withdrawal: false,
     view_details: false,
+    isVerifying: false,
+    updateKycNotUpdated: false,
+    errorText: false,
+    responseModal: false,
+    responseMessage: null,
   });
 
   useEffect(() => {
@@ -109,7 +124,10 @@ export default function Portfolio() {
       mounted = true;
       if (mounted) {
         try {
+          dispatch(handleGetPortfolioPerfomance());
           dispatch(handleGetPortfolioTransaction());
+          dispatch(handleGetPortfolioSummary());
+          dispatch(handleGetPortfolioStatistics());
         } catch (error) {
           console.log(error);
         }
@@ -120,7 +138,7 @@ export default function Portfolio() {
     };
   }, [dispatch]);
 
-  const handleOpenModal = (type) => {
+  const handleOpenModal = (type, data, errorText) => {
     switch (type) {
       case "add_money":
         setShowModal((prev) => ({
@@ -137,6 +155,26 @@ export default function Portfolio() {
       case "view_details":
         setShowModal((prev) => ({
           ...prev,
+          [type]: true,
+        }));
+        break;
+      case "isVerifying":
+        setShowModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "updateKycNotUpdated":
+        setShowModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "responseModal":
+        setShowModal((prev) => ({
+          ...prev,
+          responseMessage: data,
+          errorText: errorText,
           [type]: true,
         }));
         break;
@@ -165,6 +203,26 @@ export default function Portfolio() {
           [type]: false,
         }));
         break;
+      case "isVerifying":
+        setShowModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "updateKycNotUpdated":
+        setShowModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "responseModal":
+        setShowModal((prev) => ({
+          ...prev,
+          responseMessage: null,
+          errorText: false,
+          [type]: false,
+        }));
+        break;
       default:
         break;
     }
@@ -172,14 +230,86 @@ export default function Portfolio() {
 
   return (
     <>
+      <MessageModal modalHeight="200px" modalWidth="400px" isOpen={showModal?.isVerifying} bgColor={true}>
+        <div className="flex flex-col justify-center h-full items-center">
+          <Text variant="h3" weight="bold" format="text-center">
+            Kyc Is Undergoing verification try again later
+          </Text>
+          <div className="flex justify-center w-full my-6">
+            <div className="w-[40%]">
+              <Button
+                onClick={() => handleCloseModal("isVerifying")}
+                title="Cancel"
+                textColor="#E32526"
+                style={{ border: "1px solid #E32526" }}
+                backgroundColor="none"
+                className="px-3 font-bold outline-none self-center"
+              />
+            </div>
+          </div>
+        </div>
+      </MessageModal>
+      <MessageModal modalHeight="200px" modalWidth="400px" isOpen={showModal?.updateKycNotUpdated} bgColor={true}>
+        <div className="flex flex-col justify-center h-full items-center">
+          <Text variant="h2" weight="bold">
+            Kyc Not Completed
+          </Text>
+          <div className="flex gap-2 w-full my-6">
+            <Button
+              onClick={() => navigate("/settings/accounts")}
+              title="Update KYC"
+              textColor="#fff"
+              className="px-3 font-bold outline-none self-start"
+            />
+            <Button
+              onClick={() => handleCloseModal("updateKycNotUpdated")}
+              title="Cancel"
+              textColor="#E32526"
+              style={{ border: "1px solid #E32526" }}
+              backgroundColor="none"
+              className="px-3 font-bold outline-none self-start"
+            />
+          </div>
+        </div>
+      </MessageModal>
+      <MessageModal isOpen={showModal?.responseModal} modalWidth="300px" modalHeight="auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          {showModal?.errorText ? (
+            <Text format="text-center mt-3 whitespace-nowrap" variant="h3" color="text-[#465174]" weight="bold">
+              !Oops
+            </Text>
+          ) : (
+            <img src={Correct} alt="check-img" />
+          )}
+          <Text format="text-center mt-3" variant="body" color="text-[#465174]" weight="bold">
+            {showModal?.responseMessage}
+          </Text>
+          <div className="mt-4 w-full">
+            <Button
+              onClick={() => handleCloseModal("responseModal")}
+              title="Close"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
+        </div>
+      </MessageModal>
       <SideRightModal isOpen={showModal?.view_details} modalWidth="512px">
-        <ViewDetails handleOpenModal={handleOpenModal} handleCloseModal={handleCloseModal} />
+        <ViewDetails
+          cashAccountId={cashAccountId}
+          handleOpenModal={handleOpenModal}
+          handleCloseModal={handleCloseModal}
+        />
       </SideRightModal>
       <SideRightModal isOpen={showModal?.withdrawal} modalWidth="512px">
-        <Withdrawal handleCloseModal={handleCloseModal} />
+        <Withdrawal
+          handleOpenModal={handleOpenModal}
+          cashAccountId={cashAccountId}
+          handleCloseModal={handleCloseModal}
+        />
       </SideRightModal>
       <SideRightModal bgColor={true} isOpen={showModal?.add_money} modalWidth="512px">
-        <Addmoney handleCloseModal={handleCloseModal} />
+        <Addmoney cashAccountId={cashAccountId} handleCloseModal={handleCloseModal} />
       </SideRightModal>
       <div className="overflow-hidden" data-aos="fade-up" data-aos-duration="2000">
         <div className="w-full flex md:flex-row flex-col justify-between mb-10">
@@ -189,18 +319,11 @@ export default function Portfolio() {
 
           <div className="flex md:flex-row flex-col gap-2">
             <Button
-              title="Add Money"
+              title="Add Asset"
               className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
               type="button"
               textColor="#fff"
-              onClick={() => handleOpenModal("add_money")}
-            />
-            <Button
-              title="Withdraw"
-              className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
-              type="button"
-              textColor="#fff"
-              onClick={() => handleOpenModal("withdrawal")}
+              onClick={() => navigate("/products/all")}
             />
           </div>
         </div>
@@ -215,7 +338,7 @@ export default function Portfolio() {
                 Portfolio Net Value
               </Text>
               <Text weight="bold" variant="h2" color="text-white">
-                &#8358; 100,000
+                &#8358; 0
               </Text>
             </div>
           </div>
@@ -229,7 +352,7 @@ export default function Portfolio() {
                 Cash Value
               </Text>
               <Text weight="bold" variant="h2" color="text-[#65666A]">
-                &#8358; 100,000
+                &#8358; 0
               </Text>
             </div>
           </div>
@@ -243,7 +366,7 @@ export default function Portfolio() {
                 Loans
               </Text>
               <Text weight="bold" variant="h2" color="text-[#65666A]">
-                &#8358; 100,000
+                &#8358; 0
               </Text>
             </div>
           </div>
@@ -257,7 +380,7 @@ export default function Portfolio() {
                 Trust
               </Text>
               <Text weight="bold" variant="h2" color="text-white">
-                &#8358; 100,000
+                &#8358; 0
               </Text>
             </div>
           </div>
@@ -271,7 +394,7 @@ export default function Portfolio() {
                 Mutual Funds
               </Text>
               <Text weight="bold" variant="h2" color="text-[#65666A]">
-                &#8358; 100,000
+                &#8358; 0
               </Text>
             </div>
           </div>
@@ -285,302 +408,349 @@ export default function Portfolio() {
                 Securities
               </Text>
               <Text weight="bold" variant="h2" color="text-[#fff]">
-                &#8358; 100,000
+                &#8358; 0
               </Text>
             </div>
           </div>
         </div>
-        {/* <div className="mt-4 flex flex-col gap-2 justify-center items-center w-full h-[550px] bg-white">
-          <img src={EmptyState} alt="empty_state" />
-          <Text variant="h3" weight="normal">
-            You have no portfolios
-          </Text>
-          <Text variant="h3" weight="normal">
-            Lets make building your wealth easier.
-          </Text>
-          <div>
-            <Button
-              title="Start Investing"
-              className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
-              type="button"
-              textColor="#fff"
-              onClick={() => navigate("/products/all")}
-            />
-          </div>
-        </div> */}
-        <div className="w-full mt-4">
-          <div className="w-full">
-            <Text variant="h3" weight="bold">
-              Portfolio and performance
-            </Text>
-          </div>
-          <div className="w-full mt-3 flex gap-2 no-scrollbar overflow-hidden overflow-x-auto">
-            <div
-              onClick={() => handleOpenModal("view_details")}
-              className="cursor-pointer min-w-[345px] h-[148px] p-4 bg-[#E2FFB7]"
-            >
-              <div className="flex flex-col justify-between h-full">
-                <div>
-                  <Text variant="h4" weight="normal">
-                    Equity Fund
-                  </Text>
-                  <Text variant="h4" weight="bold" format="tracking-wide">
-                    N124,456.00
-                  </Text>
-                </div>
-                <div className="flex justify-between w-full">
-                  <Text variant="h4" weight="normal">
-                    +N12,234.00
-                  </Text>
-                  <Text color="text-[#007939]" variant="h4" weight="bold" format="tracking-wide">
-                    2.5%
-                  </Text>
-                </div>
+        {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+          portfolio_items !== undefined &&
+          portfolio_items?.length < 1 && (
+            <div className="mt-4 flex flex-col gap-2 justify-center items-center w-full h-[550px] bg-white">
+              <img src={EmptyState} alt="empty_state" />
+              <Text variant="h3" weight="normal">
+                You have no portfolios
+              </Text>
+              <Text variant="h3" weight="normal">
+                Lets make building your wealth easier.
+              </Text>
+              <div>
+                <Button
+                  title="Start Investing"
+                  className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
+                  type="button"
+                  textColor="#fff"
+                  onClick={() => navigate("/products/all")}
+                />
               </div>
             </div>
-            <div className="min-w-[345px] h-[148px] p-4 bg-[#FFD8EF]">
-              <div className="flex flex-col justify-between h-full">
-                <div>
-                  <Text variant="h4" weight="normal">
-                    Fixed Income Fund
-                  </Text>
-                  <Text variant="h4" weight="bold" format="tracking-wide">
-                    N124,456.00
-                  </Text>
-                </div>
-                <div className="flex justify-between w-full">
-                  <Text variant="h4" weight="normal">
-                    +N12,234.00
-                  </Text>
-                  <Text color="text-[#007939]" variant="h4" weight="bold" format="tracking-wide">
-                    2.5%
-                  </Text>
-                </div>
-              </div>
-            </div>
-            <div className="min-w-[345px] h-[148px] p-4 bg-[#FEFFD9]">
-              <div className="flex flex-col justify-between h-full">
-                <div>
-                  <Text variant="h4" weight="normal">
-                    Sukuk fund
-                  </Text>
-                  <Text variant="h4" weight="bold" format="tracking-wide">
-                    N124,456.00
-                  </Text>
-                </div>
-                <div className="flex justify-between w-full">
-                  <Text variant="h4" weight="normal">
-                    +N12,234.00
-                  </Text>
-                  <Text color="text-[#007939]" variant="h4" weight="bold" format="tracking-wide">
-                    2.5%
-                  </Text>
-                </div>
-              </div>
-            </div>
-            <div className="min-w-[345px] h-[148px] p-4 bg-[#65666A]">
-              <div className="flex flex-col justify-between h-full">
-                <div>
-                  <Text variant="h4" weight="normal" color="text-white">
-                    Fixed Income fund
-                  </Text>
-                  <Text variant="h4" weight="bold" format="tracking-wide" color="text-white">
-                    N124,456.00
-                  </Text>
-                </div>
-                <div className="flex gap-4 w-full">
-                  <Text variant="h4" weight="normal" color="text-white">
-                    +N12,234.00
-                  </Text>
-                  <Text color="text-[#007939]" variant="h4" weight="bold" format="tracking-wide">
-                    2.5%
-                  </Text>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="w-full mt-4">
-          <div className="w-full">
-            <Text variant="h3" weight="bold">
-              Performance
-            </Text>
-          </div>
-          <div className="w-full flex lg:flex-row flex-col gap-3">
-            <div className="bg-BACKGROUND_WHITE p-6 lg:basis-2/3 h-[500px]">
-              <div className="flex justify-between">
-                <Text format="mb-3" weight="bold" variant="h4">
-                  Investment Rate
-                </Text>
-                <Text format="mb-3" weight=" normal" variant="body">
-                  Investment
-                </Text>
-              </div>
+          )}
+        <>
+          <div className="w-full mt-4">
+            {portfolio_items !== undefined && portfolio_items?.length >= 1 && (
               <div className="w-full">
-                <ResponsiveContainer width="95%" height={400}>
-                  <LineChart width={600} height={800} data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
-                    <XAxis dataKey="name" />
-                    <Tooltip />
-                    <CartesianGrid stroke="#f5f5f5" />
-                    <Line type="monotone" dataKey="investment_returns" stroke="#0FC6C2" yAxisId={0} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-            <div className="bg-[#FFF8F8] W-[100%] lg:basis-1/3 h-[500px] p-6">
-              <div className="w-full mb-10">
-                <Text weight="bold" variant="h3">
-                  Performance summary
+                <Text variant="h3" weight="bold">
+                  Portfolio and performance
                 </Text>
               </div>
-              <div className="w-full flex flex-col gap-6">
-                <div className="flex gap-3 border-b border-[#CCCCCC] pb-6">
-                  <img src={totalEarnings} alt="icon" />
-                  <div className="flex flex-col gap-1">
-                    <Text weight="normal" variant="body">
-                      Total earnings
-                    </Text>
-                    <Text weight="bold" variant="h4">
-                      N230,000.56
-                    </Text>
-                  </div>
-                </div>
-                <div className="flex gap-3 border-b border-[#CCCCCC] pb-6">
-                  <img src={totalWithdrawals} alt="icon" />
-                  <div className="flex flex-col gap-1">
-                    <Text weight="normal" variant="body">
-                      Total Withdrawals
-                    </Text>
-                    <Text weight="bold" variant="h4">
-                      N13,000.56
-                    </Text>
-                  </div>
-                </div>
-                <div className="flex gap-3 border-b border-[#CCCCCC] pb-6">
-                  <img src={totalDeposits} alt="icon" />
-                  <div className="flex flex-col gap-1">
-                    <Text weight="normal" variant="body">
-                      Total Deposits
-                    </Text>
-                    <Text weight="bold" variant="h4">
-                      N13,000.56
-                    </Text>
-                  </div>
-                </div>
-                <div className="flex gap-3 border-b border-[#CCCCCC] pb-6">
-                  <img src={totalAssests} alt="icon" />
-                  <div className="flex flex-col gap-1">
-                    <Text weight="normal" variant="body">
-                      Total Assets
-                    </Text>
-                    <Text weight="bold" variant="h4">
-                      4
-                    </Text>
-                  </div>
-                </div>
+            )}
+            {portfolioReducer?.portfolioPerformanceIsLoading && (
+              <div className="w-full flex gap-2">
+                <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="345px" height={148} />
+                <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="345px" height={148} />
+                <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="345px" height={148} />
               </div>
-            </div>
-          </div>
-        </div>
-        <div className="w-full mt-4">
-          <div className="w-full">
-            <Text variant="h3" weight="bold">
-              Portfolio transactions
-            </Text>
-          </div>
-          <div className="w-full mb-6">
-            <div className="bg-[#F3F3F3] px-[4%] py-[2%] h-full flex">
-              <div className="w-[50%]">
-                <SearchBar widthSize="100px" placeholder="search transactions" />
-              </div>
-            </div>
-            <div className="w-full px-[4%] py-[2%] bg-white overflow-x-auto overflow-hidden no-scrollbar">
-              <div className="w-full flex justify-between mb-6">
-                <div className="basis-1/12">
-                  <Text variant="h4" weight="bold">
-                    S/N
-                  </Text>
-                </div>
-                <div className="basis-1/12"></div>
-                <div className="basis-3/12">
-                  <Text variant="h4" weight="bold">
-                    Transaction
-                  </Text>
-                </div>
-                <div className="basis-3/12">
-                  <Text variant="h4" weight="bold">
-                    Amount
-                  </Text>
-                </div>
-                <div className="basis-3/12">
-                  <Text variant="h4" weight="bold">
-                    Status
-                  </Text>
-                </div>
-              </div>
-              {portfolioReducer?.portfolioTransactionIsLoading && (
-                <div className="flex justify-center items-center h-full">
-                  <Loader />
-                </div>
-              )}
-              {!!!portfolioReducer?.portfolioTransactionIsLoading &&
-                portfolioReducer?.portfolioTransaction?.type === "portfolio/portfolioTransaction/fulfilled" && (
+            )}
+            <div className="w-full mt-3 flex gap-2 no-scrollbar overflow-hidden overflow-x-auto">
+              {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+                portfolioReducer?.portfolioPerformanceData?.type === "portfolio/portfolioPerfomance/fulfilled" && (
                   <>
-                    {portfolioReducer?.portfolioTransaction?.payload?.data?.data.map((history, index) => {
-                      return (
-                        <div key={history.id} className="w-full mb-6 flex justify-between">
-                          <div className="basis-1/12">
-                            <Text variant="h4" weight="bold">
-                              0{index + 1}
-                            </Text>
-                          </div>
-                          <div className="basis-1/12">
-                            {/* <img
-                              className="md:w-[40px] md:h-[40px] w-[30px] h-[30px]"
-                              src={arrowWithdrawal}
-                              alt="icon"
-                              loading="lazy"
-                            /> */}
-                            <img
-                              className="md:w-[40px] md:h-[40px] w-[30px] h-[30px]"
-                              src={arrowDeposit}
-                              alt="icon"
-                              loading="lazy"
-                            />
-                          </div>
-                          <div className="basis-3/12">
-                            <div>
-                              <Text variant="h4" weight="bold">
-                                {history?.channel.charAt(0).toUpperCase() + history?.channel.slice(1)} Deposit
-                              </Text>
-                              <Text variant="body" weight="normal">
-                                {moment(history?.paidAt).format("LLLL")}
-                              </Text>
+                    {portfolio_items !== undefined &&
+                      portfolio_items?.length >= 1 &&
+                      portfolio_items.map((data, index) => {
+                        return (
+                          <div
+                            key={index}
+                            onClick={() => {
+                              handleOpenModal("view_details");
+                              setCashAccountId(data?.cash_account_id);
+                            }}
+                            className={`cursor-pointer min-w-[345px] h-[148px] p-4 ${
+                              index === 1 ? "bg-[#E2FFB7]" : index % 2 ? "bg-[#FFD8EF]" : "bg-[#65666A]"
+                            }`}
+                          >
+                            <div className="flex flex-col justify-between h-full">
+                              <div>
+                                <Text
+                                  variant="h3"
+                                  weight="normal"
+                                  color={`${
+                                    index === 0
+                                      ? "text-white"
+                                        ? "text-white"
+                                        : index === 1
+                                      : index % 3
+                                      ? "text-tertiary"
+                                      : "text-tertiary"
+                                  }`}
+                                >
+                                  {data?.account_type?.name}
+                                </Text>
+                                <Text
+                                  variant="h4"
+                                  weight="bold"
+                                  format="tracking-wide"
+                                  color={`${
+                                    index === 0
+                                      ? "text-white"
+                                      : index === 1
+                                      ? "text-tertiary"
+                                      : index % 3
+                                      ? "text-white"
+                                      : ""
+                                  }`}
+                                >
+                                  {currencyEntities[data?.currency?.symbol]} {data?.current_balance}
+                                </Text>
+                              </div>
+                              <div className="flex justify-between w-full">
+                                <Text
+                                  variant="h4"
+                                  weight="normal"
+                                  color={`${
+                                    index === 0
+                                      ? "text-white"
+                                      : index === 1
+                                      ? "text-tertiary"
+                                      : index % 3
+                                      ? "text-white"
+                                      : ""
+                                  }`}
+                                >
+                                  + {currencyEntities[data?.currency?.symbol]} {data?.gains}
+                                </Text>
+                                <Text
+                                  color={`${
+                                    index === 0
+                                      ? "text-white"
+                                      : index === 1
+                                      ? "text-tertiary"
+                                      : index % 3
+                                      ? "text-white"
+                                      : ""
+                                  }`}
+                                  variant="h4"
+                                  weight="bold"
+                                  format="tracking-wide"
+                                >
+                                  {data?.accrued_credit_interest}%
+                                </Text>
+                              </div>
                             </div>
                           </div>
-                          <div className="basis-3/12">
-                            <Text variant="h4" weight="bold" color="text-[#00C48C]">
-                              {history?.currency} +{history?.amount}
-                            </Text>
-                          </div>
-                          <div className="basis-3/12">
-                            <Text
-                              variant="h4"
-                              weight="bold"
-                              format="bg-[#00C48C] text-center lg:w-[30%] md:w-[40%] w-[90%] p-2 rounded-lg"
-                              color="text-white"
-                            >
-                              {history?.status}
-                            </Text>
-                          </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })}
                   </>
                 )}
             </div>
           </div>
-        </div>
+          <div className="w-full mt-4">
+            {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+              portfolio_items !== undefined &&
+              portfolio_items?.length >= 1 && (
+                <div className="w-full">
+                  <Text variant="h3" weight="bold">
+                    Performance
+                  </Text>
+                </div>
+              )}
+            <div className="w-full flex lg:flex-row flex-col gap-3">
+              {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+                portfolio_items !== undefined &&
+                portfolio_items?.length >= 1 && (
+                  <div className="bg-BACKGROUND_WHITE p-6 lg:basis-2/3 h-[500px]">
+                    <div className="flex justify-between">
+                      <Text format="mb-3" weight="bold" variant="h4">
+                        Investment Rate
+                      </Text>
+                      <Text format="mb-3" weight=" normal" variant="body">
+                        Investment
+                      </Text>
+                    </div>
+                    <div className="w-full">
+                      <ResponsiveContainer width="95%" height={400}>
+                        <LineChart
+                          width={600}
+                          height={800}
+                          data={data}
+                          margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                        >
+                          <XAxis dataKey="name" />
+                          <Tooltip />
+                          <CartesianGrid stroke="#f5f5f5" />
+                          <Line type="monotone" dataKey="investment_returns" stroke="#0FC6C2" yAxisId={0} />
+                        </LineChart>
+                      </ResponsiveContainer>
+                    </div>
+                  </div>
+                )}
+              {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+                portfolio_items !== undefined &&
+                portfolio_items?.length >= 1 && (
+                  <div className="bg-[#FFF8F8] W-[100%] lg:basis-1/3 h-[500px] p-6">
+                    <div className="w-full mb-10">
+                      <Text weight="bold" variant="h3">
+                        Performance summary
+                      </Text>
+                    </div>
+                    <div className="w-full flex flex-col gap-6">
+                      <div className="flex gap-3 border-b border-[#CCCCCC] pb-6">
+                        <img src={totalEarnings} alt="icon" />
+                        <div className="flex flex-col gap-1">
+                          <Text weight="normal" variant="body">
+                            Total earnings
+                          </Text>
+                          <Text weight="bold" variant="h4">
+                            N230,000.56
+                          </Text>
+                        </div>
+                      </div>
+                      <div className="flex gap-3 border-b border-[#CCCCCC] pb-6">
+                        <img src={totalWithdrawals} alt="icon" />
+                        <div className="flex flex-col gap-1">
+                          <Text weight="normal" variant="body">
+                            Total Withdrawals
+                          </Text>
+                          <Text weight="bold" variant="h4">
+                            N13,000.56
+                          </Text>
+                        </div>
+                      </div>
+                      <div className="flex gap-3 border-b border-[#CCCCCC] pb-6">
+                        <img src={totalDeposits} alt="icon" />
+                        <div className="flex flex-col gap-1">
+                          <Text weight="normal" variant="body">
+                            Total Deposits
+                          </Text>
+                          <Text weight="bold" variant="h4">
+                            N13,000.56
+                          </Text>
+                        </div>
+                      </div>
+                      <div className="flex gap-3 border-b border-[#CCCCCC] pb-6">
+                        <img src={totalAssests} alt="icon" />
+                        <div className="flex flex-col gap-1">
+                          <Text weight="normal" variant="body">
+                            Total Assets
+                          </Text>
+                          <Text weight="bold" variant="h4">
+                            4
+                          </Text>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+            </div>
+          </div>
+          <div className="w-full mt-4">
+            {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+              portfolio_items !== undefined &&
+              portfolio_items?.length >= 1 && (
+                <>
+                  <div className="w-full">
+                    <Text variant="h3" weight="bold">
+                      Portfolio transactions
+                    </Text>
+                  </div>
+
+                  <div className="w-full mb-6">
+                    <div className="bg-[#F3F3F3] px-[4%] py-[2%] h-full flex">
+                      <div className="w-[50%]">
+                        <SearchBar placeholder="search transactions" />
+                      </div>
+                    </div>
+                    <div className="w-full px-[4%] py-[2%] bg-white overflow-x-auto overflow-hidden no-scrollbar">
+                      <div className="w-full flex justify-between mb-6">
+                        <div className="basis-1/12">
+                          <Text variant="h4" weight="bold">
+                            S/N
+                          </Text>
+                        </div>
+                        <div className="basis-1/12"></div>
+                        <div className="basis-3/12">
+                          <Text variant="h4" weight="bold">
+                            Transaction
+                          </Text>
+                        </div>
+                        <div className="basis-3/12">
+                          <Text variant="h4" weight="bold">
+                            Amount
+                          </Text>
+                        </div>
+                        <div className="basis-3/12">
+                          <Text variant="h4" weight="bold">
+                            Status
+                          </Text>
+                        </div>
+                      </div>
+                      {portfolioReducer?.portfolioTransactionIsLoading && (
+                        <div className="flex justify-center items-center h-full">
+                          <Loader />
+                        </div>
+                      )}
+                      {!!!portfolioReducer?.portfolioTransactionIsLoading &&
+                        portfolioReducer?.portfolioTransaction?.type === "portfolio/portfolioTransaction/fulfilled" && (
+                          <>
+                            {portfolioReducer?.portfolioTransaction?.payload?.data?.data.map((history, index) => {
+                              return (
+                                <div key={history.id} className="w-full mb-6 flex justify-between">
+                                  <div className="basis-1/12">
+                                    <Text variant="h4" weight="bold">
+                                      {index + 1}
+                                    </Text>
+                                  </div>
+                                  <div className="basis-1/12">
+                                    <img
+                                      className="md:w-[40px] md:h-[40px] w-[30px] h-[30px]"
+                                      src={arrowDeposit}
+                                      alt="icon"
+                                      loading="lazy"
+                                    />
+                                  </div>
+                                  <div className="basis-3/12">
+                                    <div>
+                                      <Text variant="h4" weight="bold">
+                                        {history?.channel.charAt(0).toUpperCase() + history?.channel.slice(1)} Deposit
+                                      </Text>
+                                      <Text variant="body" weight="normal">
+                                        {moment(history?.paidAt).format("LLLL")}
+                                      </Text>
+                                    </div>
+                                  </div>
+                                  <div className="basis-3/12">
+                                    <Text variant="h4" weight="bold" color="text-[#00C48C]">
+                                      {history?.currency} +{history?.amount}
+                                    </Text>
+                                  </div>
+                                  <div className="basis-3/12">
+                                    <Text
+                                      variant="h4"
+                                      weight="bold"
+                                      format="bg-[#00C48C] text-center lg:w-[30%] md:w-[40%] w-[90%] p-2 rounded-lg"
+                                      color="text-white"
+                                    >
+                                      {history?.status}
+                                    </Text>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                            {portfolioReducer?.portfolioTransaction?.payload?.data?.data <= 0 && (
+                              <div className="w-full flex justify-center mt-4">
+                                <Text variant="h3" weight="bold">
+                                  No Data Avaliable
+                                </Text>
+                              </div>
+                            )}
+                          </>
+                        )}
+                    </div>
+                  </div>
+                </>
+              )}
+          </div>
+        </>
       </div>
     </>
   );

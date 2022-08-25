@@ -36,7 +36,6 @@ const apiResource = () => {
         resolve(response);
       }),
     async (error) => {
-      console.log(error);
       if (error?.response?.status === 403) {
         TokenService.removeToken();
         window.location = "/login";

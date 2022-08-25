@@ -24,6 +24,7 @@ import {
 import { currencyEntities } from "../../helper";
 import MessageModal from "../../components/modals/MessageModal";
 import Referral from "./component/referral";
+import { useNavigate } from "react-router-dom";
 
 const data = [
   {
@@ -72,6 +73,7 @@ const data = [
 
 export default function Dashboard() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false);
 
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
@@ -369,6 +371,7 @@ export default function Dashboard() {
                   className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
                   type="button"
                   textColor="#fff"
+                  onClick={() => navigate("/portfolio")}
                 />
               </div>
             </div>
@@ -393,6 +396,7 @@ export default function Dashboard() {
                   className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
                   type="button"
                   textColor="#fff"
+                  onClick={() => navigate("/loans")}
                 />
               </div>
             </div>

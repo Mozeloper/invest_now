@@ -32,7 +32,7 @@ export default function BvnVerify() {
   const dispatch = useDispatch();
 
   const getSignature = async () => {
-    const data = await axios.get("https://vision-islam.herokuapp.com/api/misc/smile-signature");
+    const data = await axios.get("http://vision-islam.herokuapp.com/api/v1/misc/smile-signature");
     setsignature(data);
     // dispatch(resetInitialState());
   };

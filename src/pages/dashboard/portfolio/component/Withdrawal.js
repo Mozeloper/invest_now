@@ -3,10 +3,19 @@ import close from "../../../../assets/icons/close_btn.svg";
 import Text from "../../../../components/Typography/Typography";
 import Button from "../../../../components/Button";
 import Input from "../../../../components/formFields/inputs";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  handleGetPortfolioPerfomance,
+  handleGetPortfolioTransaction,
+  handleWithdrawalRequest,
+} from "../../../../store/slices/portfolioSlice";
 
-export default function Withdrawal({ handleCloseModal }) {
+export default function Withdrawal({ handleCloseModal, handleOpenModal }) {
   const [error, setError] = useState(false);
   const [amount, setAmount] = useState("");
+  const dispatch = useDispatch();
+  const portfolioReducer = useSelector((state) => state.portfolioReducer);
+  const portfolioDetails = portfolioReducer?.portfolioDetailsData?.payload?.data?.data;
 
   const handlePaymentMethod = () => {
     if (amount === "") {
@@ -14,7 +23,32 @@ export default function Withdrawal({ handleCloseModal }) {
     }
     if (amount !== "") {
       console.log(amount);
+      saveWithdrawalRequest();
     }
+  };
+
+  const saveWithdrawalRequest = async () => {
+    const data = {
+      customer_id: portfolioDetails?.deposit_account?.payment_options?.customer_id,
+      amount: Number(amount),
+      core_system: portfolioDetails?.deposit_account?.payment_options?.core_system,
+      core_system_option: portfolioDetails?.deposit_account?.payment_options?.core_system_options,
+      thirdParty: "",
+    };
+    await dispatch(handleWithdrawalRequest(data))
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        if (res?.data?.success) {
+          handleCloseModal("withdrawal");
+          handleOpenModal("responseModal", res?.data?.message, false);
+          dispatch(handleGetPortfolioTransaction());
+          dispatch(handleGetPortfolioPerfomance());
+        }
+      })
+      .catch((err) => {
+        handleOpenModal("responseModal", err?.data?.message, true);
+      });
   };
 
   return (
@@ -53,10 +87,11 @@ export default function Withdrawal({ handleCloseModal }) {
         </Text>
         <div className="flex flex-col gap-2">
           <Text variant="h3" weight="bold">
-            Paul Akilapa
+            {portfolioDetails?.deposit_account?.bankAccount?.name}
           </Text>
           <Text variant="h3" weight="bold">
-            008967567, UBA
+            {portfolioDetails?.deposit_account?.bankAccount?.number}{" "}
+            {portfolioDetails?.deposit_account?.bankAccount?.bankName}
           </Text>
         </div>
       </div>
@@ -67,6 +102,7 @@ export default function Withdrawal({ handleCloseModal }) {
           type="button"
           textColor="#fff"
           onClick={() => handlePaymentMethod()}
+          isLoading={portfolioReducer?.portfolioWithdrawalIsLoading}
         />
       </div>
     </div>
