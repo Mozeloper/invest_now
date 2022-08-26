@@ -7,13 +7,19 @@ import SideLeftModal from "../../../../components/modals/SideLeftModal";
 import MobileSideBar from "./mobileSideBar";
 import NotificationModal from "../../../../components/modals/notificationModal";
 import Notifications from "./other/notifications";
+import SideRightModal from "../../../../components/modals/SideRightModal";
+import ViewDailyRates from "./other/viewDailyRates";
 
 export default function Header() {
   const [sideBar, setsideBar] = useState(false);
   const [notificationBar, setNotificationBar] = useState(false);
+  const [viewDailyRates, setViewDailyRates] = useState(false);
 
   return (
     <>
+      <SideRightModal modalWidth="500px" bgColor={true} isOpen={viewDailyRates}>
+        <ViewDailyRates setViewDailyRates={setViewDailyRates} />
+      </SideRightModal>
       <SideLeftModal setsideBar={() => setsideBar(false)} modalHeight="100vh" modalWidth="375px" isOpen={sideBar}>
         <MobileSideBar />
       </SideLeftModal>
@@ -24,7 +30,10 @@ export default function Header() {
         <div className="hidden h-[88px] w-full lg:block p-4">
           <div className="w-full flex gap-4 justify-end items-center">
             <SearchBar placeholder="search transactions, products, portfolios e.t.c" />
-            <div className="flex gap-2 justify-center items-center">
+            <div
+              onClick={() => setViewDailyRates(true)}
+              className="flex gap-2 justify-center items-center cursor-pointer"
+            >
               <img src={ratesIcon} alt="notification_icon" className="w-[22px] h-[12px]" />
               <Text variant="h4">View daily rates</Text>
             </div>
@@ -44,7 +53,11 @@ export default function Header() {
           </div>
           <div className="w-full flex justify-around items-center">
             <SearchBar placeholder="search transactions, products, portfolios e.t.c" />
-            <div className="flex gap-2 justify-center items-center">
+
+            <div
+              onClick={() => setViewDailyRates(true)}
+              className="flex gap-2 justify-center items-center cursor-pointer"
+            >
               <img src={ratesIcon} alt="rate_icon" className="w-[22px] h-[12px]" />
               <Text variant="h4">View daily rates</Text>
             </div>

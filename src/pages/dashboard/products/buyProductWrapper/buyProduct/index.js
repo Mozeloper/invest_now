@@ -11,12 +11,13 @@ import {
   setAccountType,
 } from "../../../../../store/slices/buyProductSlice";
 import { handleResetStep } from "../../../../../store/slices/openAccountSlice";
+import Loader from "../../../../../components/loader";
 
 export default function BuyProducts() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
-  // const buyProductReducer = useSelector((state) => state.buyProductReducer);
+  const buyProductReducer = useSelector((state) => state.buyProductReducer);
   const firstName = dashboardReducer?.customerDetails?.payload?.data?.data?.firstname;
   const customerKycStep =
     dashboardReducer?.customerDetails?.payload?.data?.data?.tier_status === "TIER_0" ? true : false;
@@ -25,8 +26,6 @@ export default function BuyProducts() {
     self: false,
     dependent: false,
   });
-
-  // console.log(buyProductReducer);
 
   useEffect(() => {
     let mounted = false;
@@ -131,42 +130,33 @@ export default function BuyProducts() {
               </div>
               {activeExistingAccount && (
                 <div className="flex flex-col gap-1">
-                  <div
-                    style={{ background: "linear-gradient(to right, #2B2B2B, 70%, #606161)" }}
-                    className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer"
-                    onClick={() => {
-                      navigate("/products/new_bank_account");
-                      dispatch(setAccountType("MY_SELF"));
-                    }}
-                  >
-                    <Text color="text-white" weight="bold" variant="h4">
-                      Your money market account
-                    </Text>
-                  </div>
-                  <div
-                    style={{ background: "linear-gradient(to right, #2B2B2B, 70%, #606161)" }}
-                    className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer"
-                    onClick={() => {
-                      navigate("/products/new_bank_account");
-                      dispatch(setAccountType("MY_SELF"));
-                    }}
-                  >
-                    <Text color="text-white" weight="bold" variant="h4">
-                      Your stock trading account
-                    </Text>
-                  </div>
-                  <div
-                    style={{ background: "linear-gradient(to right, #2B2B2B, 70%, #606161)" }}
-                    className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer"
-                    onClick={() => {
-                      navigate("/products/new_bank_account");
-                      dispatch(setAccountType("MY_SELF"));
-                    }}
-                  >
-                    <Text color="text-white" weight="bold" variant="h4">
-                      Your security account
-                    </Text>
-                  </div>
+                  {buyProductReducer?.isExistingCashAccountIsLoaing && (
+                    <div className="flex justify-center items-center h-full">
+                      <Loader />
+                    </div>
+                  )}
+                  {!!!buyProductReducer?.isExistingCashAccountIsLoaing &&
+                    buyProductReducer?.existingAccountData?.type === "buyproduct/existingCashAccount/fulfilled" && (
+                      <>
+                        {buyProductReducer?.existingAccountData?.payload?.data?.data.map((list, index) => {
+                          return (
+                            <div
+                              key={index}
+                              style={{ background: "linear-gradient(to right, #2B2B2B, 70%, #606161)" }}
+                              className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer"
+                              onClick={() => {
+                                navigate("/products/new_bank_account");
+                                dispatch(setAccountType("MY_SELF"));
+                              }}
+                            >
+                              <Text color="text-white" weight="bold" variant="h4">
+                                {list?.ACCOUNTTYPE}
+                              </Text>
+                            </div>
+                          );
+                        })}
+                      </>
+                    )}
                 </div>
               )}
             </>

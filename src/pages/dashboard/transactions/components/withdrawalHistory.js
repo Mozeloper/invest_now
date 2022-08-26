@@ -20,6 +20,8 @@ export default function WithdrawalHistory() {
   const [searchText, setSearchText] = useState("");
   const [paginationNumber, setPaginationNumber] = useState(1);
   const [type, setType] = useState("completed");
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
   const handlePaginationChange = (_, page) => {
     setPaginationNumber(page);
@@ -40,9 +42,9 @@ export default function WithdrawalHistory() {
   }, [dispatch, paginationNumber, type]);
 
   const handleFilter = () => {
-    if (searchText !== "") {
+    if (searchText !== "" || startDate !== null || endDate !== null) {
       setPaginationNumber(1);
-      dispatch(handleGetWithdrawalHistory({ paginationNumber, searchText, type }));
+      dispatch(handleGetWithdrawalHistory({ paginationNumber, searchText, type, startDate, endDate }));
     }
     return null;
   };
@@ -64,7 +66,7 @@ export default function WithdrawalHistory() {
             placeholder="*Start"
             name="start"
             type="date"
-            // handleChange={handleChange}
+            handleChange={(e) => setStartDate(e.target.value)}
           />
         </div>
         <Text variant="body" weight="bold" format="mt-4">
@@ -76,7 +78,7 @@ export default function WithdrawalHistory() {
             placeholder="*End"
             name="end"
             type="date"
-            // handleChange={handleChange}
+            handleChange={(e) => setEndDate(e.target.value)}
           />
         </div>
         <SelectSmall setType={setType} type={type} />

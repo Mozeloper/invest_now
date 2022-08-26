@@ -6,7 +6,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Text from "../../../components/Typography/Typography";
 import Button from "../../../components/Button";
-import Input from "../../../components/formFields/inputs";
+// import Input from "../../../components/formFields/inputs";
 import MyInput from "../../../components/formFields/inputs/MyInput";
 import SearchableSelect from "../../../components/formFields/selectField";
 import PhoneInput from "react-phone-input-2";
@@ -313,7 +313,7 @@ export default function ProfileUpdate() {
                 handleChange={handleChange}
               />
             </div>
-            <div className="mt-4 w-full">
+            {/* <div className="mt-4 w-full">
               <label htmlFor="referral_code" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
                 Do you have a referral code? Please input below
               </label>
@@ -323,7 +323,7 @@ export default function ProfileUpdate() {
                   {errors.referral_code}
                 </Text>
               ) : null}
-            </div>
+            </div> */}
             <div className="mt-8">
               <Button title="Next" className="cursor-pointer w-full" type="submit" isLoading={isSubmitting} />
             </div>

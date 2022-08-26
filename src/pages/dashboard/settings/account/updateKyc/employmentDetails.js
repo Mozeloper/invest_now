@@ -149,7 +149,7 @@ export default function EmploymentDetails({ handleCloseModals }) {
                   name="income_band"
                   isLoading={false}
                   setFieldValue={setFieldValue}
-                  placeholder="Select band"
+                  placeholder="Income band"
                   defaultValue={values.income_band}
                 />
                 {errors.income_band && touched.income_band ? (

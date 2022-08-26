@@ -17,6 +17,8 @@ export default function DepositHistory() {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [paginationNumber, setPaginationNumber] = useState(1);
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
 
   const handlePaginationChange = (_, page) => {
     setPaginationNumber(page);
@@ -36,9 +38,12 @@ export default function DepositHistory() {
     };
   }, [dispatch, paginationNumber]);
 
-  const handleFilter = async () => {
-    setPaginationNumber(1);
-    await dispatch(handleGetDepositHistory({ paginationNumber, searchText }));
+  const handleFilter = () => {
+    if (searchText !== "" || startDate !== null || endDate !== null) {
+      setPaginationNumber(1);
+      dispatch(handleGetDepositHistory({ paginationNumber, searchText, startDate, endDate }));
+    }
+    return null;
   };
 
   return (
@@ -58,7 +63,7 @@ export default function DepositHistory() {
             placeholder="*Start"
             name="start"
             type="date"
-            // handleChange={handleChange}
+            handleChange={(e) => setStartDate(e.target.value)}
           />
         </div>
         <Text variant="body" weight="bold" format="mt-4">
@@ -70,7 +75,7 @@ export default function DepositHistory() {
             placeholder="*End"
             name="end"
             type="date"
-            // handleChange={handleChange}
+            handleChange={(e) => setEndDate(e.target.value)}
           />
         </div>
         <div>

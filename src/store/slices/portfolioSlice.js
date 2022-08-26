@@ -5,9 +5,14 @@ import { appUrls } from "../../services/urls";
 
 export const handleGetPortfolioTransaction = createAsyncThunk(
   "portfolio/portfolioTransaction",
-  async (_, { rejectWithValue }) => {
+  async (values, { rejectWithValue }) => {
     try {
-      const data = await api.get(appUrls.getPortfolioTransactionURL);
+      const data = await api.get(
+        appUrls.getPortfolioTransactionURL +
+          `?search=${values?.searchText ?? ""}&page=${values?.paginationNumber ?? 1}&perPage=5&from=${
+            values?.startDate ?? null
+          }&to=${values?.endDate ?? null}`
+      );
       return data;
     } catch (error) {
       return rejectWithValue(error);
@@ -148,7 +153,7 @@ export const portfolioSlice = createSlice({
     },
     [handleGetPortfolioStatistics.fulfilled]: (state, action) => {
       state.portfolioStatisticsIsLoading = false;
-      state.portfolioStatisticsData = action.payload;
+      state.portfolioStatisticsData = action;
     },
     [handleGetPortfolioStatistics.rejected]: (state, action) => {
       state.portfolioStatisticsIsLoading = false;

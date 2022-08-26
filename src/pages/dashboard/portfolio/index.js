@@ -9,9 +9,9 @@ import Button from "../../../components/Button";
 import Text from "../../../components/Typography/Typography";
 import RedIcon from "../../../assets/icons/bg_red.svg";
 import GreenIcon from "../../../assets/icons/bg_green.svg";
-import PurpleIcon from "../../../assets/icons/bg_purple.svg";
+// import PurpleIcon from "../../../assets/icons/bg_purple.svg";
+// import purpleFrame from "../../../assets/icons/purple_frame.svg";
 import redFrame from "../../../assets/icons/red_frame.svg";
-import purpleFrame from "../../../assets/icons/purple_frame.svg";
 import greenFrame from "../../../assets/icons/green_frame.svg";
 import totalEarnings from "../../../assets/icons/total_earnings.svg";
 import totalWithdrawals from "../../../assets/icons/total_withdrawals.svg";
@@ -33,6 +33,8 @@ import {
 } from "../../../store/slices/portfolioSlice";
 import EmptyState from "../../../assets/images/empty_state.svg";
 import MessageModal from "../../../components/modals/MessageModal";
+import Input from "../../../components/formFields/inputs";
+import PaginationControlled from "../../../components/Pagination";
 
 const data = [
   null,
@@ -102,10 +104,16 @@ export default function Portfolio() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const portfolioReducer = useSelector((state) => state.portfolioReducer);
-  const portfolioSummary = portfolioReducer?.portfolioSummaryData;
+  // const portfolioSummary = portfolioReducer?.portfolioSummaryData;
   const portfolio_items = portfolioReducer?.portfolioPerformanceData?.payload?.data?.data?.portfolio_items;
-  console.log(portfolioSummary);
+  const otherDetails = portfolioReducer?.portfolioTransaction?.payload?.data?.metadata;
+  const portfolioStats = portfolioReducer?.portfolioStatisticsData?.payload?.data?.data;
+
   const [cashAccountId, setCashAccountId] = useState("");
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+  const [searchText, setSearchText] = useState("");
+  const [paginationNumber, setPaginationNumber] = useState(1);
 
   const [showModal, setShowModal] = useState({
     add_money: false,
@@ -123,20 +131,41 @@ export default function Portfolio() {
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(handleGetPortfolioPerfomance());
-          dispatch(handleGetPortfolioTransaction());
-          dispatch(handleGetPortfolioSummary());
-          dispatch(handleGetPortfolioStatistics());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(handleGetPortfolioPerfomance());
+        dispatch(handleGetPortfolioSummary());
+        dispatch(handleGetPortfolioStatistics());
       }
     })();
     return () => {
       mounted = false;
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    let mounted = false;
+    (async () => {
+      mounted = true;
+      if (mounted) {
+        dispatch(handleGetPortfolioTransaction({ paginationNumber }));
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [dispatch, paginationNumber]);
+
+  const handleFilter = () => {
+    if (searchText !== "" || startDate !== null || endDate !== null) {
+      setPaginationNumber(1);
+      dispatch(handleGetPortfolioTransaction({ paginationNumber, searchText, startDate, endDate }));
+    }
+    return null;
+  };
+
+  const handlePaginationChange = (_, page) => {
+    setPaginationNumber(page);
+    setSearchText("");
+  };
 
   const handleOpenModal = (type, data, errorText) => {
     switch (type) {
@@ -328,113 +357,95 @@ export default function Portfolio() {
           </div>
         </div>
         <div className="w-full flex gap-2 no-scrollbar overflow-hidden overflow-x-auto">
-          <div
-            style={{ backgroundImage: `url(${redFrame})` }}
-            className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-          >
-            <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-            <div className="flex flex-col justify-center">
-              <Text variant="body" color="text-white">
-                Portfolio Net Value
-              </Text>
-              <Text weight="bold" variant="h2" color="text-white">
-                &#8358; 0
-              </Text>
-            </div>
-          </div>
-          <div
-            style={{ backgroundImage: `url(${greenFrame})` }}
-            className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-          >
-            <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
-            <div className="flex flex-col justify-center">
-              <Text color="text-[#65666A]" variant="body">
-                Cash Value
-              </Text>
-              <Text weight="bold" variant="h2" color="text-[#65666A]">
-                &#8358; 0
-              </Text>
-            </div>
-          </div>
-          <div
-            style={{ backgroundImage: `url(${purpleFrame})` }}
-            className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-          >
-            <img src={PurpleIcon} alt="icon" className="w-[64px] h-[64px]" />
-            <div className="flex flex-col justify-center">
-              <Text color="text-[#65666A]" variant="body">
-                Loans
-              </Text>
-              <Text weight="bold" variant="h2" color="text-[#65666A]">
-                &#8358; 0
-              </Text>
-            </div>
-          </div>
-          <div
-            style={{ backgroundImage: `url(${redFrame})` }}
-            className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-          >
-            <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-            <div className="flex flex-col justify-center">
-              <Text color="text-white" variant="body">
-                Trust
-              </Text>
-              <Text weight="bold" variant="h2" color="text-white">
-                &#8358; 0
-              </Text>
-            </div>
-          </div>
-          <div
-            style={{ backgroundImage: `url(${greenFrame})` }}
-            className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-          >
-            <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
-            <div className="flex flex-col justify-center">
-              <Text color="text-[#65666A]" variant="body">
-                Mutual Funds
-              </Text>
-              <Text weight="bold" variant="h2" color="text-[#65666A]">
-                &#8358; 0
-              </Text>
-            </div>
-          </div>
-          <div
-            style={{ backgroundImage: `url(${redFrame})` }}
-            className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-          >
-            <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-            <div className="flex flex-col justify-center">
-              <Text color="text-[#fff]" variant="body">
-                Securities
-              </Text>
-              <Text weight="bold" variant="h2" color="text-[#fff]">
-                &#8358; 0
-              </Text>
-            </div>
-          </div>
-        </div>
-        {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
-          portfolio_items !== undefined &&
-          portfolio_items?.length < 1 && (
-            <div className="mt-4 flex flex-col gap-2 justify-center items-center w-full h-[550px] bg-white">
-              <img src={EmptyState} alt="empty_state" />
-              <Text variant="h3" weight="normal">
-                You have no portfolios
-              </Text>
-              <Text variant="h3" weight="normal">
-                Lets make building your wealth easier.
-              </Text>
-              <div>
-                <Button
-                  title="Start Investing"
-                  className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
-                  type="button"
-                  textColor="#fff"
-                  onClick={() => navigate("/products/all")}
-                />
-              </div>
+          {portfolioReducer?.portfolioStatisticsIsLoading && (
+            <div className="w-full flex gap-2">
+              <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="345px" height={148} />
+              <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="345px" height={148} />
+              <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="345px" height={148} />
             </div>
           )}
+          {!!!portfolioReducer?.portfolioStatisticsIsLoading &&
+            portfolioReducer?.portfolioStatisticsData?.type === "portfolio/portfolioStatistics/fulfilled" && (
+              <>
+                <div
+                  style={{ backgroundImage: `url(${redFrame})` }}
+                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text variant="body" color="text-white">
+                      Portfolio Net Value
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-white">
+                      &#8358; {portfolioStats?.portfolio_net_value}
+                    </Text>
+                  </div>
+                </div>
+                <div
+                  style={{ backgroundImage: `url(${redFrame})` }}
+                  className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text color="text-white" variant="body">
+                      Trust
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-white">
+                      &#8358; {portfolioStats?.trust}
+                    </Text>
+                  </div>
+                </div>
+                <div
+                  style={{ backgroundImage: `url(${greenFrame})` }}
+                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text color="text-[#65666A]" variant="body">
+                      Mutual Funds
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-[#65666A]">
+                      &#8358; {portfolioStats?.mutual_funds}
+                    </Text>
+                  </div>
+                </div>
+                <div
+                  style={{ backgroundImage: `url(${redFrame})` }}
+                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text color="text-[#fff]" variant="body">
+                      Securities
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-[#fff]">
+                      &#8358; {portfolioStats?.securities}
+                    </Text>
+                  </div>
+                </div>
+              </>
+            )}
+        </div>
+        {!!!portfolioReducer?.portfolioPerformanceIsLoading && portfolio_items?.length < 1 && (
+          <div className="mt-4 flex flex-col gap-2 justify-center items-center w-full h-[550px] bg-white">
+            <img src={EmptyState} alt="empty_state" />
+            <Text variant="h3" weight="normal">
+              You have no portfolios
+            </Text>
+            <Text variant="h3" weight="normal">
+              Lets make building your wealth easier.
+            </Text>
+            <div>
+              <Button
+                title="Start Investing"
+                className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
+                type="button"
+                textColor="#fff"
+                onClick={() => navigate("/products/all")}
+              />
+            </div>
+          </div>
+        )}
         <>
           <div className="w-full mt-4">
             {portfolio_items !== undefined && portfolio_items?.length >= 1 && (
@@ -655,10 +666,51 @@ export default function Portfolio() {
                   </div>
 
                   <div className="w-full mb-6">
-                    <div className="bg-[#F3F3F3] px-[4%] py-[2%] h-full flex">
-                      <div className="w-[50%]">
-                        <SearchBar placeholder="search transactions" />
+                    <div className="bg-[#F3F3F3] px-[4%] py-[2%] h-full flex items-center gap-4 flex-wrap w-full">
+                      <SearchBar
+                        value={searchText}
+                        onChange={(e) => setSearchText(e.target.value)}
+                        placeholder="search transactions"
+                      />
+                      <Text variant="body" weight="bold" format="mt-4">
+                        Filter By
+                      </Text>
+                      <div className="">
+                        <Input
+                          className="w-full"
+                          placeholder="*Start"
+                          name="start"
+                          type="date"
+                          handleChange={(e) => setStartDate(e.target.value)}
+                        />
                       </div>
+                      <Text variant="body" weight="bold" format="mt-4">
+                        to
+                      </Text>
+                      <div className="">
+                        <Input
+                          className="w-full"
+                          placeholder="*End"
+                          name="end"
+                          type="date"
+                          handleChange={(e) => setEndDate(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <Button
+                          title="Filter"
+                          className="px-8 py-2 whitespace-nowrap font-extrabold border border-[#65666A]"
+                          type="button"
+                          size="small"
+                          textColor="#fff"
+                          onClick={() => handleFilter()}
+                        />
+                      </div>
+                      <Text variant="body" weight="bold" format="mt-4">
+                        {`Showing ${otherDetails?.page ?? 0} - ${otherDetails?.perPage ?? 0} of  ${
+                          otherDetails?.total ?? 0
+                        }`}
+                      </Text>
                     </div>
                     <div className="w-full px-[4%] py-[2%] bg-white overflow-x-auto overflow-hidden no-scrollbar">
                       <div className="w-full flex justify-between mb-6">
@@ -736,7 +788,7 @@ export default function Portfolio() {
                                 </div>
                               );
                             })}
-                            {portfolioReducer?.portfolioTransaction?.payload?.data?.data <= 0 && (
+                            {portfolioReducer?.portfolioTransaction?.payload?.data?.data?.length <= 0 && (
                               <div className="w-full flex justify-center mt-4">
                                 <Text variant="h3" weight="bold">
                                   No Data Avaliable
@@ -744,6 +796,16 @@ export default function Portfolio() {
                               </div>
                             )}
                           </>
+                        )}
+                      {!!!portfolioReducer?.portfolioTransactionIsLoading &&
+                        portfolioReducer?.portfolioTransaction?.payload?.data?.data?.length >= 1 && (
+                          <div className="flex justify-end pt-3">
+                            <PaginationControlled
+                              handlePaginationChange={handlePaginationChange}
+                              totalNumberOfPages={otherDetails?.total}
+                              page={paginationNumber}
+                            />
+                          </div>
                         )}
                     </div>
                   </div>
