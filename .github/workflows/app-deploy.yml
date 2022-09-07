@@ -1,0 +1,41 @@
+# This is a basic workflow to help you get started with Actions
+
+name: Build and deploy Invest Now
+
+on:
+  push:
+    branches: [staging]
+
+  pull_request:
+    branches: [staging]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Configure node version
+        uses: actions/setup-node@v1
+        with:
+          node-version: "16.13.0"
+
+      - name: Install node dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Build app
+        run: CI='' yarn build
+
+      - name: Install Surge
+        run: yarn global add surge
+
+      - name: Fix 404 error for build
+        working-directory: ./build
+        run: cp index.html 200.html
+
+      - name: Push to the set url
+        run: surge ./build https://invest_now.surge.sh --token 938d9b03d0811da03d68fa826f405820
