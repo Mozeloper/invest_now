@@ -1,3 +1,4 @@
+/* eslint-disable eqeqeq */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
@@ -5,11 +6,26 @@ import * as Yup from "yup";
 import Password from "../../../components/formFields/password";
 import Text from "../../../components/Typography/Typography";
 import Correct from "../../../assets/icons/correct.svg";
+import password_initial from "../../../assets/icons/password_initial.svg";
+import password_correct from "../../../assets/icons/password_correct.svg";
 import Button from "../../../components/Button";
 import "react-phone-input-2/lib/style.css";
 import MessageModal from "../../../components/modals/MessageModal";
 import { useSelector, useDispatch } from "react-redux";
 import { handlePasswordCreation } from "../../../store/slices/authSlices";
+
+function checkUppercase(str) {
+  for (var i = 0; i < str?.length; i++) {
+    if (str?.charAt(i) == str?.charAt(i)?.toUpperCase() && str?.charAt(i)?.match(/[a-z]/i)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function containsNumber(str) {
+  return /\d/.test(str);
+}
 
 export default function CreatePassword() {
   const [openModal, setOpenModal] = useState(false);
@@ -21,6 +37,13 @@ export default function CreatePassword() {
   const authReducer = useSelector((state) => state.authReducer);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [passwordCharacterCheck, setPasswordCharacterCheck] = useState({
+    password_length: false,
+    contains_uppercase: false,
+    contains_number: false,
+    unique_character: false,
+    confirm_password_match: false,
+  });
 
   const handlePasswordUserCreation = async (data) => {
     const values = {
@@ -30,8 +53,9 @@ export default function CreatePassword() {
     await dispatch(handlePasswordCreation(values))
       .unwrap()
       .then((res) => {
-        setOpenModal(true);
-        localStorage.setItem("access_token", res?.data?.data?.user?.access_token);
+        if (res?.data?.success) {
+          setOpenModal(true);
+        }
       })
       .catch((error) => {
         if (!error?.data?.success) {
@@ -53,9 +77,58 @@ export default function CreatePassword() {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#/$%/^&/*])(?=.{8,})/,
         "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
       )
-      .required("Password is required"),
+      .required("Password is required")
+      .test("password", null, function (password) {
+        if (password?.trim() !== "") {
+          if (password?.length >= 8) {
+            setPasswordCharacterCheck((prev) => ({
+              ...prev,
+              password_length: true,
+            }));
+          } else {
+            setPasswordCharacterCheck((prev) => ({
+              ...prev,
+              password_length: false,
+            }));
+          }
+          if (checkUppercase(password)) {
+            setPasswordCharacterCheck((prev) => ({
+              ...prev,
+              contains_uppercase: true,
+            }));
+          } else {
+            setPasswordCharacterCheck((prev) => ({
+              ...prev,
+              contains_uppercase: false,
+            }));
+          }
+          if (containsNumber(password)) {
+            setPasswordCharacterCheck((prev) => ({
+              ...prev,
+              contains_number: true,
+            }));
+          } else {
+            setPasswordCharacterCheck((prev) => ({
+              ...prev,
+              contains_number: false,
+            }));
+          }
+          if (password?.match(/\W/)) {
+            setPasswordCharacterCheck((prev) => ({
+              ...prev,
+              unique_character: true,
+            }));
+          } else {
+            setPasswordCharacterCheck((prev) => ({
+              ...prev,
+              unique_character: false,
+            }));
+          }
+        }
+      }),
     confirm_password: Yup.string()
       .oneOf([Yup.ref("password"), null], "Passwords must match")
+
       .required("Password confirm is required"),
   });
 
@@ -136,6 +209,42 @@ export default function CreatePassword() {
                     {errors.confirm_password}
                   </Text>
                 ) : null}
+              </div>
+              <div className="mt-4">
+                <ul className="flex flex-col gap-1">
+                  <li className="flex gap-2">
+                    {passwordCharacterCheck?.password_length ? (
+                      <img src={password_correct} alt="password_correct" loading="lazy" />
+                    ) : (
+                      <img src={password_initial} alt="password_initial" loading="lazy" />
+                    )}
+                    Minimum of 8 characters
+                  </li>
+                  <li className="flex gap-2">
+                    {passwordCharacterCheck?.contains_uppercase ? (
+                      <img src={password_correct} alt="password_correct" />
+                    ) : (
+                      <img src={password_initial} alt="password_initial" />
+                    )}
+                    One UPPERCASE character
+                  </li>
+                  <li className="flex gap-2">
+                    {passwordCharacterCheck?.contains_number ? (
+                      <img src={password_correct} alt="password_correct" />
+                    ) : (
+                      <img src={password_initial} alt="password_initial" />
+                    )}
+                    One number
+                  </li>
+                  <li className="flex gap-2">
+                    {passwordCharacterCheck?.unique_character ? (
+                      <img src={password_correct} alt="password_correct" />
+                    ) : (
+                      <img src={password_initial} alt="password_initial" />
+                    )}
+                    {`One unique character (e.g !@#$%&*)?>`}
+                  </li>
+                </ul>
               </div>
               <div className="mt-8">
                 <Button

@@ -32,6 +32,7 @@ export default function NextOfKin() {
   const authReducer = useSelector((state) => state.authReducer);
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
   const buyProductReducer = useSelector((state) => state.buyProductReducer);
+  const existing_nok_details = buyProductReducer?.existingAccountDataDetails?.payload?.data?.data?.next_of_kin;
   const productsReducer = useSelector((state) => state.productsReducer);
   const productData = productsReducer?.productDetailsData?.payload?.data?.data;
   const isBothTrue = productData?.category?.hasBeneficiary && productData?.category?.hasChnNumber;
@@ -92,9 +93,9 @@ export default function NextOfKin() {
       id_card: customerDetails?.kycDetail[1]?.location ?? "",
       signature_specimen: customerDetails?.kycDetail[2]?.location ?? "",
       utility_bill: customerDetails?.kycDetail[3]?.location ?? "",
-      bank_id: buyProductReducer?.bankDetails?.bankSelected?.id ?? null,
+      bank_id: buyProductReducer?.bankDetails?.selected_bank?.id ?? null,
       bank_acct_no: buyProductReducer?.bankDetails?.accountNumber ?? null,
-      bank_acct_name: buyProductReducer?.bankDetails?.account_name ?? null,
+      bank_acct_name: buyProductReducer?.bankDetails?.existing_account_name ?? null,
       is_pep: customerDetails?.pep_status ?? false,
       is_minor: false,
       owner: true,
@@ -174,14 +175,14 @@ export default function NextOfKin() {
       <div className="mt-8">
         <Formik
           initialValues={{
-            firstName: "",
-            lastName: "",
-            middleName: "",
-            relationship: "",
-            phone_number: "",
-            gender: "",
-            email: "",
-            address: "",
+            firstName: existing_nok_details?.first_name ?? "",
+            lastName: existing_nok_details?.last_name ?? "",
+            middleName: existing_nok_details?.middle_name ?? "",
+            relationship: existing_nok_details?.relationship ?? "",
+            phone_number: existing_nok_details?.phone ?? "",
+            gender: existing_nok_details?.gender ?? "",
+            email: existing_nok_details?.email ?? "",
+            address: existing_nok_details?.address ?? "",
           }}
           validationSchema={nextOfKinSchema}
           enableReinitialize={true}
@@ -248,6 +249,7 @@ export default function NextOfKin() {
                     name="relationship"
                     setFieldValue={setFieldValue}
                     value={values.relationship}
+                    defaultInputValue={existing_nok_details?.relationship ?? ""}
                     placeholder="Select relationship"
                   />
                   {errors.relationship && touched.relationship ? (
@@ -293,6 +295,7 @@ export default function NextOfKin() {
                     name="gender"
                     setFieldValue={setFieldValue}
                     value={values.gender}
+                    defaultInputValue={existing_nok_details?.gender ?? ""}
                     placeholder="Select gender"
                   />
                   {errors.gender && touched.gender ? (

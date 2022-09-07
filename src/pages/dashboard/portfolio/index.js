@@ -104,14 +104,14 @@ export default function Portfolio() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const portfolioReducer = useSelector((state) => state.portfolioReducer);
-  // const portfolioSummary = portfolioReducer?.portfolioSummaryData;
+  const portfolioSummary = portfolioReducer?.portfolioSummaryData?.payload?.data?.data;
   const portfolio_items = portfolioReducer?.portfolioPerformanceData?.payload?.data?.data?.portfolio_items;
   const otherDetails = portfolioReducer?.portfolioTransaction?.payload?.data?.metadata;
   const portfolioStats = portfolioReducer?.portfolioStatisticsData?.payload?.data?.data;
 
   const [cashAccountId, setCashAccountId] = useState("");
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
   const [searchText, setSearchText] = useState("");
   const [paginationNumber, setPaginationNumber] = useState(1);
 
@@ -160,6 +160,16 @@ export default function Portfolio() {
       dispatch(handleGetPortfolioTransaction({ paginationNumber, searchText, startDate, endDate }));
     }
     return null;
+  };
+
+  const clearFilter = () => {
+    if (searchText !== "" || startDate !== null || endDate !== null) {
+      setSearchText("");
+      setStartDate("");
+      setEndDate("");
+      setPaginationNumber(1);
+      dispatch(handleGetPortfolioTransaction({ paginationNumber }));
+    }
   };
 
   const handlePaginationChange = (_, page) => {
@@ -426,35 +436,39 @@ export default function Portfolio() {
               </>
             )}
         </div>
-        {!!!portfolioReducer?.portfolioPerformanceIsLoading && portfolio_items?.length < 1 && (
-          <div className="mt-4 flex flex-col gap-2 justify-center items-center w-full h-[550px] bg-white">
-            <img src={EmptyState} alt="empty_state" />
-            <Text variant="h3" weight="normal">
-              You have no portfolios
-            </Text>
-            <Text variant="h3" weight="normal">
-              Lets make building your wealth easier.
-            </Text>
-            <div>
-              <Button
-                title="Start Investing"
-                className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
-                type="button"
-                textColor="#fff"
-                onClick={() => navigate("/products/all")}
-              />
+        {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+          portfolio_items?.length === 0 &&
+          portfolioReducer?.portfolioPerformanceData?.type === "portfolio/portfolioPerfomance/fulfilled" && (
+            <div className="mt-4 flex flex-col gap-2 justify-center items-center w-full h-[550px] bg-white">
+              <img src={EmptyState} alt="empty_state" />
+              <Text variant="h3" weight="normal">
+                You have no portfolios
+              </Text>
+              <Text variant="h3" weight="normal">
+                Lets make building your wealth easier.
+              </Text>
+              <div>
+                <Button
+                  title="Start Investing"
+                  className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
+                  type="button"
+                  textColor="#fff"
+                  onClick={() => navigate("/products/all")}
+                />
+              </div>
             </div>
-          </div>
-        )}
+          )}
         <>
           <div className="w-full mt-4">
-            {portfolio_items !== undefined && portfolio_items?.length >= 1 && (
-              <div className="w-full">
-                <Text variant="h3" weight="bold">
-                  Portfolio and performance
-                </Text>
-              </div>
-            )}
+            {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+              portfolio_items !== undefined &&
+              portfolio_items?.length >= 1 && (
+                <div className="w-full">
+                  <Text variant="h3" weight="bold">
+                    Portfolio and performance
+                  </Text>
+                </div>
+              )}
             {portfolioReducer?.portfolioPerformanceIsLoading && (
               <div className="w-full flex gap-2">
                 <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="345px" height={148} />
@@ -595,7 +609,8 @@ export default function Portfolio() {
                     </div>
                   </div>
                 )}
-              {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+              {!!!portfolioReducer?.portfolioSummaryIsLoading &&
+                !!!portfolioReducer?.portfolioPerformanceIsLoading &&
                 portfolio_items !== undefined &&
                 portfolio_items?.length >= 1 && (
                   <div className="bg-[#FFF8F8] W-[100%] lg:basis-1/3 h-[500px] p-6">
@@ -612,7 +627,7 @@ export default function Portfolio() {
                             Total earnings
                           </Text>
                           <Text weight="bold" variant="h4">
-                            N230,000.56
+                            {portfolioSummary?.total_earnings ?? 0}
                           </Text>
                         </div>
                       </div>
@@ -623,7 +638,7 @@ export default function Portfolio() {
                             Total Withdrawals
                           </Text>
                           <Text weight="bold" variant="h4">
-                            N13,000.56
+                            {portfolioSummary?.total_withdrawals ?? 0}
                           </Text>
                         </div>
                       </div>
@@ -634,7 +649,7 @@ export default function Portfolio() {
                             Total Deposits
                           </Text>
                           <Text weight="bold" variant="h4">
-                            N13,000.56
+                            {portfolioSummary?.total_deposits ?? 0}
                           </Text>
                         </div>
                       </div>
@@ -645,7 +660,7 @@ export default function Portfolio() {
                             Total Assets
                           </Text>
                           <Text weight="bold" variant="h4">
-                            4
+                            {portfolioSummary?.total_assets ?? 0}
                           </Text>
                         </div>
                       </div>
@@ -679,6 +694,7 @@ export default function Portfolio() {
                         <Input
                           className="w-full"
                           placeholder="*Start"
+                          value={startDate}
                           name="start"
                           type="date"
                           handleChange={(e) => setStartDate(e.target.value)}
@@ -691,6 +707,7 @@ export default function Portfolio() {
                         <Input
                           className="w-full"
                           placeholder="*End"
+                          value={endDate}
                           name="end"
                           type="date"
                           handleChange={(e) => setEndDate(e.target.value)}
@@ -704,6 +721,16 @@ export default function Portfolio() {
                           size="small"
                           textColor="#fff"
                           onClick={() => handleFilter()}
+                        />
+                      </div>
+                      <div>
+                        <Button
+                          onClick={() => clearFilter()}
+                          title="clear filter"
+                          className="cursor-pointer w-full border-none outline-none"
+                          type="button"
+                          backgroundColor="none"
+                          textColor="#E32526"
                         />
                       </div>
                       <Text variant="body" weight="bold" format="mt-4">

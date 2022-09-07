@@ -142,11 +142,11 @@ export const portfolioSlice = createSlice({
     },
     [handleGetPortfolioSummary.fulfilled]: (state, action) => {
       state.portfolioSummaryIsLoading = false;
-      state.portfolioSummaryData = action.payload;
+      state.portfolioSummaryData = action;
     },
     [handleGetPortfolioSummary.rejected]: (state, action) => {
       state.portfolioSummaryIsLoading = false;
-      state.portfolioSummaryData = action.payload;
+      state.portfolioSummaryData = action;
     },
     [handleGetPortfolioStatistics.pending]: (state) => {
       state.portfolioStatisticsIsLoading = true;

@@ -12,6 +12,9 @@ import { Provider } from "react-redux";
 import store from "./store";
 import { persistStore } from "redux-persist";
 
+import { ApiInjectStore } from "./services/api";
+ApiInjectStore(store);
+
 const persistor = persistStore(store);
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

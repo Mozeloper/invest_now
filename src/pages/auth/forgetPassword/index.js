@@ -78,7 +78,7 @@ export default function ForgetPassword() {
                 <label htmlFor="email" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
                   Email Addrerss
                 </label>
-                <Input placeholder="Enter email adress" type="text" name="email" handleChange={handleChange} />
+                <Input placeholder="Enter email address" type="text" name="email" handleChange={handleChange} />
                 {errors.email && touched.email ? (
                   <Text variant="h4" weight="normal" color="text-red">
                     {errors.email}

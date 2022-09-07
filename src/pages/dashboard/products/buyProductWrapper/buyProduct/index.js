@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Text from "../../../../../components/Typography/Typography";
 import downArrow from "../../../../../assets/icons/down_arrow.svg";
 import downArrowWhite from "../../../../../assets/icons/white_small_logo.svg";
@@ -9,6 +9,8 @@ import {
   handleExistingCashAccount,
   reintializeState,
   setAccountType,
+  setProductCode,
+  setReferralCode,
 } from "../../../../../store/slices/buyProductSlice";
 import { handleResetStep } from "../../../../../store/slices/openAccountSlice";
 import Loader from "../../../../../components/loader";
@@ -16,6 +18,7 @@ import Loader from "../../../../../components/loader";
 export default function BuyProducts() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const location = useLocation();
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const buyProductReducer = useSelector((state) => state.buyProductReducer);
   const firstName = dashboardReducer?.customerDetails?.payload?.data?.data?.firstname;
@@ -32,6 +35,11 @@ export default function BuyProducts() {
     (async () => {
       mounted = true;
       if (mounted) {
+        window.scroll({
+          top: 0,
+          left: 0,
+          behavior: "smooth",
+        });
         if (customerKycStep) {
           navigate("/settings/accounts");
           dispatch(reintializeState());
@@ -41,6 +49,13 @@ export default function BuyProducts() {
           dispatch(reintializeState());
           dispatch(handleResetStep());
           dispatch(handleExistingCashAccount());
+        }
+        if (location?.state !== null) {
+          const myString = location?.state?.replace("?encoded_key=", "");
+          const decodedString = atob(myString);
+          const splitted = decodedString.split("-");
+          dispatch(setProductCode(splitted[0]));
+          dispatch(setReferralCode(splitted[1]));
         }
       }
     })();
@@ -138,14 +153,14 @@ export default function BuyProducts() {
                   {!!!buyProductReducer?.isExistingCashAccountIsLoaing &&
                     buyProductReducer?.existingAccountData?.type === "buyproduct/existingCashAccount/fulfilled" && (
                       <>
-                        {buyProductReducer?.existingAccountData?.payload?.data?.data.map((list, index) => {
+                        {buyProductReducer?.existingAccountData?.payload?.data?.data?.map((list, index) => {
                           return (
                             <div
                               key={index}
                               style={{ background: "linear-gradient(to right, #2B2B2B, 70%, #606161)" }}
                               className="p-[2%] lg:w-[534px] md:w-full w-full rounded-lg cursor-pointer"
                               onClick={() => {
-                                navigate("/products/new_bank_account");
+                                navigate("/products/new_bank_account", { state: list });
                                 dispatch(setAccountType("MY_SELF"));
                               }}
                             >

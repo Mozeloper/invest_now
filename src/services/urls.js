@@ -1,5 +1,5 @@
 export const appUrls = {
-  loginURL: "auth/app-login",
+  loginURL: "api/v2/auth/login",
   customerDetails: "api/v2/customers/get",
   forgetPasswordURL: "api/v2/customers/generate-verification-code?",
   forgetPasswordOtpURL: "api/v2/customers/validate-verification-code?",
@@ -48,6 +48,7 @@ export const appUrls = {
   recurrentPaymentURL: "payment-tokenize/setup-recurrent",
   verifyPaymentURL: "payment-tokenize/verify",
   existingCashAccountUrl: "api/v2/customers/get-cash-accounts",
+  existingCashAccountDetailsUrl: "api/v2/customers/get-cash-account-detail",
   getPortfolioPerfomanceURL: "api/v2/customers/get-portfolio-detail",
   getPortfolioDetailsURL: "api/v2/customers/get-portfolio-item-detail",
   saveWithdrawalRequestURL: "investnow/save-withdrawal-request",
@@ -63,4 +64,6 @@ export const appUrls = {
   withdrawalHistoryCompletedURL: "investnow/get-withdrawal-requests",
   getActiveRecurringPaymentURL: "investnow/get-active-recurrent",
   disableRecurringPaymentURL: "investnow/disable-recurrent",
+  getSegmentURL: "json/stock-broking/get-equity-list",
+  saveUtraceURL: "utrace/save",
 };

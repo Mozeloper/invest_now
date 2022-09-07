@@ -254,6 +254,16 @@ export default function SignatureSetup({ handleCloseModals }) {
               className="cursor-pointer w-full"
               type="button"
             />
+            <Button
+              onClick={() => {
+                signCanvas.current.clear();
+              }}
+              title="clear"
+              className="cursor-pointer w-full border-none outline-none"
+              type="button"
+              backgroundColor="none"
+              textColor="#E32526"
+            />
           </div>
         </div>
         {message !== "" && (

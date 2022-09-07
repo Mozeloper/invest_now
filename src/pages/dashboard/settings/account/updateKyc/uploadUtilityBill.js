@@ -83,13 +83,15 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
       {image !== "" && (
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <Button
-            onClick={() => utilityBillSefie()}
-            title="Save Picture"
-            className="cursor-pointer w-full"
-            type="button"
-            isLoading={updateKycSliceReducer?.isLoading}
-          />
+          <div className="w-[50%]">
+            <Button
+              onClick={() => utilityBillSefie()}
+              title="Save Picture"
+              className="cursor-pointer "
+              type="button"
+              isLoading={updateKycSliceReducer?.isLoading}
+            />
+          </div>
         </>
       )}
       {message !== "" && (
@@ -267,15 +269,17 @@ export default function UploadUtilityBill({ handleCloseModals }) {
                 {images !== "" && (
                   <div className="flex flex-col items-center justify-center gap-4">
                     <img src={imageList} alt="img_preview" className="h-[300px] w-[300px]" />
-                    <Button
-                      onClick={() => {
-                        utilityBillUpload();
-                      }}
-                      isLoading={updateKycSliceReducer?.isLoading}
-                      title="Save Picture"
-                      className="cursor-pointer w-full"
-                      type="button"
-                    />
+                    <div className="w-[50%]">
+                      <Button
+                        onClick={() => {
+                          utilityBillUpload();
+                        }}
+                        isLoading={updateKycSliceReducer?.isLoading}
+                        title="Save Picture"
+                        className="cursor-pointer w-full"
+                        type="button"
+                      />
+                    </div>
                   </div>
                 )}
                 {message !== "" && (

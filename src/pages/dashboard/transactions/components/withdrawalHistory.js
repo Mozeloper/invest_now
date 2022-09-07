@@ -49,6 +49,16 @@ export default function WithdrawalHistory() {
     return null;
   };
 
+  const clearFilter = () => {
+    if (searchText !== "" || startDate !== "" || endDate !== "") {
+      setSearchText("");
+      setStartDate("");
+      setEndDate("");
+      setPaginationNumber(1);
+      dispatch(handleGetWithdrawalHistory({ paginationNumber }));
+    }
+  };
+
   return (
     <>
       <div className="bg-[#F3F3F3] px-[4%] py-[2%] h-full flex items-center gap-4 flex-wrap w-full">
@@ -90,6 +100,16 @@ export default function WithdrawalHistory() {
             size="small"
             textColor="#fff"
             onClick={() => handleFilter()}
+          />
+        </div>
+        <div>
+          <Button
+            onClick={() => clearFilter()}
+            title="clear filter"
+            className="cursor-pointer w-full border-none outline-none"
+            type="button"
+            backgroundColor="none"
+            textColor="#E32526"
           />
         </div>
         <Text variant="body" weight="bold" format="mt-4">

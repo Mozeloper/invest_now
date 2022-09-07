@@ -11,7 +11,6 @@ export default function ViewDailyRates({ setViewDailyRates }) {
 
   const dashboardSummaryDetails = useSelector((state) => state?.dashboardReducer);
   const slidingRate = dashboardSummaryDetails?.slidingRate;
-  console.log(slidingRate);
 
   useEffect(() => {
     let mounted = false;

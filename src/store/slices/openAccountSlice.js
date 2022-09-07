@@ -107,7 +107,6 @@ export const openAccountSlice = createSlice({
   initialState,
   reducers: {
     handleNextStep: (state, action) => {
-      console.log(action);
       switch (action?.payload?.type) {
         case "bank":
           state.step = action?.payload?.nextPhase;

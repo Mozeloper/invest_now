@@ -60,7 +60,14 @@ const WebcamCapture = ({ handleCloseUploadModals, validId }) => {
       {image !== "" && (
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <Button onClick={() => uploadValid()} title="Save Picture" className="cursor-pointer w-full" type="button" />
+          <div className="w-[50%]">
+            <Button
+              onClick={() => uploadValid()}
+              title="Save Picture"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
         </>
       )}
     </div>
@@ -292,15 +299,17 @@ export default function CscsValidIdentity({ handleCloseModal }) {
                   {images !== "" && (
                     <div className="flex flex-col items-center justify-center gap-4">
                       <img src={imageList} alt="img_preview" className="h-[300px] w-[300px]" />
-                      <Button
-                        onClick={() => {
-                          uploadValid();
-                        }}
-                        title="Save Picture"
-                        className="cursor-pointer w-full"
-                        type="button"
-                        isLoading={updateKycSliceReducer?.isLoading}
-                      />
+                      <div className="w-[50%]">
+                        <Button
+                          onClick={() => {
+                            uploadValid();
+                          }}
+                          title="Save Picture"
+                          className="cursor-pointer w-full"
+                          type="button"
+                          isLoading={updateKycSliceReducer?.isLoading}
+                        />
+                      </div>
                     </div>
                   )}
                 </MessageModal>

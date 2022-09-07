@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import closeBtn from "../../../../../assets/icons/close_btn.svg";
 import UploadIcon from "../../../../../assets/icons/upload_icon.svg";
 import checked from "../../../../../assets/icons/correct.svg";
@@ -13,6 +13,7 @@ import SelfCertification from "./selfCertification";
 import SignatureSetup from "./signatureSetup";
 import UploadPassport from "./uploadPassport";
 import { useSelector } from "react-redux";
+import Button from "../../../../../components/Button";
 
 export default function UpdateKyc({ handleCloseItemRouting }) {
   const [openModal, setOpenModal] = useState({
@@ -23,7 +24,9 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
     bio_data: false,
     employment_details: false,
     self_certification: false,
+    showPopup: false,
   });
+
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const completionStatus =
     dashboardReducer?.customerDetails?.payload?.data?.data?.profile_completion?.completion_status;
@@ -38,6 +41,24 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
     dashboardReducer?.customerDetails?.payload?.data?.data?.mothers_maiden_name !== null
       ? dashboardReducer?.customerDetails?.payload?.data?.data?.mothers_maiden_name
       : false;
+  const customerKycStepTier_0 =
+    dashboardReducer?.customerDetails?.payload?.data?.data?.tier_status === "TIER_0" ? true : false;
+  const customerKycStepTier_1 =
+    dashboardReducer?.customerDetails?.payload?.data?.data?.tier_status === "TIER_1" ? true : false;
+  const ifAnyTierExist = customerKycStepTier_0 || customerKycStepTier_1;
+
+  useEffect(() => {
+    let mounted = false;
+    (async () => {
+      mounted = true;
+      if (mounted && ifAnyTierExist) {
+        handleOpenModals("showPopup");
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [ifAnyTierExist]);
 
   const handleOpenModals = (type) => {
     switch (type) {
@@ -78,6 +99,12 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
         }));
         break;
       case "self_certification":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "showPopup":
         setOpenModal((prev) => ({
           ...prev,
           [type]: true,
@@ -132,10 +159,17 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
           [type]: false,
         }));
         break;
+      case "showPopup":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
       default:
         break;
     }
   };
+
   return (
     <>
       <div className="flex justify-end w-full">
@@ -158,7 +192,7 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
         </Text>
       </div>
       <div className="w-full flex flex-col gap-2">
-        <Text variant="sub" weight="bold">
+        <Text variant="body" weight="bold">
           Your Passport *
         </Text>
         <div
@@ -174,8 +208,8 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
           Accepted file type are PDF , PNG or JPEG. File size must not be more than 5mb
         </Text>
       </div>
-      <div className="w-full flex flex-col gap-2">
-        <Text variant="sub" weight="bold">
+      <div className="w-full flex flex-col gap-2 my-3">
+        <Text variant="body" weight="bold">
           Your Signature *
         </Text>
         <div
@@ -192,7 +226,7 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
         </Text>
       </div>
       <div className="w-full flex flex-col gap-2 my-3">
-        <Text variant="sub" weight="bold">
+        <Text variant="body" weight="bold">
           Valid ID update
         </Text>
         <div
@@ -209,14 +243,14 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
         </Text>
       </div>
       <div className="w-full flex flex-col gap-2">
-        <Text variant="sub" weight="bold">
+        <Text variant="body" weight="bold">
           Utility bill update
         </Text>
         <div
           onClick={() => (utilityKycStatus ? null : handleOpenModals("utility_bill"))}
           className="flex items-center justify-between w-full cursor-pointer px-4 py-2 bg-[#F8F8F8]"
         >
-          <Text variant="sub" weight="normal">
+          <Text variant="body" weight="normal">
             Upload your Utility bill
           </Text>
           {utilityKycStatus ? <img src={checked} alt="upload_icon" /> : <img src={UploadIcon} alt="upload_icon" />}
@@ -259,22 +293,48 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
           )}
         </div>
       </div>
+      <MessageModal bgColor={true} modalHeight="auto" isOpen={openModal?.showPopup}>
+        <Text variant="h4" weight="bold">
+          To Start Investing, Kindly Provide the following Information;
+        </Text>
+        <div className="w-full my-4">
+          <ul className="list-disc ml-[6%]">
+            <li className="font-bold text-sm text-black">Take/Upload a selfie</li>
+            <li className="font-bold text-sm text-black">Upload a signature</li>
+            <li className="font-bold text-sm text-black">Valid Id</li>
+            <li className="font-bold text-sm text-black">Employment Details</li>
+          </ul>
+        </div>
+        <Text variant="h4" weight="bold">
+          Please note that you will be required to complete your KYC to make withdrawal
+        </Text>
+        <div className="w-full flex justify-center">
+          <div className="mt-8 w-[60%]">
+            <Button
+              onClick={() => handleCloseModals("showPopup")}
+              title="Continue"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
+        </div>
+      </MessageModal>
       <MessageModal bgColor={true} modalHeight="625px" isOpen={openModal?.utility_bill}>
         <UploadUtilityBill handleCloseModals={handleCloseModals} />
       </MessageModal>
-      <MessageModal bgColor={true} modalHeight="625px" isOpen={openModal?.valid_id}>
+      <MessageModal bgColor={true} modalHeight="650px" isOpen={openModal?.valid_id}>
         <UploadValidId handleCloseModals={handleCloseModals} />
       </MessageModal>
-      <MessageModal bgColor={true} modalHeight="720px" isOpen={openModal?.signature_setup}>
+      <MessageModal bgColor={true} modalHeight="450px" isOpen={openModal?.signature_setup}>
         <SignatureSetup handleCloseModals={handleCloseModals} />
       </MessageModal>
-      <MessageModal bgColor={true} modalHeight="720px" isOpen={openModal?.upload_passport}>
+      <MessageModal bgColor={true} modalHeight="450px" isOpen={openModal?.upload_passport}>
         <UploadPassport handleCloseModals={handleCloseModals} />
       </MessageModal>
       <MessageModal modalHeight="100vh" isOpen={openModal?.bio_data}>
         <UpdateBioData handleCloseModals={handleCloseModals} />
       </MessageModal>
-      <MessageModal modalHeight="700px" isOpen={openModal?.employment_details}>
+      <MessageModal modalHeight="70vh" isOpen={openModal?.employment_details}>
         <EmploymentDetails handleCloseModals={handleCloseModals} />
       </MessageModal>
       <MessageModal modalHeight="auto" isOpen={openModal?.self_certification}>

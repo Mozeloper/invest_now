@@ -17,6 +17,12 @@ import {
 } from "../../../../store/slices/buyProductSlice";
 import MessageModal from "../../../../components/modals/MessageModal";
 import BlankModal from "../../../../components/modals/blankModal";
+import {
+  handleGetPortfolioPerfomance,
+  handleGetPortfolioStatistics,
+  handleGetPortfolioSummary,
+  handleGetPortfolioTransaction,
+} from "../../../../store/slices/portfolioSlice";
 
 const colourStyles = {
   control: (styles) => ({
@@ -45,6 +51,7 @@ export default function Addmoney({ handleCloseModal }) {
   const portfolioReducer = useSelector((state) => state.portfolioReducer);
   const portfolioDetails = portfolioReducer?.portfolioDetailsData?.payload?.data?.data;
   const attemptId = useRef(null);
+  const refNumber = useRef(null);
 
   const [error, setError] = useState({
     amount: false,
@@ -61,7 +68,8 @@ export default function Addmoney({ handleCloseModal }) {
   const [dayOfWeek, setDayOfWeek] = useState(null);
   const [showErrorModals, setShowErrorModals] = useState({
     verifyPayment: false,
-    initializePayment: false,
+    initializePaymentError: false,
+    initializePaymentSuccess: false,
     details: null,
   });
 
@@ -90,7 +98,7 @@ export default function Addmoney({ handleCloseModal }) {
   }
 
   const config = {
-    reference: new Date().getTime().toString(),
+    reference: refNumber.current,
     email: emailAddress,
     amount: Number(amount * 100),
     metadata: portfolioDetails?.deposit_account?.paystack_custom_data,
@@ -106,6 +114,10 @@ export default function Addmoney({ handleCloseModal }) {
       .then((res) => {
         if (res?.data?.success) {
           handleCloseModal("add_money");
+          dispatch(handleGetPortfolioPerfomance());
+          dispatch(handleGetPortfolioSummary());
+          dispatch(handleGetPortfolioStatistics());
+          dispatch(handleGetPortfolioTransaction());
         }
       })
       .catch((err) => {
@@ -168,14 +180,19 @@ export default function Addmoney({ handleCloseModal }) {
       .unwrap()
       .then((res) => {
         if (res?.data?.success) {
-          initializePaymentsToPaystack(onSuccess, onClose);
           attemptId.current = res?.data?.data?.id;
+          refNumber.current = res?.data?.data?.ref_number;
+          setShowErrorModals((prev) => ({
+            ...prev,
+            initializePaymentSuccess: true,
+            details: res?.data?.message,
+          }));
         }
       })
       .catch((err) => {
         setShowErrorModals((prev) => ({
           ...prev,
-          initializePayment: true,
+          initializePaymentError: true,
           details: err?.data?.message,
         }));
       });
@@ -205,14 +222,19 @@ export default function Addmoney({ handleCloseModal }) {
       .unwrap()
       .then((res) => {
         if (res?.data?.success) {
-          initializePaymentsToPaystack(onSuccess, onClose);
           attemptId.current = res?.data?.data?.id;
+          refNumber.current = res?.data?.data?.ref_number;
+          setShowErrorModals((prev) => ({
+            ...prev,
+            initializePaymentSuccess: true,
+            details: res?.data?.message,
+          }));
         }
       })
       .catch((err) => {
         setShowErrorModals((prev) => ({
           ...prev,
-          initializePayment: true,
+          initializePaymentError: true,
           details: err?.data?.message,
         }));
       });
@@ -366,6 +388,55 @@ export default function Addmoney({ handleCloseModal }) {
                 }))
               }
               title="Close"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
+        </div>
+      </MessageModal>
+      <MessageModal isOpen={showErrorModals?.initializePaymentError} modalWidth="300px" modalHeight="auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          <Text format="text-center mt-3 whitespace-nowrap" variant="h3" color="text-[#465174]" weight="bold">
+            Oops!
+          </Text>
+          <Text format="text-center mt-3" variant="body" color="text-[#465174]" weight="bold">
+            {showErrorModals?.details}
+          </Text>
+          <div className="mt-4 w-full">
+            <Button
+              onClick={() =>
+                setShowErrorModals((prev) => ({
+                  ...prev,
+                  initializePaymentError: false,
+                  details: null,
+                }))
+              }
+              title="Close"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
+        </div>
+      </MessageModal>
+      <MessageModal isOpen={showErrorModals?.initializePaymentSuccess} modalWidth="300px" modalHeight="auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          <Text format="text-center mt-3 whitespace-nowrap" variant="h3" color="text-[#465174]" weight="bold">
+            Congratulations
+          </Text>
+          <Text format="text-center mt-3" variant="body" color="text-[#465174]" weight="bold">
+            {showErrorModals?.details}
+          </Text>
+          <div className="mt-4 w-full">
+            <Button
+              onClick={() => {
+                setShowErrorModals((prev) => ({
+                  ...prev,
+                  initializePaymentSuccess: false,
+                  details: null,
+                }));
+                initializePaymentsToPaystack(onSuccess, onClose);
+              }}
+              title="continue"
               className="cursor-pointer w-full"
               type="button"
             />

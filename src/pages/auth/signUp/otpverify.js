@@ -29,16 +29,20 @@ export default function OTPverify() {
       bvn: authReducer?.user?.data?.bvn,
       code: { code: values.otp },
     };
-    console.log(data);
     await dispatch(handleValidateOtpCode(data))
       .unwrap()
       .then((res) => {
-        console.log(res);
-        // route user to create password page
-        navigate("/create_password", { state: state?.state?.email });
+        if (res?.data?.success) {
+          navigate("/create_password", { state: state?.state?.email });
+        }
       })
       .catch((err) => {
-        console.log(err);
+        setOpenStatusMessage(true);
+        setStatusMessage((prev) => ({
+          ...prev,
+          reason: "!Oops",
+          message: err?.data?.message,
+        }));
       });
   };
 
@@ -46,7 +50,16 @@ export default function OTPverify() {
     const bvn = authReducer?.user?.data?.bvn;
     await dispatch(handleResetVerificationCode(bvn))
       .unwrap()
-      .then((res) => {})
+      .then((res) => {
+        if (res?.data?.success) {
+          setOpenStatusMessage(true);
+          setStatusMessage((prev) => ({
+            ...prev,
+            reason: "OTP SENT",
+            message: res?.data?.message,
+          }));
+        }
+      })
       .catch((err) => {
         setOpenStatusMessage(true);
         setStatusMessage((prev) => ({
@@ -134,12 +147,12 @@ export default function OTPverify() {
             {isTimeOver && !!!values?.otp.length >= 1 && (
               <div className="items-start w-[50%] mt-4">
                 <Button
-                  title="Resend Otp"
+                  title={`${authReducer?.isLoading ? "Loading..." : "Resend Otp"}`}
+                  disabled={authReducer?.isLoading}
                   textColor="#E32526"
                   backgroundColor="none"
                   className="cursor-pointer w-full whitespace-nowrap"
                   type="button"
-                  isLoading={isSubmitting}
                   style={{ borderRadius: "20px", border: "3px solid #E32526" }}
                   onClick={() => {
                     handleResetVerificationOtpCode();

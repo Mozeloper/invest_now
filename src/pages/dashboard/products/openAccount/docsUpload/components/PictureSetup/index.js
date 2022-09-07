@@ -24,7 +24,6 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
   const webcamRef = React.useRef(null);
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
-    console.log(imageSrc);
     setImage(imageSrc);
   }, [webcamRef]);
 

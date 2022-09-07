@@ -205,10 +205,10 @@ export default function UpdateBioData({ handleCloseModals }) {
                 ) : null}
               </div>
 
-              <div className="mt-8">
+              <div className="w-full mt-8 flex justify-center">
                 <Button
                   title="Submit"
-                  className="cursor-pointer w-full"
+                  className="cursor-pointer w-[50%]"
                   type="submit"
                   isLoading={updateKycSliceReducer?.saveBioDataisLoading}
                 />

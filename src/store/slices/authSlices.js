@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { api } from "../../services/api";
 import { appUrls } from "../../services/urls";
 
-export const handleLogin = createAsyncThunk("auth/login", async (values, { rejectWithValue }) => {
+export const handleLogin = createAsyncThunk("auth/handleLogin", async (values, { rejectWithValue }) => {
   try {
     const data = await api.post(appUrls.loginURL, values);
     return data;
@@ -128,7 +128,7 @@ export const handleValidateOtpCode = createAsyncThunk("auth/validateOtpCode", as
   }
 });
 
-export const handlePasswordCreation = createAsyncThunk("auth/getResetOtpCode", async (values, { rejectWithValue }) => {
+export const handlePasswordCreation = createAsyncThunk("auth/passwordCreation", async (values, { rejectWithValue }) => {
   try {
     const data = await api.put(appUrls.passwordCreationURL + `?bvn=${values.bvn}`, values.password);
     return data;
@@ -170,15 +170,17 @@ export const authSlice = createSlice({
     [handleLogin.pending]: (state) => {
       state.isLoading = true;
       state.authedUser = null;
+      state.isLoggedIn = false;
     },
     [handleLogin.fulfilled]: (state, action) => {
       state.isLoggedIn = true;
       state.isLoading = false;
       state.authedUser = action?.payload?.data;
     },
-    [handleLogin.rejected]: (state, action) => {
+    [handleLogin.rejected]: (state) => {
       state.isLoggedIn = false;
-      state.authedUser = action?.payload?.data;
+      state.isLoading = false;
+      state.authedUser = null;
     },
     [handleForgetPassword.pending]: (state) => {
       state.isLoading = true;
@@ -319,7 +321,7 @@ export const authSlice = createSlice({
     },
     [handlePasswordCreation.rejected]: (state, action) => {
       state.isLoading = false;
-      state.authedUser = action.payload?.data;
+      state.authedUser = null;
     },
   },
 });

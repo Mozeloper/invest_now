@@ -42,6 +42,7 @@ const SearchableSelect = ({
   isLoading,
   extraFunction,
   defaultValue,
+  defaultInputValue,
   multipleOptions = false,
 }) => {
   return (
@@ -57,7 +58,7 @@ const SearchableSelect = ({
       styles={colourStyles}
       placeholder={!isLoading ? placeholder : ""}
       isLoading={isLoading}
-      // defaultInputValue={defaultValue}
+      defaultInputValue={defaultInputValue}
       defaultValue={defaultValue}
       isMulti={multipleOptions}
     />

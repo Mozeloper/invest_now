@@ -23,8 +23,8 @@ export default function SuccessAccountModal({ handleCloseModal, setIsModalOpen }
           Congratulations!
         </Text>
         <Text weight="normal" variant="body" color="text-[#465174]" format="tracking-wide text-center">
-          You now have a United Capital Trust Fund Account. An activation Link has been sent to your mail. Use it to
-          activate your account and create a password
+          You now have a United Capital Account. An activation Link has been sent to your mail. Use it to activate your
+          account and create a password
         </Text>
       </div>
       <div className="mt-6 w-full flex justify-center">

@@ -17,12 +17,13 @@ export default function ResetPassword({ handleCloseItemRouting }) {
     await dispatch(handleResetPassword(data))
       .unwrap()
       .then((res) => {
-        console.log(res);
-        setTimeout(() => {
-          handleCloseItemRouting("change_password");
-          setMessage("");
-        }, 2000);
-        setMessage(res?.data?.message);
+        if (res?.data?.success) {
+          setTimeout(() => {
+            handleCloseItemRouting("change_password");
+            setMessage("");
+          }, 2000);
+          setMessage(res?.data?.message);
+        }
       })
       .catch((error) => {
         console.log(error);

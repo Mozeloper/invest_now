@@ -12,6 +12,24 @@ export const handleGetAllProducts = createAsyncThunk("products/allProducts", asy
   }
 });
 
+export const handleGetAllSegment = createAsyncThunk("products/segments", async (value, { rejectWithValue }) => {
+  try {
+    const data = await api.get(appUrls.getSegmentURL + `?segments=${value ?? ""}`);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
+export const handleSubmitUtrace = createAsyncThunk("products/utrace", async (value, { rejectWithValue }) => {
+  try {
+    const data = await api.post(appUrls.saveUtraceURL, value);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
 export const handleGetProductDetails = createAsyncThunk(
   "products/productDetail",
   async (value, { rejectWithValue }) => {
@@ -29,6 +47,8 @@ const initialState = {
   allProductData: null,
   productDetailIsLoading: false,
   productDetailsData: null,
+  productSegementsIsLoading: false,
+  productSegmentData: null,
 };
 
 export const productsSlice = createSlice({
@@ -54,6 +74,25 @@ export const productsSlice = createSlice({
     },
     [handleGetProductDetails.rejected]: (state) => {
       state.productDetailIsLoading = false;
+    },
+    [handleGetAllSegment.pending]: (state) => {
+      state.productSegementsIsLoading = true;
+    },
+    [handleGetAllSegment.fulfilled]: (state, action) => {
+      state.productSegementsIsLoading = false;
+      state.productSegmentData = action;
+    },
+    [handleGetAllSegment.rejected]: (state) => {
+      state.productSegementsIsLoading = false;
+    },
+    [handleSubmitUtrace.pending]: (state) => {
+      state.savingUtraceIsLoading = true;
+    },
+    [handleSubmitUtrace.fulfilled]: (state, action) => {
+      state.savingUtraceIsLoading = false;
+    },
+    [handleSubmitUtrace.rejected]: (state) => {
+      state.savingUtraceIsLoading = false;
     },
   },
 });

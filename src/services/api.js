@@ -1,6 +1,14 @@
 import axios from "axios";
-import TokenService from "./token.service";
+import { resetInitialState } from "../store/slices/authSlices";
+import { reintializeState } from "../store/slices/buyProductSlice";
+// import TokenService from "./token.service";
 import { appUrls } from "./urls";
+
+let store;
+
+export const ApiInjectStore = (_store) => {
+  store = _store;
+};
 
 const BASE_URL = process.env.REACT_APP_BASE_URL;
 
@@ -17,7 +25,7 @@ const apiResource = () => {
 
   api.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem("access_token");
+      const token = store?.getState()?.authReducer?.authedUser?.data?.user?.access_token;
       // const urlArr = config.url.split("/")
       // console.log("apis", config.url);
       // const isLogin = config.url.includes("auth/app-login");
@@ -37,7 +45,9 @@ const apiResource = () => {
       }),
     async (error) => {
       if (error?.response?.status === 403) {
-        TokenService.removeToken();
+        store?.dispatch(resetInitialState());
+        store?.dispatch(reintializeState());
+        // TokenService.removeUser();
         window.location = "/login";
       } else if (error?.response?.status === 401) {
         const originalConfig = error.config;
@@ -45,7 +55,9 @@ const apiResource = () => {
         if (!isLogin) {
           window.location = "/login";
         }
-        TokenService.removeToken();
+        // TokenService.removeUser();
+        store?.dispatch(resetInitialState());
+        store?.dispatch(reintializeState());
       } else {
         return new Promise((resolve, reject) => {
           reject(error?.response);

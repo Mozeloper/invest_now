@@ -20,7 +20,7 @@ export default function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  console.log(location.state?.from?.pathname);
+  const from = location.state?.from?.pathname ?? "/dashboard";
 
   const handleSubmitLogin = async (values) => {
     await dispatch(handleLogin(values))
@@ -28,8 +28,7 @@ export default function Login() {
       .then((res) => {
         const userData = res?.data;
         if (userData?.success && userData?.message === "User login was successful.") {
-          localStorage.setItem("access_token", res?.data?.data?.user?.access_token);
-          navigate("/dashboard");
+          navigate(from, { state: location?.state?.from?.search }, { replace: true });
         }
       })
       .catch((error) => {
@@ -44,7 +43,14 @@ export default function Login() {
 
   const loginSchema = Yup.object().shape({
     email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
-    password: Yup.string().min(8, "Too Short!").max(50, "Too Long!").required("Password is required"),
+    password: Yup.string()
+      .min(8, "Too Short!")
+      .max(50, "Too Long!")
+      .required("Password is required")
+      .matches(
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#/$%/^&/*])(?=.{8,})/,
+        "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+      ),
   });
 
   return (

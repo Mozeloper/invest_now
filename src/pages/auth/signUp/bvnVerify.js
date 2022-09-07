@@ -104,7 +104,7 @@ export default function BvnVerify() {
         }
       })
       .catch((error) => {
-        console.log("smileError", error);
+        console.log(error);
       });
   };
 
@@ -136,7 +136,7 @@ export default function BvnVerify() {
   const displayMessageAlert = () => {
     if (!!showMessageAlert) {
       return (
-        <MessageModal isOpen={showMessageAlert} minWidth="auto" modalWidth="800px" modalHeight="auto">
+        <MessageModal isOpen={showMessageAlert} minWidth="auto" modalWidth="650px" modalHeight="auto">
           <TermsOfService setShowMessageAlert={() => setShowMessageAlert(!showMessageAlert)} />
         </MessageModal>
       );

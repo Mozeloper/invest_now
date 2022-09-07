@@ -8,7 +8,7 @@ import Button from "../../../../../components/Button";
 import Text from "../../../../../components/Typography/Typography";
 import { handleRatingExperience } from "../../../../../store/slices/openAccountSlice";
 
-export default function RatingModal({ handleCloseModal }) {
+export default function RatingModal({ handleCloseModal, setIsModalOpen }) {
   const dashboardReducer = useSelector((state) => state?.dashboardReducer);
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
   const customerDetails = dashboardReducer?.customerDetails?.payload?.data?.data;
@@ -127,7 +127,13 @@ export default function RatingModal({ handleCloseModal }) {
               <Button
                 onClick={() => {
                   handleCloseModal(false);
-                  // setIsPaymentModalOpen(true);
+                  setIsModalOpen((prev) => ({
+                    ...prev,
+                    error: false,
+                    success: false,
+                    showFundAccount: true,
+                    details: null,
+                  }));
                 }}
                 title="Continue to payment"
                 className="cursor-pointer"

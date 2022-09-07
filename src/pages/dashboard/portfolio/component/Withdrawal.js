@@ -22,7 +22,6 @@ export default function Withdrawal({ handleCloseModal, handleOpenModal }) {
       setError(true);
     }
     if (amount !== "") {
-      console.log(amount);
       saveWithdrawalRequest();
     }
   };
@@ -38,7 +37,6 @@ export default function Withdrawal({ handleCloseModal, handleOpenModal }) {
     await dispatch(handleWithdrawalRequest(data))
       .unwrap()
       .then((res) => {
-        console.log(res);
         if (res?.data?.success) {
           handleCloseModal("withdrawal");
           handleOpenModal("responseModal", res?.data?.message, false);

@@ -76,23 +76,28 @@ export default function MutualFunds() {
                                   index % 2 ? "bg-[#EEECFE]" : "bg-[#E7F5FF]"
                                 }  rounded-lg p-2`}
                               >
-                                <div
-                                  style={{
-                                    backgroundImage: `url(${info?.imageUrlHome})`,
-                                    height: "171px",
-                                    width: "270px",
-                                    borderRadius: "10px",
-                                    padding: "3px",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                  }}
-                                >
-                                  {/* <div className="p-2 mt-3 bg-BACKGROUND_GREEN w-[60%] rounded-lg self-end flex gap-3 justify-end">
+                                {product?.name !== "Mutual Funds" ? (
+                                  <div
+                                    style={{
+                                      backgroundImage: `url(${info?.imageUrlHome})`,
+                                      height: "171px",
+                                      width: "270px",
+                                      margin: 0,
+                                      backgroundSize: "cover",
+                                      backgroundRepeat: "no-repeat",
+                                      borderRadius: "10px",
+                                      padding: "3px",
+                                    }}
+                                  >
+                                    {/* <div className="p-2 mt-3 bg-BACKGROUND_GREEN w-[60%] rounded-lg self-end flex gap-3 justify-end">
                                   <p className="text-sm font-bold text-white">2012</p>
                                   <p className="text-sm font-bold text-white">Gains</p>
                                   <p className="text-sm font-bold text-white">22.5%</p>
                                 </div> */}
-                                </div>
+                                  </div>
+                                ) : (
+                                  <img src={info?.imageUrlHome} alt="product_img" className="min-w-[270px] h-[171px]" />
+                                )}
                                 <div className="mt-3 flex flex-col justify-between h-[170px]">
                                   <div
                                     dangerouslySetInnerHTML={{

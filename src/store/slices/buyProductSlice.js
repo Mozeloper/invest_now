@@ -47,6 +47,21 @@ export const handleExistingCashAccount = createAsyncThunk(
   }
 );
 
+export const handleExistingCashAccountDetails = createAsyncThunk(
+  "buyproduct/existingCashAccountDetails",
+  async (values, { rejectWithValue }) => {
+    try {
+      const data = await api.get(
+        appUrls.existingCashAccountDetailsUrl +
+          `?core_system=${values?.core_system}&account_type=${values?.account_type}&customer_id=${values?.customer_id}`
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 export const buyProductSlice = createSlice({
   name: "buyProduct",
   initialState: {},
@@ -65,6 +80,10 @@ export const buyProductSlice = createSlice({
       state.cscsValidIdentity = null;
       state.cscsValidIdentityType = null;
       state.step = null;
+      state.initializePaymentData = null;
+      state.verifyPaymentData = null;
+      state.existingAccountData = null;
+      state.existingAccountDataDetails = null;
     },
     setAccountType: (state, action) => {
       state.accountType = action.payload;
@@ -153,6 +172,17 @@ export const buyProductSlice = createSlice({
     [handleExistingCashAccount.rejected]: (state, action) => {
       state.isExistingCashAccountIsLoaing = false;
       state.existingAccountData = action;
+    },
+    [handleExistingCashAccountDetails.pending]: (state) => {
+      state.isExistingCashAccountIsLoaing = true;
+    },
+    [handleExistingCashAccountDetails.fulfilled]: (state, action) => {
+      state.isExistingCashAccountIsLoaing = false;
+      state.existingAccountDataDetails = action;
+    },
+    [handleExistingCashAccountDetails.rejected]: (state, action) => {
+      state.isExistingCashAccountIsLoaing = false;
+      state.existingAccountDataDetails = action;
     },
   },
 });

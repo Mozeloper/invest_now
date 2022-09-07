@@ -17,8 +17,8 @@ export default function DepositHistory() {
   const dispatch = useDispatch();
   const [searchText, setSearchText] = useState("");
   const [paginationNumber, setPaginationNumber] = useState(1);
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const handlePaginationChange = (_, page) => {
     setPaginationNumber(page);
@@ -44,6 +44,16 @@ export default function DepositHistory() {
       dispatch(handleGetDepositHistory({ paginationNumber, searchText, startDate, endDate }));
     }
     return null;
+  };
+
+  const clearFilter = () => {
+    if (searchText !== "" || startDate !== "" || endDate !== "") {
+      setSearchText("");
+      setStartDate("");
+      setEndDate("");
+      setPaginationNumber(1);
+      dispatch(handleGetDepositHistory({ paginationNumber }));
+    }
   };
 
   return (
@@ -88,6 +98,16 @@ export default function DepositHistory() {
             onClick={() => handleFilter()}
           />
         </div>
+        <div>
+          <Button
+            onClick={() => clearFilter()}
+            title="clear filter"
+            className="cursor-pointer w-full border-none outline-none"
+            type="button"
+            backgroundColor="none"
+            textColor="#E32526"
+          />
+        </div>
         <Text variant="body" weight="bold" format="mt-4">
           {`Showing ${otherDetails?.page ?? 0} - ${otherDetails?.perPage ?? 0} of  ${otherDetails?.total ?? 0}`}
         </Text>
@@ -124,7 +144,7 @@ export default function DepositHistory() {
         {!!!transactionReducer?.depositHistoryIsLoading && depositHistoryData.length <= 0 && (
           <div className="w-full flex justify-center mt-[8%]">
             <Text variant="h3" weight="bold">
-              {transactionReducer?.depositHistoryData?.payload?.data?.message}
+              No data avaliable
             </Text>
           </div>
         )}

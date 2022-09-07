@@ -93,7 +93,7 @@ export default function Referral({ setIsReferralModalOpen }) {
     navigator.clipboard.writeText(data).then(() => {
       setSuccessCopy((prev) => ({
         ...prev,
-        text: "Copied to clipboard",
+        text: "Referral code copied",
         [type]: true,
       }));
       setTimeout(() => {
@@ -165,10 +165,12 @@ export default function Referral({ setIsReferralModalOpen }) {
           </Text>
           <div className="w-full bg-pink rounded-lg p-4 flex justify-between gap-4 flex-wrap overflow-hidden overflow-x-auto no-scrollbar">
             <Text variant="body" weight="bold" format="mb-2 flex flex-wrap">
-              {`${originLocation}/products/open_account/${referralLink}`}
+              {`${originLocation}/products/buy_product?encoded_key=${referralLink}`}
             </Text>
             <div
-              onClick={() => copyCodeToClipBoard(`${originLocation}/products/open_account/${referralLink}`, "link")}
+              onClick={() =>
+                copyCodeToClipBoard(`${originLocation}/products/buy_product?encoded_key=${referralLink}`, "link")
+              }
               className="bg-[#FFD8D8] whitespace-nowrap cursor-pointer p-1 flex items-center rounded-lg text-xs text-tertiary mb-2"
             >
               Click to Copy

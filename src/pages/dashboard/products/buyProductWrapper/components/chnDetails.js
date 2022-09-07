@@ -16,6 +16,7 @@ import RatingModal from "./ratingModal";
 import checked from "../../../../../assets/icons/correct.svg";
 import CscsValidIdentity from "./cscsValidIdentity";
 import FundAccount from "./FundAccount";
+import { useNavigate } from "react-router-dom";
 
 export default function ChnDetails() {
   const [isModalOpen, setIsModalOpen] = useState({
@@ -27,6 +28,7 @@ export default function ChnDetails() {
     showValidId: false,
   });
 
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const buyProductReducer = useSelector((state) => state.buyProductReducer);
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
@@ -65,9 +67,9 @@ export default function ChnDetails() {
       id_card: buyProductReducer?.cscsValidIdentity ?? customerDetails?.kycDetail[1]?.location ?? "",
       signature_specimen: customerDetails?.kycDetail[2]?.location ?? "",
       utility_bill: customerDetails?.kycDetail[3]?.location ?? "",
-      bank_id: buyProductReducer?.bankDetails?.bankSelected?.id ?? null,
+      bank_id: buyProductReducer?.bankDetails?.selected_bank?.id ?? null,
       bank_acct_no: buyProductReducer?.bankDetails?.accountNumber ?? null,
-      bank_acct_name: buyProductReducer?.bankDetails?.account_name ?? null,
+      bank_acct_name: buyProductReducer?.bankDetails?.existing_account_name ?? null,
       is_pep: customerDetails?.pep_status ?? false,
       is_minor: buyProductReducer?.accountType === "DEPENDENT_MINOR" ? true : false,
       owner: buyProductReducer?.accountType === "MY_SELF" ? "MY_SELF" : "",
@@ -273,13 +275,34 @@ export default function ChnDetails() {
           </div>
         </div>
       </MessageModal>
-      <MessageModal bgColor={true} isOpen={isModalOpen?.success}>
+      <MessageModal bgColor={true} isOpen={isModalOpen?.success} modalWidth="300px" modalHeight="auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          <Text format="text-center mt-3" variant="h2" color="text-black" weight="bold">
+            Congratulations!
+          </Text>
+          <Text format="text-center mt-3" variant="h4" color="text-[#465174]" weight="bold">
+            {isModalOpen?.details}
+          </Text>
+          <div className="mt-4 w-full">
+            <Button
+              onClick={() => {
+                handleCloseModal();
+                navigate("/portfolio");
+              }}
+              title="Close"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
+        </div>
+      </MessageModal>
+      <MessageModal bgColor={true} isOpen={false}>
         <SuccessAccountModal handleCloseModal={handleCloseModal} setIsModalOpen={setIsModalOpen} />
       </MessageModal>
       <MessageModal modalHeight="auto" bgColor={true} isOpen={isModalOpen?.showRating}>
         <RatingModal handleCloseModal={handleCloseModal} setIsModalOpen={setIsModalOpen} />
       </MessageModal>
-      <MessageModal bgColor={true} modalHeight="90vh" isOpen={isModalOpen?.showValidId}>
+      <MessageModal bgColor={true} modalHeight="650px" isOpen={isModalOpen?.showValidId}>
         <CscsValidIdentity handleCloseModal={handleCloseModal} setIsModalOpen={setIsModalOpen} />
       </MessageModal>
       <MessageModal modalHeight="90vh" bgColor={true} isOpen={isModalOpen?.showFundAccount}>

@@ -81,6 +81,8 @@ export default function Trust() {
                                     backgroundImage: `url(${info?.imageUrlHome})`,
                                     height: "171px",
                                     width: "270px",
+                                    backgroundSize: "cover",
+                                    backgroundRepeat: "no-repeat",
                                     borderRadius: "10px",
                                     padding: "3px",
                                     display: "flex",

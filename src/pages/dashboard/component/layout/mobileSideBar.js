@@ -20,11 +20,12 @@ import { resetInitialState } from "../../../../store/slices/authSlices";
 import MessageModal from "../../../../components/modals/MessageModal";
 import ProfilePicSetup from "./other/profilePicSetup";
 import { handleCustomerDetails } from "../../../../store/slices/dashboardSlice";
+import { reintializeState } from "../../../../store/slices/buyProductSlice";
 
 export default function MobileSideBar() {
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
-  const customerPic = dashboardReducer?.customerDetails?.payload?.data?.data?.profile_pic;
+  const customerPic = dashboardReducer?.customerDetails?.payload?.data?.data?.profile_pic ?? "";
   const tierStatus = dashboardReducer?.customerDetails?.payload?.data?.data?.tier_status;
   const firstName = userDetails?.data?.customer?.firstname;
   const lastName = userDetails?.data?.customer?.lastname;
@@ -117,8 +118,9 @@ export default function MobileSideBar() {
 
   const handlelogout = () => {
     dispatch(resetInitialState());
-    localStorage.removeItem("access_token");
+    dispatch(reintializeState());
     navigate("/login");
+    localStorage.clear();
   };
   return (
     <>
@@ -131,7 +133,7 @@ export default function MobileSideBar() {
           className="flex gap-2 cursor-pointer bg-[#F7F7F8] mb-5 p-3 rounded-md"
         >
           <img
-            src={customerPic !== null ? customerPic : ProfileImg}
+            src={customerPic !== "" ? customerPic : ProfileImg}
             alt="logo"
             className="h-[40px] w-[40px] rounded-full"
           />
@@ -246,7 +248,7 @@ export default function MobileSideBar() {
           </div>
         </div>
       </div>
-      <MessageModal bgColor={true} modalHeight="625px" isOpen={openModal?.upload_profile_pic}>
+      <MessageModal bgColor={true} modalHeight="450px" isOpen={openModal?.upload_profile_pic}>
         <ProfilePicSetup handleCloseModals={handleCloseModals} />
       </MessageModal>
     </>

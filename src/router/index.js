@@ -1,8 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
-import { useSelector } from "react-redux";
-import { Navigate, Outlet, Route, Routes } from "react-router-dom";
-
+import { Navigate, Route, Routes } from "react-router-dom";
+import { AuthappPrivateRoute, InappPrivateRoute } from "./ProtectedRoute";
 import Dashboard from "../pages/dashboard";
 import SplashScreen from "../pages";
 import LoginLayout from "../pages/auth/login";
@@ -15,7 +14,7 @@ import OTPverify from "../pages/auth/signUp/otpverify";
 import Login from "../pages/auth/login/login";
 import ForgetPassword from "../pages/auth/forgetPassword";
 
-import AppLayout from "../pages/dashboard/component/layout";
+// import AppLayout from "../pages/dashboard/component/layout";
 import Portfolio from "../pages/dashboard/portfolio";
 import Products from "../pages/dashboard/products";
 import Transactions from "../pages/dashboard/transactions";
@@ -26,7 +25,7 @@ import Accounts from "../pages/dashboard/settings/account";
 import ContactUs from "../pages/dashboard/settings/contactUs";
 import Faq from "../pages/dashboard/settings/faq";
 import Security from "../pages/dashboard/settings/security";
-import OpenAccount from "../pages/dashboard/products/openAccount";
+// import OpenAccount from "../pages/dashboard/products/openAccount";
 import AllProducts from "../pages/dashboard/products/allProducts";
 import MutualFunds from "../pages/dashboard/products/mutualFunds";
 import Trust from "../pages/dashboard/products/trust";
@@ -45,52 +44,70 @@ import BirthCertificateUpload from "../pages/dashboard/products/buyProductWrappe
 import FurtherProductsUpload from "../pages/dashboard/products/buyProductWrapper/furtherInfo";
 import ReccuringFunding from "../pages/dashboard/reccuringFunding";
 import SingleReccuringFunding from "../pages/dashboard/reccuringFunding/singleReccuringFunding";
-
-function InappPrivateRoute() {
-  const { isLoggedIn } = useSelector((state) => state.authReducer);
-  const isAuthed = isLoggedIn;
-  return isAuthed ? (
-    <AppLayout>
-      <Outlet />
-    </AppLayout>
-  ) : (
-    <Navigate to="/login" />
-  );
-}
-
-function AuthappPrivateRoute() {
-  const { isLoggedIn } = useSelector((state) => state.authReducer);
-  const isAuthed = !isLoggedIn;
-  return isAuthed ? (
-    <>
-      <Outlet />
-    </>
-  ) : (
-    <Navigate to="/dashboard" />
-  );
-}
+import WrapperLayout from "../components/LandingPageLayout";
+// import FixedIncomeFund from "../pages/landingPages/mutualFunds/fixedIncomeFund";
+import EquityFund from "../pages/landingPages/mutualFunds/equityFund";
+import MoneyMarketFund from "../pages/landingPages/mutualFunds/moneyMarketFund";
+import BalancedFund from "../pages/landingPages/mutualFunds/balancedFund";
+import WealthWomenFund from "../pages/landingPages/mutualFunds/wealthWomenFund";
+import SkukFund from "../pages/landingPages/mutualFunds/skukFund";
+import NigerianEurobandFund from "../pages/landingPages/mutualFunds/nigerianEurobandFund";
+import EducationTrust from "../pages/landingPages/trust/educationTrust";
+import NigeriaDiasporaTrust from "../pages/landingPages/trust/nigeriaDiasporaTrust";
+import PrivateInvestment from "../pages/landingPages/trust/privateInvestment";
+import StockTrading from "../pages/landingPages/securities/stockTrading";
+import Utrace from "../pages/landingPages/securities/utrace";
+import WeeklyInvestment from "../pages/landingPages/analysis/weeklyInvestment";
+import PanAfricanMonitor from "../pages/landingPages/analysis/panAfricanMonitor";
+import DailyPriceList from "../pages/landingPages/analysis/dailyPriceList";
+import InterestCalcuator from "../pages/landingPages/analysis/interestCalcuator";
+import MutualFundReturns from "../pages/landingPages/analysis/mutualFundReturns";
+import LandingPageProduct from "../pages/landingPages/products";
+import FrequentlyAskedQuestion from "../pages/landingPages/frequentlyAskedQuestion";
+import ContactUsForm from "../pages/landingPages/ContactUsForm";
 
 export default function AppRoute() {
   return (
     <div>
       <Routes>
-        {/* <Route element={<AuthappPrivateRoute />}> */}
-        <Route path="/" element={<SplashScreen />} />
-        <Route element={<LoginLayout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/forget_password" element={<ForgetPassword />} />
-          <Route path="/forget_password/otp" element={<OtpForgetPassword />} />
-          <Route path="/forget_password/change_password" element={<ChangePasswordForgetPassword />} />
+        <Route element={<AuthappPrivateRoute />}>
+          <Route element={<WrapperLayout />}>
+            <Route path="/" element={<SplashScreen />} />
+            <Route path="/:product/:productType" element={<LandingPageProduct />} />
+            <Route path="/frequently_asked_question" element={<FrequentlyAskedQuestion />} />
+            <Route path="/contact_us_form" element={<ContactUsForm />} />
+            {/* <Route path="/Mutual_Funds/equity_fund" element={<EquityFund />} />
+            <Route path="/Mutual_Funds/money_market_fund" element={<MoneyMarketFund />} />
+            <Route path="/Mutual_Funds/balanced_fund" element={<BalancedFund />} />
+            <Route path="/Mutual_Funds/wealth_for_women_funds" element={<WealthWomenFund />} />
+            <Route path="/Mutual_Funds/skuk_fund" element={<SkukFund />} />
+            <Route path="/Mutual_Funds/nigerian_euroband_fund" element={<NigerianEurobandFund />} />
+            <Route path="/trust/education_trust" element={<EducationTrust />} />
+            <Route path="/trust/nigerian_diaspora_trust" element={<NigeriaDiasporaTrust />} />
+            <Route path="/trust/private_investment" element={<PrivateInvestment />} />
+            <Route path="/securities/stock_trading" element={<StockTrading />} />
+            <Route path="/securities/utrace" element={<Utrace />} />
+            <Route path="/analysis/weekly_investment_view" element={<WeeklyInvestment />} />
+            <Route path="/analysis/pan_african_monitor" element={<PanAfricanMonitor />} />
+            <Route path="/analysis/daily_price_list" element={<DailyPriceList />} />
+            <Route path="/analysis/interest_calculator" element={<InterestCalcuator />} />
+            <Route path="/analysis/mutual_funds_return" element={<MutualFundReturns />} /> */}
+          </Route>
+          <Route element={<LoginLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/forget_password" element={<ForgetPassword />} />
+            <Route path="/forget_password/otp" element={<OtpForgetPassword />} />
+            <Route path="/forget_password/change_password" element={<ChangePasswordForgetPassword />} />
+          </Route>
+          <Route element={<SignUpLayout />}>
+            <Route path="/bvn_verification" element={<BvnVerify />} />
+            <Route path="/profile_update" element={<ProfileUpdate />} />
+            <Route path="/otp_verification" element={<OTPverify />} />
+            <Route path="/create_password" element={<CreatePassword />} />
+          </Route>
         </Route>
-        <Route element={<SignUpLayout />}>
-          <Route path="/bvn_verification" element={<BvnVerify />} />
-          <Route path="/profile_update" element={<ProfileUpdate />} />
-          <Route path="/otp_verification" element={<OTPverify />} />
-          <Route path="/create_password" element={<CreatePassword />} />
-        </Route>
-        {/* </Route> */}
 
-        <Route element={<AppLayout />}>
+        <Route element={<InappPrivateRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/portfolio" element={<Portfolio />} />
           <Route element={<Products />}>
@@ -100,7 +117,7 @@ export default function AppRoute() {
             <Route path="/products/securities" element={<Securities />} />
           </Route>
           <Route element={<BuyProductWrapper />}>
-            <Route path="/products/buy_product" element={<BuyProducts />} />
+            <Route path="/products/buy_product/*" element={<BuyProducts />} />
             <Route path="/products/new_bank_account" element={<NewBankAccount />} />
             <Route path="/products/next_of_kin" element={<NextOfKin />} />
             <Route path="/products/:productType" element={<FurtherProductsUpload />} />
@@ -122,7 +139,7 @@ export default function AppRoute() {
           <Route path="/request_embassy_statement" element={<RequestEmbassy />} />
           <Route path="/contact_relationship_manager" element={<RelationshipManager />} />
         </Route>
-        <Route path="/products/open_account/*" element={<OpenAccount />} />
+        {/* <Route path="/products/open_account/*" element={<OpenAccount />} /> */}
         <Route path="/Not-found" element={<NotFound />} />
         <Route path="*" element={<Navigate to="/Not-found" replace={true} />} />
       </Routes>

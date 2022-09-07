@@ -25,6 +25,8 @@ import { currencyEntities } from "../../helper";
 import MessageModal from "../../components/modals/MessageModal";
 import Referral from "./component/referral";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/loader";
+import { handleGetPortfolioPerfomance } from "../../store/slices/portfolioSlice";
 
 const data = [
   {
@@ -75,7 +77,8 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false);
-
+  const portfolioReducer = useSelector((state) => state.portfolioReducer);
+  const portfolio_items = portfolioReducer?.portfolioPerformanceData?.payload?.data?.data?.portfolio_items;
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
   const firstName = userDetails?.data?.customer?.firstname;
   const customerId = userDetails?.data?.customer?.id;
@@ -84,22 +87,20 @@ export default function Dashboard() {
   const account_summary = dashboardSummaryDetails?.dashboardSummary?.payload?.data?.data;
   const slidingRate = dashboardSummaryDetails?.slidingRate;
 
-  const dashboardSummary = async () => {
-    await dispatch(handleDashboardSummary());
-  };
-
-  const completionSummary = async () => {
-    await dispatch(handlecompletionSummary(customerId));
-  };
-
-  const slidingRating = async () => {
-    await dispatch(handleSlidingRating());
-  };
-
   useEffect(() => {
-    dashboardSummary();
-    completionSummary();
-    slidingRating();
+    let mounted = false;
+    (async () => {
+      mounted = true;
+      if (mounted) {
+        dispatch(handleDashboardSummary());
+        dispatch(handlecompletionSummary(customerId));
+        dispatch(handleSlidingRating());
+        dispatch(handleGetPortfolioPerfomance());
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (
@@ -213,7 +214,7 @@ export default function Dashboard() {
                   <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
                   <div className="flex flex-col justify-center">
                     <Text color="text-[#65666A]" variant="body">
-                      Cash Value
+                      Cash Account
                     </Text>
                     <Text weight="bold" variant="h2" color="text-[#65666A]">
                       {currencyEntities[account_summary?.cashAccountSummary[0]?.CurrencyId]}{" "}
@@ -354,27 +355,67 @@ export default function Dashboard() {
           )}
         </div>
         <div className="w-full mt-4 flex lg:flex-row flex-col gap-2">
-          <div className="bg-BACKGROUND_WHITE h-[400px] p-6 lg:basis-1/2 basis-1">
+          <div className="bg-BACKGROUND_WHITE min-h-[400px] h-full p-6 lg:basis-1/2 basis-1">
             <div className="w-full mt-4">
               <Text format="mb-3" weight="bold" variant="h3">
                 My Portfolio
               </Text>
             </div>
-            <div className="w-full h-[80%] flex flex-col justify-center items-center">
-              <img src={empty} alt="empty" className="w-[200px] h-[100px]" />
-              <Text format="mb-3" weight="bold" variant="body">
-                You currently haven’t no portfolio
-              </Text>
-              <div>
-                <Button
-                  title="Build your portfolio"
-                  className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
-                  type="button"
-                  textColor="#fff"
-                  onClick={() => navigate("/portfolio")}
-                />
+            {portfolioReducer?.portfolioPerformanceIsLoading && (
+              <div className="w-full h-[80%] flex flex-col justify-center items-center">
+                <Loader />
               </div>
-            </div>
+            )}
+            {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+              portfolioReducer?.portfolioPerformanceData?.type === "portfolio/portfolioPerfomance/fulfilled" && (
+                <>
+                  {portfolio_items !== undefined &&
+                    portfolio_items?.length >= 1 &&
+                    portfolio_items.map((data, index) => {
+                      return (
+                        <div key={index} className="w-full flex flex-col">
+                          <div className="w-full mb-4 border-b border-[#BCBCBC]">
+                            <Text format="mb-1" weight="normal" variant="h4">
+                              {data?.account_type?.name}
+                            </Text>
+                            <div className="flex justify-between">
+                              <Text format="mb-1" weight="normal" variant="h4">
+                                {currencyEntities[data?.currency?.symbol]} {data?.current_balance}
+                              </Text>
+                              <div className="flex gap-2">
+                                <Text format="mb-1" weight="normal" variant="h4" color="text-green-600">
+                                  {data?.accrued_credit_interest}%
+                                </Text>
+                                <Text format="mb-1" weight="normal" variant="h4">
+                                  + {currencyEntities[data?.currency?.symbol]} {data?.gains}
+                                </Text>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                </>
+              )}
+            {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
+              portfolioReducer?.portfolioPerformanceData?.type === "portfolio/portfolioPerfomance/fulfilled" &&
+              portfolio_items?.length === 0 && (
+                <div className="w-full h-[80%] flex flex-col justify-center items-center">
+                  <img src={empty} alt="empty" className="w-[200px] h-[100px]" />
+                  <Text format="mb-3" weight="bold" variant="body">
+                    You currently have no portfolio
+                  </Text>
+                  <div>
+                    <Button
+                      title="Build your portfolio"
+                      className="h-fit px-16 py-6 whitespace-nowrap font-extrabold"
+                      type="button"
+                      textColor="#fff"
+                      onClick={() => navigate("/portfolio")}
+                    />
+                  </div>
+                </div>
+              )}
           </div>
           <div className="bg-BACKGROUND_WHITE h-[400px] p-6 lg:basis-1/2 basis-1">
             <div className="w-full mt-4">

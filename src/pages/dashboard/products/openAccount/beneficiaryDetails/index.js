@@ -107,7 +107,6 @@ export default function BeneficiaryDetails({
           validationSchema={beneficiarySchema}
           enableReinitialize={true}
           onSubmit={async (values) => {
-            console.log(values);
             handleDispatchNextStep(null, values, 4, "beneficiary");
           }}
         >

@@ -10,7 +10,12 @@ import Skeleton from "@mui/material/Skeleton";
 import { handleCustomerDetails } from "../../../../store/slices/dashboardSlice";
 import { setProductCode } from "../../../../store/slices/buyProductSlice";
 
-export default function ProductDetails({ handleShowKycMessage, handleOpenProductDetailsModal, productCode }) {
+export default function ProductDetails({
+  handleShowKycMessage,
+  handleOpenProductDetailsModal,
+  setUTraceModal,
+  productCode,
+}) {
   const productsReducer = useSelector((state) => state.productsReducer);
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const productData = productsReducer?.productDetailsData?.payload?.data?.data;
@@ -25,18 +30,19 @@ export default function ProductDetails({ handleShowKycMessage, handleOpenProduct
     (async () => {
       mounted = true;
       if (mounted && productCode !== null) {
-        try {
-          dispatch(handleCustomerDetails());
-          dispatch(handleGetProductDetails(productCode));
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(handleCustomerDetails());
+        dispatch(handleGetProductDetails(productCode));
       }
     })();
     return () => {
       mounted = false;
     };
   }, [productCode, dispatch]);
+
+  const handleOpenUtraceModal = () => {
+    handleOpenProductDetailsModal(null);
+    setUTraceModal(true);
+  };
 
   const handleRouting = () => {
     switch (customerKycStep) {
@@ -71,19 +77,11 @@ export default function ProductDetails({ handleShowKycMessage, handleOpenProduct
       {!!!productsReducer?.productDetailIsLoading &&
         productsReducer?.productDetailsData?.type === "products/productDetail/fulfilled" && (
           <>
-            <div
-              style={{
-                backgroundImage: `url(${productData?.imageUrlHome})`,
-                height: "277px",
-                width: "100%",
-                padding: "3px",
-                display: "flex",
-                flexDirection: "column",
-              }}
-            >
+            <div className="relative">
+              <img src={productData?.imageUrlHome} alt="product_img" loading="lazy" className="w-full h-[277px]" />
               <img
                 onClick={() => handleOpenProductDetailsModal(null)}
-                className="w-[100px] h-[100px] cursor-pointer"
+                className="w-[100px] h-[100px] cursor-pointer absolute top-0 left-0"
                 src={BackButton}
                 alt="back_Button"
               />
@@ -121,8 +119,8 @@ export default function ProductDetails({ handleShowKycMessage, handleOpenProduct
               {productData?.data !== null && (
                 <div className="md:w-[50%] w-full flex self-start justify-start my-6">
                   <Button
-                    onClick={() => handleRouting()}
-                    title="Open Account"
+                    onClick={() => (productData?.name === "UTrace" ? handleOpenUtraceModal() : handleRouting())}
+                    title={`${productData?.name === "UTrace" ? "Request Search" : "Open Account"}`}
                     textColor="#fff"
                     className="px-3 font-bold outline-none self-start"
                   />

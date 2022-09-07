@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../../../components/loadingSkeleton";
 import SideRightModal from "../../../../components/modals/SideRightModal";
 import ProductDetails from "../components/productDetails";
+import UtraceModal from "../components/utraceModal";
+import MessageModal from "../../../../components/modals/MessageModal";
+import Correct from "../../../../assets/icons/correct.svg";
 
 export default function AllProducts() {
   const { setShowModal } = useOutletContext();
@@ -16,17 +19,19 @@ export default function AllProducts() {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [productCode, setProductCode] = useState(null);
+  const [uTraceModal, setUTraceModal] = useState(false);
+  const [showResponseModal, setShowResponseModal] = useState({
+    details: null,
+    successModal: false,
+    errorText: false,
+  });
 
   useEffect(() => {
     let mounted = false;
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(handleGetAllProducts());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(handleGetAllProducts());
       }
     })();
     return () => {
@@ -96,27 +101,32 @@ export default function AllProducts() {
                                 index % 2 ? "bg-[#EEECFE]" : "bg-[#E7F5FF]"
                               }  rounded-lg p-2`}
                             >
-                              <div
-                                style={{
-                                  backgroundImage: `url(${info?.imageUrlHome})`,
-                                  height: "171px",
-                                  width: "270px",
-                                  borderRadius: "10px",
-                                  padding: "3px",
-                                  display: "flex",
-                                  flexDirection: "column",
-                                }}
-                              >
-                                {/* <div className="p-2 mt-3 bg-BACKGROUND_GREEN w-[60%] rounded-lg self-end flex gap-3 justify-end">
+                              {product?.name !== "Mutual Funds" ? (
+                                <div
+                                  style={{
+                                    backgroundImage: `url(${info?.imageUrlHome})`,
+                                    height: "171px",
+                                    width: "270px",
+                                    margin: 0,
+                                    backgroundSize: "cover",
+                                    backgroundRepeat: "no-repeat",
+                                    borderRadius: "10px",
+                                    padding: "3px",
+                                  }}
+                                >
+                                  {/* <div className="p-2 mt-3 bg-BACKGROUND_GREEN w-[60%] rounded-lg self-end flex gap-3 justify-end">
                                   <p className="text-sm font-bold text-white">2012</p>
                                   <p className="text-sm font-bold text-white">Gains</p>
                                   <p className="text-sm font-bold text-white">22.5%</p>
                                 </div> */}
-                              </div>
+                                </div>
+                              ) : (
+                                <img src={info?.imageUrlHome} alt="product_img" className="min-w-[270px] h-[171px]" />
+                              )}
                               <div className="mt-3 flex flex-col justify-between h-[170px]">
                                 <div
                                   dangerouslySetInnerHTML={{
-                                    __html: info?.introHtml.substring(0, 200).concat("..."),
+                                    __html: info?.introHtml.substring(0, 140).concat("..."),
                                   }}
                                 />
 
@@ -124,7 +134,7 @@ export default function AllProducts() {
                                   <div>
                                     <Button
                                       onClick={() => handleOpenProductDetailsModal(info?.code)}
-                                      title="Open Account"
+                                      title={`${info?.name === "UTrace" ? "E-dividend Search" : "Open Account"}`}
                                       textColor="#fff"
                                       className="px-3 font-bold outline-none"
                                     />
@@ -142,11 +152,41 @@ export default function AllProducts() {
             </>
           )}
       </div>
+      <MessageModal bgColor={true} isOpen={showResponseModal?.successModal} modalWidth="400px" modalHeight="auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          {showResponseModal?.errorText ? (
+            <Text format="text-center mt-3" variant="h3" color="text-[#465174]" weight="bold">
+              !Oops
+            </Text>
+          ) : (
+            <img src={Correct} alt="check-img" />
+          )}
+          <Text format="text-center mt-3" variant="h3" color="text-[#465174]" weight="bold">
+            {showResponseModal?.details}
+          </Text>
+        </div>
+        <div className="w-full flex justify-center">
+          <div className="mt-8 w-[60%]">
+            <Button
+              onClick={() =>
+                setShowResponseModal((prev) => ({ ...prev, successModal: false, errorText: false, details: null }))
+              }
+              title={`${showResponseModal?.errorText ? "Close" : "Continue"}`}
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
+        </div>
+      </MessageModal>
+      <SideRightModal isOpen={uTraceModal}>
+        <UtraceModal setShowResponseModal={setShowResponseModal} setUTraceModal={setUTraceModal} />
+      </SideRightModal>
       <SideRightModal isOpen={isModalOpen}>
         <ProductDetails
           handleShowKycMessage={() => handleShowKycMessage()}
           handleOpenProductDetailsModal={handleOpenProductDetailsModal}
           productCode={productCode}
+          setUTraceModal={setUTraceModal}
         />
       </SideRightModal>
     </>

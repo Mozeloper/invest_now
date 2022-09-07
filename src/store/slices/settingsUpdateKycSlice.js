@@ -12,17 +12,14 @@ export const handleUtilityBill = createAsyncThunk("settings/uploadUtilityBill", 
   }
 });
 
-export const handleUploadPassport = createAsyncThunk(
-  "settings/uploadUtilityBill",
-  async (values, { rejectWithValue }) => {
-    try {
-      const data = await api.put(appUrls.uploadPassport, values);
-      return data;
-    } catch (error) {
-      return rejectWithValue(error);
-    }
+export const handleUploadPassport = createAsyncThunk("settings/uploadPassport", async (values, { rejectWithValue }) => {
+  try {
+    const data = await api.put(appUrls.uploadPassport, values);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
   }
-);
+});
 
 export const getIdentityTypes = createAsyncThunk("settings/identityTypes", async (_, { rejectWithValue }) => {
   try {

@@ -46,7 +46,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
     }
 
     const data = {
-      utility_bill_base64: result,
+      passport_base64: result,
     };
     await dispatch(handleUploadPassport(data))
       .unwrap()
@@ -89,7 +89,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
               title="Save Picture"
               className="cursor-pointer w-full"
               type="button"
-              isLoading={updateKycSliceReducer?.isLoading}
+              isLoading={updateKycSliceReducer?.isLoadingPassport}
             />
           </div>
         </>
@@ -181,7 +181,7 @@ export default function UploadPassport({ handleCloseModals }) {
     }
 
     const data = {
-      utility_bill_base64: result,
+      passport_base64: result,
     };
     await dispatch(handleUploadPassport(data))
       .unwrap()
@@ -189,7 +189,7 @@ export default function UploadPassport({ handleCloseModals }) {
         dispatch(handleCustomerDetails());
         setTimeout(() => {
           handleCloseUploadModals("take_picture");
-          handleCloseModals("utility_bill");
+          handleCloseModals("upload_passport");
           setMessage("");
         }, 2000);
         setMessage(res?.data?.message);
@@ -274,7 +274,7 @@ export default function UploadPassport({ handleCloseModals }) {
                         onClick={() => {
                           utilityBillUpload();
                         }}
-                        isLoading={updateKycSliceReducer?.isLoading}
+                        isLoading={updateKycSliceReducer?.isLoadingPassport}
                         title="Save Picture"
                         className="cursor-pointer w-full"
                         type="button"
@@ -322,7 +322,7 @@ export default function UploadPassport({ handleCloseModals }) {
         <WebcamCapture
           handleCloseWebCaptureUploadModals={() => {
             handleCloseUploadModals("take_picture");
-            handleCloseModals("utility_bill");
+            handleCloseModals("upload_passport");
           }}
         />
       </MessageModal>

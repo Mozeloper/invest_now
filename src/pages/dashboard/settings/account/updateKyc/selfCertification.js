@@ -69,7 +69,6 @@ export default function SelfCertification({ handleCloseModals }) {
   };
 
   const handleSelfCertificationForm = async (data) => {
-    console.log(data, reasonOption?.id);
     const result = {
       jurisdiction_of_tax_residence: data.country !== "" ? data.country : "",
       tin: data?.tin !== "" ? data?.tin : "",

@@ -56,6 +56,7 @@ export default function FundAccount({ handleCloseModal }) {
   const portfolio = portfolioItemData?.deposit_account;
   const navigate = useNavigate();
   const attemptId = useRef(null);
+  const ref_number = useRef(null);
 
   const [error, setError] = useState({
     amount: false,
@@ -64,7 +65,8 @@ export default function FundAccount({ handleCloseModal }) {
 
   const [showErrorModals, setShowErrorModals] = useState({
     verifyPayment: false,
-    initializePayment: false,
+    initializePaymentError: false,
+    initializePaymentSuccess: false,
     details: null,
   });
 
@@ -75,15 +77,14 @@ export default function FundAccount({ handleCloseModal }) {
   const [dayOfWeek, setDayOfWeek] = useState("");
 
   const config = {
-    reference: new Date().getTime().toString(),
+    reference: ref_number.current,
     email: emailAddress,
     amount: Number(amount * 100),
     metadata: portfolio?.paystack_custom_data,
     publicKey: process.env.REACT_APP_PAYSTACK_KEY,
   };
 
-  const onSuccess = (reference) => {
-    console.log(reference);
+  const onSuccess = () => {
     const data = {
       payment_attempt_id: attemptId.current,
     };
@@ -155,14 +156,19 @@ export default function FundAccount({ handleCloseModal }) {
       .unwrap()
       .then((res) => {
         if (res?.data?.success) {
-          initializePaymentsToPaystack(onSuccess, onClose);
           attemptId.current = res?.data?.data?.id;
+          ref_number.current = res?.data?.data?.ref_number;
+          setShowErrorModals((prev) => ({
+            ...prev,
+            initializePaymentSuccess: true,
+            details: res?.data?.message,
+          }));
         }
       })
       .catch((err) => {
         setShowErrorModals((prev) => ({
           ...prev,
-          initializePayment: true,
+          initializePaymentError: true,
           details: err?.data?.message,
         }));
       });
@@ -192,14 +198,19 @@ export default function FundAccount({ handleCloseModal }) {
       .unwrap()
       .then((res) => {
         if (res?.data?.success) {
-          initializePaymentsToPaystack(onSuccess, onClose);
           attemptId.current = res?.data?.data?.id;
+          ref_number.current = res?.data?.data?.ref_number;
+          setShowErrorModals((prev) => ({
+            ...prev,
+            initializePaymentSuccess: true,
+            details: res?.data?.message,
+          }));
         }
       })
       .catch((err) => {
         setShowErrorModals((prev) => ({
           ...prev,
-          initializePayment: true,
+          initializePaymentError: true,
           details: err?.data?.message,
         }));
       });
@@ -374,6 +385,55 @@ export default function FundAccount({ handleCloseModal }) {
                 }))
               }
               title="Close"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
+        </div>
+      </MessageModal>
+      <MessageModal isOpen={showErrorModals?.initializePaymentError} modalWidth="300px" modalHeight="auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          <Text format="text-center mt-3 whitespace-nowrap" variant="h3" color="text-[#465174]" weight="bold">
+            Oops!
+          </Text>
+          <Text format="text-center mt-3" variant="body" color="text-[#465174]" weight="bold">
+            {showErrorModals?.details}
+          </Text>
+          <div className="mt-4 w-full">
+            <Button
+              onClick={() =>
+                setShowErrorModals((prev) => ({
+                  ...prev,
+                  initializePaymentError: false,
+                  details: null,
+                }))
+              }
+              title="Close"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
+        </div>
+      </MessageModal>
+      <MessageModal isOpen={showErrorModals?.initializePaymentSuccess} modalWidth="300px" modalHeight="auto">
+        <div className="flex flex-col justify-center items-center w-full">
+          <Text format="text-center mt-3 whitespace-nowrap" variant="h3" color="text-[#465174]" weight="bold">
+            Congratulations
+          </Text>
+          <Text format="text-center mt-3" variant="body" color="text-[#465174]" weight="bold">
+            {showErrorModals?.details}
+          </Text>
+          <div className="mt-4 w-full">
+            <Button
+              onClick={() => {
+                setShowErrorModals((prev) => ({
+                  ...prev,
+                  initializePaymentSuccess: false,
+                  details: null,
+                }));
+                initializePaymentsToPaystack(onSuccess, onClose);
+              }}
+              title="continue"
               className="cursor-pointer w-full"
               type="button"
             />

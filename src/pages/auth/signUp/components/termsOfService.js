@@ -37,7 +37,7 @@ export default function TermsOfService({ setShowMessageAlert }) {
           onClick={() => navigate("/")}
           className="py-4 font-extrabold"
         />
-        <Button title="Agree" onClick={setShowMessageAlert} className="py-4 font-extrabold" />
+        <Button title="I Agree" onClick={setShowMessageAlert} className="py-4 font-extrabold" />
       </div>
     </div>
   );
