@@ -51,7 +51,7 @@ export default function BuyProducts() {
           dispatch(handleExistingCashAccount());
         }
         if (location?.state !== null) {
-          const myString = location?.state?.replace("?encoded_key=", "");
+          const myString = location?.state?.replace("?code=", "");
           const decodedString = atob(myString);
           const splitted = decodedString.split("-");
           dispatch(setProductCode(splitted[0]));
