@@ -64,6 +64,7 @@ export const productsSlice = createSlice({
     },
     [handleGetAllProducts.rejected]: (state) => {
       state.allProductIsLoading = false;
+      state.allProductData = null;
     },
     [handleGetProductDetails.pending]: (state) => {
       state.productDetailIsLoading = true;
@@ -74,6 +75,7 @@ export const productsSlice = createSlice({
     },
     [handleGetProductDetails.rejected]: (state) => {
       state.productDetailIsLoading = false;
+      state.productDetailsData = null;
     },
     [handleGetAllSegment.pending]: (state) => {
       state.productSegementsIsLoading = true;
@@ -84,6 +86,7 @@ export const productsSlice = createSlice({
     },
     [handleGetAllSegment.rejected]: (state) => {
       state.productSegementsIsLoading = false;
+      state.productSegmentData = null;
     },
     [handleSubmitUtrace.pending]: (state) => {
       state.savingUtraceIsLoading = true;

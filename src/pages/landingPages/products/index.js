@@ -64,7 +64,7 @@ export default function LandingPageProduct() {
         </div>
         <div className="w-[30%] mt-[3%] mb-[10%] wrapper">
           <Button
-            title="Create an account"
+            title={`${productData?.name === "UTrace" ? "Request Search" : "Open Account"}`}
             onClick={() => navigate("/bvn_verification")}
             className="px-12 py-4 whitespace-nowrap font-extrabold capitalize"
             style={{ border: "3px solid #E32526" }}

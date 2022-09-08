@@ -63,7 +63,9 @@ export const handlePortfolioItem = createAsyncThunk(
   "openaccount/portfolioItem",
   async (values, { rejectWithValue }) => {
     try {
-      const data = await api.get(appUrls.portfolioItemDetail + `cash_account_id=${values}`);
+      const data = await api.get(
+        appUrls.portfolioItemDetail + `cash_account_id=${values?.cashAccountId}&customer_id=${values?.customerId}`
+      );
       return data;
     } catch (error) {
       return rejectWithValue(error);

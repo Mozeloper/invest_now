@@ -174,14 +174,14 @@ export const buyProductSlice = createSlice({
       state.existingAccountData = action;
     },
     [handleExistingCashAccountDetails.pending]: (state) => {
-      state.isExistingCashAccountIsLoaing = true;
+      state.existingBankAccountIsLoading = true;
     },
     [handleExistingCashAccountDetails.fulfilled]: (state, action) => {
-      state.isExistingCashAccountIsLoaing = false;
+      state.existingBankAccountIsLoading = false;
       state.existingAccountDataDetails = action;
     },
     [handleExistingCashAccountDetails.rejected]: (state, action) => {
-      state.isExistingCashAccountIsLoaing = false;
+      state.existingBankAccountIsLoading = false;
       state.existingAccountDataDetails = action;
     },
   },

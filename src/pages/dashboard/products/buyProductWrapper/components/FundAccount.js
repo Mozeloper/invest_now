@@ -52,11 +52,13 @@ export default function FundAccount({ handleCloseModal }) {
   const emailAddress = userDetails?.data?.customer?.email;
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
   const cashAccountId = openAccountReducer?.createAccountData?.data?.data?.cash_account_id;
+  const customerId = openAccountReducer?.createAccountData?.data?.data?.customer_id;
   const portfolioItemData = openAccountReducer?.portfolioItemData?.data?.data;
   const portfolio = portfolioItemData?.deposit_account;
   const navigate = useNavigate();
   const attemptId = useRef(null);
   const ref_number = useRef(null);
+  console.log(openAccountReducer?.createAccountData?.data?.data);
 
   const [error, setError] = useState({
     amount: false,
@@ -113,14 +115,14 @@ export default function FundAccount({ handleCloseModal }) {
     (async () => {
       mounted = true;
       if (mounted) {
-        dispatch(handlePortfolioItem(cashAccountId));
+        dispatch(handlePortfolioItem({ cashAccountId, customerId }));
         dispatch(handlePaymentFrequency());
       }
     })();
     return () => {
       mounted = false;
     };
-  }, [dispatch, cashAccountId]);
+  }, [dispatch, cashAccountId, customerId]);
 
   if (openAccountReducer?.paymentFrequencyData?.type === "openaccount/paymentFrequency/fulfilled") {
     openAccountReducer?.paymentFrequencyData?.payload?.data?.data.map((list) => {
@@ -426,12 +428,12 @@ export default function FundAccount({ handleCloseModal }) {
           <div className="mt-4 w-full">
             <Button
               onClick={() => {
+                initializePaymentsToPaystack(onSuccess, onClose);
                 setShowErrorModals((prev) => ({
                   ...prev,
                   initializePaymentSuccess: false,
                   details: null,
                 }));
-                initializePaymentsToPaystack(onSuccess, onClose);
               }}
               title="continue"
               className="cursor-pointer w-full"

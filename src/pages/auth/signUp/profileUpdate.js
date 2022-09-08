@@ -54,14 +54,12 @@ export default function ProfileUpdate() {
         }
       })
       .catch((error) => {
-        if (error?.status === 400 && error?.data?.message === "customer already exists.") {
-          setOpenStatusMessage(true);
-          setStatusMessage((prev) => ({
-            ...prev,
-            reason: "User Aleady Exist",
-            message: error?.data?.message,
-          }));
-        }
+        setOpenStatusMessage(true);
+        setStatusMessage((prev) => ({
+          ...prev,
+          reason: "!oops",
+          message: error?.data?.message,
+        }));
       });
   };
 

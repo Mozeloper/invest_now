@@ -69,15 +69,17 @@ const WebcamCapture = ({ handleCloseUploadModals, customerId, isLoading }) => {
       {image !== "" && (
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <Button
-            isLoading={isLoading}
-            onClick={() => {
-              uploadValid();
-            }}
-            title="Save Picture"
-            className="cursor-pointer w-full"
-            type="button"
-          />
+          <div className="w-[50%]">
+            <Button
+              isLoading={isLoading}
+              onClick={() => {
+                uploadValid();
+              }}
+              title="Save Picture"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div>
         </>
       )}
     </div>
@@ -221,15 +223,15 @@ export default function Uploader({ handleCloseModals }) {
                   </Text>
                 </div>
                 {images !== "" && (
-                  <div className="flex flex-col items-center justify-center gap-4">
+                  <div className="w-full flex flex-col items-center justify-center gap-4">
                     <img src={imageList} alt="img_preview" className="h-[300px] w-[300px]" />
-                    <div className="w-[50%] mx-auto">
+                    <div className="w-[50%]">
                       <Button
                         onClick={() => {
                           uploadValid();
                         }}
                         title="Save Picture"
-                        className="cursor-pointer w-full mx-auto"
+                        className="cursor-pointer w-full"
                         type="button"
                       />
                     </div>

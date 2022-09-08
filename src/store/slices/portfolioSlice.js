@@ -36,7 +36,9 @@ export const handleGetPortfolioDetails = createAsyncThunk(
   "portfolio/portfolioDetails",
   async (values, { rejectWithValue }) => {
     try {
-      const data = await api.get(appUrls.getPortfolioDetailsURL + `?cash_account_id=${values}`);
+      const data = await api.get(
+        appUrls.getPortfolioDetailsURL + `?cash_account_id=${values?.cashAccountId}&customer_id=${values?.customerId}`
+      );
       return data;
     } catch (error) {
       return rejectWithValue(error);
@@ -120,13 +122,15 @@ export const portfolioSlice = createSlice({
     },
     [handleGetPortfolioDetails.pending]: (state) => {
       state.portfolioDetailsIsLoading = true;
+      state.portfolioDetailsData = null;
     },
     [handleGetPortfolioDetails.fulfilled]: (state, action) => {
       state.portfolioDetailsIsLoading = false;
       state.portfolioDetailsData = action;
     },
-    [handleGetPortfolioDetails.rejected]: (state) => {
+    [handleGetPortfolioDetails.rejected]: (state, action) => {
       state.portfolioDetailsIsLoading = false;
+      state.portfolioDetailsData = action;
     },
     [handleWithdrawalRequest.pending]: (state) => {
       state.portfolioWithdrawalIsLoading = true;

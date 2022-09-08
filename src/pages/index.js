@@ -51,13 +51,13 @@ export default function Index() {
 
   return (
     <>
-      <div className="lg:min-h-[calc(100vh-72px)] lg:h-[calc(100vh-72px)] h-[calc(70vh-72px)] mt-[72px] w-[100%] flex justify-between">
+      <div className="lg:min-h-[calc(100vh-72px)] lg:h-[calc(100vh-72px)] h-[calc(50vh-72px)] mt-[72px] w-[100%] flex justify-between">
         <div
           data-aos="fade-up"
           data-aos-duration="2000"
           className="lg:w-[60%] w-full wrapper flex flex-col items-center lg:items-start justify-center"
         >
-          <div className="text-wrap lg:text-start text-center w-[100%] lg:w-[80%]">
+          <div className="text-wrap lg:text-start text-center w-[60%] lg:w-[80%]">
             <Slider {...settings}>
               <div>
                 <Text variant="h0" format="font-bold">

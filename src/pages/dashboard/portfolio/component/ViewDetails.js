@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Skeleton } from "@mui/material";
 import { currencyEntities } from "../../../../helper";
 
-export default function ViewDetails({ handleCloseModal, handleOpenModal, cashAccountId }) {
+export default function ViewDetails({ handleCloseModal, handleOpenModal, cashAccountId, customerId }) {
   const dispatch = useDispatch();
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const portfolioReducer = useSelector((state) => state.portfolioReducer);
@@ -30,13 +30,13 @@ export default function ViewDetails({ handleCloseModal, handleOpenModal, cashAcc
     (async () => {
       mounted = true;
       if (mounted) {
-        dispatch(handleGetPortfolioDetails(cashAccountId));
+        dispatch(handleGetPortfolioDetails({ cashAccountId, customerId }));
       }
     })();
     return () => {
       mounted = false;
     };
-  }, [dispatch, cashAccountId]);
+  }, [dispatch, cashAccountId, customerId]);
 
   return (
     <div className="p-[4%]">
@@ -54,6 +54,14 @@ export default function ViewDetails({ handleCloseModal, handleOpenModal, cashAcc
           <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="345px" height={200} />
         </div>
       )}
+      {!!!portfolioReducer?.portfolioDetailsIsLoading &&
+        portfolioReducer?.portfolioDetailsData?.type === "portfolio/portfolioDetails/rejected" && (
+          <div className="h-full w-full flex justify-center mt-24">
+            <Text variant="h1" weight="bold">
+              {portfolioReducer?.portfolioDetailsData?.payload?.data?.message}
+            </Text>
+          </div>
+        )}
       {!!!portfolioReducer?.portfolioDetailsIsLoading &&
         portfolioReducer?.portfolioDetailsData?.type === "portfolio/portfolioDetails/fulfilled" && (
           <>

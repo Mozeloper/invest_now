@@ -110,6 +110,7 @@ export default function Portfolio() {
   const portfolioStats = portfolioReducer?.portfolioStatisticsData?.payload?.data?.data;
 
   const [cashAccountId, setCashAccountId] = useState("");
+  const [customerId, setCustomerId] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
   const [searchText, setSearchText] = useState("");
@@ -336,6 +337,7 @@ export default function Portfolio() {
       <SideRightModal isOpen={showModal?.view_details} modalWidth="512px">
         <ViewDetails
           cashAccountId={cashAccountId}
+          customerId={customerId}
           handleOpenModal={handleOpenModal}
           handleCloseModal={handleCloseModal}
         />
@@ -344,11 +346,12 @@ export default function Portfolio() {
         <Withdrawal
           handleOpenModal={handleOpenModal}
           cashAccountId={cashAccountId}
+          customerId={customerId}
           handleCloseModal={handleCloseModal}
         />
       </SideRightModal>
       <SideRightModal bgColor={true} isOpen={showModal?.add_money} modalWidth="512px">
-        <Addmoney cashAccountId={cashAccountId} handleCloseModal={handleCloseModal} />
+        <Addmoney customerId={customerId} cashAccountId={cashAccountId} handleCloseModal={handleCloseModal} />
       </SideRightModal>
       <div className="overflow-hidden" data-aos="fade-up" data-aos-duration="2000">
         <div className="w-full flex md:flex-row flex-col justify-between mb-10">
@@ -489,6 +492,7 @@ export default function Portfolio() {
                             onClick={() => {
                               handleOpenModal("view_details");
                               setCashAccountId(data?.cash_account_id);
+                              setCustomerId(data?.customer_id);
                             }}
                             className={`cursor-pointer min-w-[345px] h-[148px] p-4 ${
                               index === 1 ? "bg-[#E2FFB7]" : index % 2 ? "bg-[#FFD8EF]" : "bg-[#65666A]"

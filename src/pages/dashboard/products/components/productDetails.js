@@ -81,9 +81,10 @@ export default function ProductDetails({
               <img src={productData?.imageUrlHome} alt="product_img" loading="lazy" className="w-full h-[277px]" />
               <img
                 onClick={() => handleOpenProductDetailsModal(null)}
-                className="w-[100px] h-[100px] cursor-pointer absolute top-0 left-0"
+                className="w-[100px] h-[100px] cursor-pointer absolute top-5 left-5"
                 src={BackButton}
                 alt="back_Button"
+                loading="lazy"
               />
             </div>
             <div className="mt-6 px-[6%]">

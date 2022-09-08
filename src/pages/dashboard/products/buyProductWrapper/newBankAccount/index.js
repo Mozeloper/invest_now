@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import Text from "../../../../../components/Typography/Typography";
@@ -41,9 +41,9 @@ export default function NewBankAccount() {
 
   const openAccountReducer = useSelector((state) => state.openAccountReducer);
   const buyProductReducer = useSelector((state) => state.buyProductReducer);
-  const bank_name = buyProductReducer?.existingAccountDataDetails?.payload?.data?.data?.bank?.name ?? "";
-  const bank_id = buyProductReducer?.existingAccountDataDetails?.payload?.data?.data?.bank?.id ?? "";
-  const bank_code = buyProductReducer?.existingAccountDataDetails?.payload?.data?.data?.bank?.code ?? "";
+  const bank_name = buyProductReducer?.existingAccountDataDetails?.payload?.data?.data?.bank ?? "";
+  const bank_id = buyProductReducer?.existingAccountDataDetails?.payload?.data?.data?.bank_id ?? "";
+  // const bank_code = buyProductReducer?.existingAccountDataDetails?.payload?.data?.data?.bank?.code ?? "";
   const bank_account_number =
     buyProductReducer?.existingAccountDataDetails?.payload?.data?.data?.bank_account_number ?? "";
   const bank_account_name = buyProductReducer?.existingAccountDataDetails?.payload?.data?.data?.bank_account_name ?? "";
@@ -54,6 +54,8 @@ export default function NewBankAccount() {
     { name: "Paul Akilapa", number: " 31134567890", code: "FBN" },
   ]);
   const existingReferralCode = buyProductReducer?.referralCode ?? "";
+  const defaultBankName = useRef("");
+  defaultBankName.current = bank_name;
 
   const bankList = [];
   const [isSelected, setIsSelected] = useState({
@@ -70,7 +72,7 @@ export default function NewBankAccount() {
     verify_account: false,
     existing_account: false,
   });
-  const [bankSelected, setBankSelected] = useState(bank_name);
+  const [bankSelected, setBankSelected] = useState();
   const [accountNumber, setAccountNumber] = useState(bank_account_number);
   const [selectedExistingBank, setIsSelectedExistingBank] = useState(null);
 
@@ -99,7 +101,7 @@ export default function NewBankAccount() {
     let mounted = false;
     (async () => {
       mounted = true;
-      if (mounted && bank_account_number !== "") {
+      if (mounted && bank_name !== "" && bank_account_number !== "") {
         setAccountNumber(bank_account_number);
         setBankSelected(bank_name);
       }
@@ -206,7 +208,7 @@ export default function NewBankAccount() {
         } else {
           existing_account_name = bank_account_name;
           selected_bank = {
-            code: bank_code,
+            // code: bank_code, not needed..
             id: bank_id,
           };
         }
@@ -267,7 +269,7 @@ export default function NewBankAccount() {
                 className="w-[15px] h-[15px]"
               />
             </div>
-            {buyProductReducer?.isExistingCashAccountIsLoaing && (
+            {buyProductReducer?.existingBankAccountIsLoading && (
               <div className="mt-2">
                 <Box>
                   <Skeleton animation="wave" />
@@ -275,7 +277,7 @@ export default function NewBankAccount() {
                 </Box>
               </div>
             )}
-            {!!!buyProductReducer?.isExistingCashAccountIsLoaing && (
+            {!!!buyProductReducer?.existingBankAccountIsLoading && (
               <>
                 {isSelected?.new_bank_details && (
                   <>
@@ -293,7 +295,7 @@ export default function NewBankAccount() {
                         isLoading={openAccountReducer?.bankIsLoading}
                         placeholder="Choose Bank"
                         options={bankList}
-                        defaultInputValue={bank_name}
+                        defaultInputValue={defaultBankName.current ?? ""}
                         styles={colourStyles}
                       />
                     </div>
