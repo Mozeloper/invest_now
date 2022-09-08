@@ -32,45 +32,54 @@ export default function LandingPageProduct() {
 
   return (
     <div className="mt-[150px] min-h-[60vh] w-full">
-      <div className="wrapper w-full">
-        <div className="w-full relative">
-          <img
-            src={productData?.imageUrlHome}
-            alt="bg"
-            loading="lazy"
-            className="max-w-[90%] w-full h-[300px] rounded-lg"
-          />
-          <Text weight="bold" color="text-white" variant="h0" format="tracking-wide absolute top-24 left-20">
-            {productData?.name}
+      {productsReducer?.productDetailIsLoading && (
+        <div className="h-[100px] w-full flex justify-center">
+          <Text weight="bold" variant="h1" format="tracking-wide">
+            Loading Product Details..
           </Text>
-          <div
-            className="text-base text-white font-bold absolute tracking-wide top-40 left-20 w-[70%]"
-            dangerouslySetInnerHTML={{
-              __html: productData?.introHtml.substring(0, 140).concat("..."),
-            }}
-          />
         </div>
+      )}
+      {!!!productsReducer?.productDetailIsLoading && (
+        <div className="wrapper w-full">
+          <div className="w-full relative">
+            <img
+              src={productData?.imageUrlHome}
+              alt="bg"
+              loading="lazy"
+              className="max-w-[90%] w-full h-[300px] rounded-lg"
+            />
+            <Text weight="bold" color="text-white" variant="h0" format="tracking-wide absolute top-24 left-20">
+              {productData?.name}
+            </Text>
+            <div
+              className="text-base text-white font-bold absolute tracking-wide top-40 left-20 w-[70%]"
+              dangerouslySetInnerHTML={{
+                __html: productData?.introHtml.substring(0, 140).concat("..."),
+              }}
+            />
+          </div>
 
-        <div className="wrapper w-full mt-5 flex flex-col gap-5">
-          <Text weight="bold" color="text-[#65666A]" variant="h2" format="tracking-wide">
-            Benefits and features of {productData?.name}
-          </Text>
-          <div
-            className="text-sm text-[#465174]"
-            dangerouslySetInnerHTML={{
-              __html: productData?.html,
-            }}
-          />
+          <div className="wrapper w-full mt-5 flex flex-col gap-5">
+            <Text weight="bold" color="text-[#65666A]" variant="h2" format="tracking-wide">
+              Benefits and features of {productData?.name}
+            </Text>
+            <div
+              className="text-sm text-[#465174]"
+              dangerouslySetInnerHTML={{
+                __html: productData?.html,
+              }}
+            />
+          </div>
+          <div className="w-[30%] mt-[3%] mb-[10%] wrapper">
+            <Button
+              title={`${productData?.name === "UTrace" ? "Request Search" : "Open Account"}`}
+              onClick={() => navigate("/bvn_verification")}
+              className="px-12 py-4 whitespace-nowrap font-extrabold capitalize"
+              style={{ border: "3px solid #E32526" }}
+            />
+          </div>
         </div>
-        <div className="w-[30%] mt-[3%] mb-[10%] wrapper">
-          <Button
-            title={`${productData?.name === "UTrace" ? "Request Search" : "Open Account"}`}
-            onClick={() => navigate("/bvn_verification")}
-            className="px-12 py-4 whitespace-nowrap font-extrabold capitalize"
-            style={{ border: "3px solid #E32526" }}
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 }
