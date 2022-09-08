@@ -491,7 +491,7 @@ export default function Portfolio() {
                             key={index}
                             onClick={() => {
                               handleOpenModal("view_details");
-                              setCashAccountId(data?.cash_account_id);
+                              setCashAccountId(data?.portfolio_account_id);
                               setCustomerId(data?.customer_id);
                             }}
                             className={`cursor-pointer min-w-[345px] h-[148px] p-4 ${

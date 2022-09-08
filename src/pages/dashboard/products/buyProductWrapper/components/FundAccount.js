@@ -58,7 +58,6 @@ export default function FundAccount({ handleCloseModal }) {
   const navigate = useNavigate();
   const attemptId = useRef(null);
   const ref_number = useRef(null);
-  console.log(openAccountReducer?.createAccountData?.data?.data);
 
   const [error, setError] = useState({
     amount: false,
