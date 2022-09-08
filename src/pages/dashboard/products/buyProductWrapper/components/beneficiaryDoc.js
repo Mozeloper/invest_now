@@ -107,7 +107,7 @@ export default function BeneficiaryDoc() {
       birth_certificate_base64: buyProductReducer?.bithCertificate ?? "",
       beneficiary_fullname: values?.fullName ?? "",
       beneficiary_dob: values?.date_of_birth ?? "",
-      beneficiary_id_type: openAccountReducer?.validId ?? "",
+      beneficiary_id_type: openAccountReducer?.mybeneficiaryIdType ?? "",
       beneficiary_id: openAccountReducer?.mybeneficiaryId ?? "",
       beneficiary_passport: openAccountReducer?.mybeneficiaryPassport ?? "",
       account_type: productData?.code ?? "",
