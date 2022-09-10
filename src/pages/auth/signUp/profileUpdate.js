@@ -149,7 +149,7 @@ export default function ProfileUpdate() {
           email: authReducer?.smileDetails?.FullData?.email,
           phone_number: authReducer?.smileDetails?.FullData?.PhoneNumber1,
           date_of_birth: authReducer?.smileDetails?.DOB,
-          gender_type: authReducer?.smileDetails?.FullData?.Gender,
+          gender_type: authReducer?.smileDetails?.FullData?.Gender ?? "",
           country_code: authReducer?.smileDetails?.FullData?.nationality,
           state_id: authReducer?.smileDetails?.FullData?.stateOfOrigin,
           residential_address: authReducer?.smileDetails?.FullData?.residentialAddress,
@@ -251,7 +251,7 @@ export default function ProfileUpdate() {
                   isLoading={authReducer?.isGenderLoading}
                   setFieldValue={setFieldValue}
                   placeholder="Select gender"
-                  defaultInputValue={values.gender_type}
+                  // defaultInputValue={values.gender_type}
                 />
                 {errors.gender_type && touched.gender_type ? (
                   <Text variant="small" weight="normal" color="text-red">

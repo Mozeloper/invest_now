@@ -72,7 +72,7 @@ export default function ChnDetails() {
       bank_acct_name: buyProductReducer?.bankDetails?.existing_account_name ?? null,
       is_pep: customerDetails?.pep_status ?? false,
       is_minor: buyProductReducer?.accountType === "DEPENDENT_MINOR" ? true : false,
-      owner: buyProductReducer?.accountType === "MY_SELF" ? "MY_SELF" : "",
+      owner: buyProductReducer?.accountType,
       nok_first_name: buyProductReducer?.nextOfKin?.firstName ?? "",
       nok_middle_name: buyProductReducer?.nextOfKin?.middleName ?? "",
       nok_last_name: buyProductReducer?.nextOfKin?.lastName ?? "",

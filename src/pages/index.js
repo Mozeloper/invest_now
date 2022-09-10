@@ -60,10 +60,10 @@ export default function Index() {
           data-aos-duration="2000"
           className="lg:w-[60%] w-full wrapper flex flex-col items-center lg:items-start justify-center"
         >
-          <div className="text-wrap lg:text-start text-center w-[60%] lg:w-[70%]">
+          <div className="text-wrap lg:text-start text-center w-[60%] lg:w-[80%]">
             <Slider {...settings}>
-              <div className="text-2xl font-bold">All your investment needs now just one tap away</div>
-              <div className="text-2xl font-bold">
+              <div className="text-5xl font-bold">All your investment needs now just one tap away</div>
+              <div className="text-5xl font-bold">
                 InvestNow enables you have complete control of your investment portfolio
               </div>
             </Slider>

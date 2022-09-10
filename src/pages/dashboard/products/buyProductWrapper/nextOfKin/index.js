@@ -98,7 +98,7 @@ export default function NextOfKin() {
       bank_acct_name: buyProductReducer?.bankDetails?.existing_account_name ?? null,
       is_pep: customerDetails?.pep_status ?? false,
       is_minor: false,
-      owner: true,
+      owner: buyProductReducer?.accountType,
       nok_first_name: values?.firstName,
       nok_middle_name: values?.middleName,
       nok_last_name: values?.lastName,
