@@ -35,10 +35,13 @@ const slideImages = [
 const settings = {
   infinite: true,
   speed: 1000,
+  lazyLoad: true,
+  initialSlide: 0,
   vertical: true,
   autoplay: true,
-  slidesToShow: 1,
-  slidesToScroll: 1,
+  // slidesToShow: 1,
+  // slidesToScroll: 1,
+  adaptiveHeight: true,
 };
 
 export default function Index() {
@@ -51,23 +54,17 @@ export default function Index() {
 
   return (
     <>
-      <div className="lg:min-h-[calc(100vh-72px)] lg:h-[calc(100vh-72px)] h-[calc(50vh-72px)] mt-[72px] w-[100%] flex justify-between">
+      <div className="lg:min-h-[calc(100vh-72px)] lg:h-[calc(100vh-72px)] h-[calc(80vh-72px)] mt-[72px] w-[100%] flex justify-between">
         <div
           data-aos="fade-up"
           data-aos-duration="2000"
           className="lg:w-[60%] w-full wrapper flex flex-col items-center lg:items-start justify-center"
         >
-          <div className="text-wrap lg:text-start text-center w-[60%] lg:w-[80%]">
+          <div className="text-wrap lg:text-start text-center w-[60%] lg:w-[70%]">
             <Slider {...settings}>
-              <div>
-                <Text variant="h0" format="font-bold">
-                  All your investment needs now just one tap away
-                </Text>
-              </div>
-              <div>
-                <Text variant="h0" format="font-bold">
-                  Scale up your business with SME financing
-                </Text>
+              <div className="text-2xl font-bold">All your investment needs now just one tap away</div>
+              <div className="text-2xl font-bold">
+                InvestNow enables you have complete control of your investment portfolio
               </div>
             </Slider>
           </div>
@@ -322,7 +319,7 @@ export default function Index() {
           data-aos-duration="2000"
           className="flex justify-start overflow-x-auto no-scrollbar wrapper gap-4"
         >
-          <div className="bg-BACKGROUND_WHITE min-w-[420px] h-full p-4">
+          <div className="bg-BACKGROUND_WHITE min-w-[420px] h-[220px] p-4">
             <Text variant="h4" format="w-[90%] font-extrabold mb-4">
               They pay good attention to me. They also provide quality and timely service which has, in no small
               measure, enabled me to achieve the much-needed objective of good returns on investment.
@@ -334,7 +331,7 @@ export default function Index() {
               </Text>
             </div>
           </div>
-          <div className="bg-BACKGROUND_WHITE min-w-[420px] h-full p-4">
+          <div className="bg-BACKGROUND_WHITE min-w-[420px] h-[220px] p-4">
             <Text variant="h4" format="w-[90%] font-extrabold mb-4">
               I’ve had a very good experience with United Capital Plc. The company has related with me very well and has
               really added value to my business. They take pride in putting your interests first.
@@ -346,7 +343,7 @@ export default function Index() {
               </Text>
             </div>
           </div>
-          <div className="bg-BACKGROUND_WHITE min-w-[420px] h-full p-4">
+          <div className="bg-BACKGROUND_WHITE min-w-[420px] h-[220px] p-4">
             <Text variant="h4" format="w-[90%] font-extrabold mb-4">
               I’ve invested with United Capital for a while now, and I’ve been telling others to join in. If they
               weren’t good at what they do, I wouldn’t have been transacting with them for over eight years.

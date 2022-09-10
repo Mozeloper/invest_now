@@ -65,6 +65,8 @@ import MutualFundReturns from "../pages/landingPages/analysis/mutualFundReturns"
 import LandingPageProduct from "../pages/landingPages/products";
 import FrequentlyAskedQuestion from "../pages/landingPages/frequentlyAskedQuestion";
 import ContactUsForm from "../pages/landingPages/ContactUsForm";
+import PrivacyStatement from "../pages/landingPages/privacyStatement";
+import TermsandConditions from "../pages/landingPages/termsAndConditions";
 
 export default function AppRoute() {
   return (
@@ -75,6 +77,8 @@ export default function AppRoute() {
             <Route path="/" element={<SplashScreen />} />
             <Route path="/:product/:productType" element={<LandingPageProduct />} />
             <Route path="/frequently_asked_question" element={<FrequentlyAskedQuestion />} />
+            <Route path="/privacy_statement" element={<PrivacyStatement />} />
+            <Route path="/terms_and_conditions" element={<TermsandConditions />} />
             <Route path="/contact_us_form" element={<ContactUsForm />} />
             {/* <Route path="/Mutual_Funds/equity_fund" element={<EquityFund />} />
             <Route path="/Mutual_Funds/money_market_fund" element={<MoneyMarketFund />} />

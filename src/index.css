@@ -25,6 +25,9 @@ body {
   min-height: 320px;
   background-color: #fff;
 }
+.slick-slide {
+  height: 100px;
+}
 
 .wrapper {
   @apply px-[5%] md:px-[6%];

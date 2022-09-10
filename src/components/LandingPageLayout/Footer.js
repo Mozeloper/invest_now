@@ -13,10 +13,10 @@ import MessageModal from "../modals/MessageModal";
 export default function Footer() {
   const navigate = useNavigate();
 
-  const [successCopy, setSuccessCopy] = useState({
-    text: "",
-    link: false,
-  });
+  // const [successCopy, setSuccessCopy] = useState({
+  //   text: "",
+  //   link: false,
+  // });
   const [emailValue, setEmailValue] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [alertMessage, setAlertMessage] = useState({
@@ -51,22 +51,23 @@ export default function Footer() {
       setOpenModal(true);
     }
   };
-  const copyCodeToClipBoard = (data) => {
-    navigator.clipboard.writeText(data).then(() => {
-      setSuccessCopy((prev) => ({
-        ...prev,
-        text: "Phone Number copied",
-        link: true,
-      }));
-      setTimeout(() => {
-        setSuccessCopy((prev) => ({
-          ...prev,
-          text: "",
-          link: false,
-        }));
-      }, 2000);
-    });
-  };
+  // const copyCodeToClipBoard = (data) => {
+  //   navigator.clipboard.writeText(data).then(() => {
+  //     setSuccessCopy((prev) => ({
+  //       ...prev,
+  //       text: "Phone Number copied",
+  //       link: true,
+  //     }));
+  //     setTimeout(() => {
+  //       setSuccessCopy((prev) => ({
+  //         ...prev,
+  //         text: "",
+  //         link: false,
+  //       }));
+  //     }, 2000);
+  //   });
+  // };
+
   return (
     <>
       <MessageModal isOpen={openModal} modalWidth="300px" modalHeight="auto">
@@ -105,8 +106,18 @@ export default function Footer() {
                   >
                     Contact Us
                   </li>
-                  <li className="text-white cursor-pointer text-sm mb-6 hover:scale-110">Terms and Conditions</li>
-                  <li className="text-white cursor-pointer text-sm mb-6 hover:scale-110">Privacy statement</li>
+                  <li
+                    onClick={() => navigate("/terms_and_conditions")}
+                    className="text-white cursor-pointer text-sm mb-6 hover:scale-110"
+                  >
+                    Terms and Conditions
+                  </li>
+                  <li
+                    onClick={() => navigate("/privacy_statement")}
+                    className="text-white cursor-pointer text-sm mb-6 hover:scale-110"
+                  >
+                    Privacy statement
+                  </li>
                 </ul>
               </div>
               <div className="">
@@ -152,7 +163,7 @@ export default function Footer() {
                   </li>
                 </ul>
               </div>
-              <div className="">
+              {/* <div className="">
                 <Text color="text-white" variant="h3" format="tracking-wide font-bold mb-2">
                   Contact
                 </Text>
@@ -183,7 +194,7 @@ export default function Footer() {
                     </Text>
                   )}
                 </ul>
-              </div>
+              </div> */}
             </div>
             <div className="flex flex-col justify-between">
               <div>
@@ -215,10 +226,18 @@ export default function Footer() {
                   We are sociable
                 </Text>
                 <div className="flex gap-4">
-                  <img className="cursor-pointer hover:scale-110" loading="lazy" src={twitter} alt="twitter" />
-                  <img className="cursor-pointer hover:scale-110" loading="lazy" src={facebook} alt="facebook" />
-                  <img className="cursor-pointer hover:scale-110" loading="lazy" src={instagram} alt="instagram" />
-                  <img className="cursor-pointer hover:scale-110" loading="lazy" src={youtube} alt="youtube" />
+                  <a href="https://twitter.com/UnitedCap" target="_blank" rel="noreferrer">
+                    <img className="cursor-pointer hover:scale-110" loading="lazy" src={twitter} alt="twitter" />
+                  </a>
+                  <a href="https://web.facebook.com/UnitedCapitalPlc/?_rdc=1&_rdr" target="_blank" rel="noreferrer">
+                    <img className="cursor-pointer hover:scale-110" loading="lazy" src={facebook} alt="facebook" />
+                  </a>
+                  <a href="https://www.instagram.com/unitedcapitalplc" target="_blank" rel="noreferrer">
+                    <img className="cursor-pointer hover:scale-110" loading="lazy" src={instagram} alt="instagram" />
+                  </a>
+                  <a href="https://www.youtube.com/channel/UC07ZLKfSkCUUm3CBHIWBL_Q" target="_blank" rel="noreferrer">
+                    <img className="cursor-pointer hover:scale-110" loading="lazy" src={youtube} alt="youtube" />
+                  </a>
                 </div>
               </div>
             </div>

@@ -183,7 +183,7 @@ export default function ContactUsForm() {
               <Text weight="normal" variant="h4" color="text-[#000000] text-center">
                 Contact us on Whatsapp: +2348168282396
               </Text>
-              <Text weight="normal" variant="h4" color="text-[#000000] text-right">
+              <Text weight="normal" variant="h4" color="text-[#000000] text-center">
                 Email: UnitedCustomerService@unitedcapitalplcgroup.com
               </Text>
             </div>
