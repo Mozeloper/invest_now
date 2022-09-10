@@ -27,6 +27,7 @@ import Referral from "./component/referral";
 import { useNavigate } from "react-router-dom";
 import Loader from "../../components/loader";
 import { handleGetPortfolioPerfomance } from "../../store/slices/portfolioSlice";
+import SocialMedia from "./component/socialMedia";
 
 const data = [
   {
@@ -77,6 +78,7 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false);
+  const [isSocialMediaModalOpen, setIsSocialMediaModalOpen] = useState(false);
   const portfolioReducer = useSelector((state) => state.portfolioReducer);
   const portfolio_items = portfolioReducer?.portfolioPerformanceData?.payload?.data?.data?.portfolio_items;
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
@@ -106,7 +108,13 @@ export default function Dashboard() {
   return (
     <>
       <MessageModal modalHeight="80vh" isOpen={isReferralModalOpen}>
-        <Referral setIsReferralModalOpen={setIsReferralModalOpen} />
+        <Referral
+          setIsSocialMediaModalOpen={setIsSocialMediaModalOpen}
+          setIsReferralModalOpen={setIsReferralModalOpen}
+        />
+      </MessageModal>
+      <MessageModal bgColor={true} modalHeight="30vh" modalWidth="400px" isOpen={isSocialMediaModalOpen}>
+        <SocialMedia setIsSocialMediaModalOpen={setIsSocialMediaModalOpen} />
       </MessageModal>
       <div data-aos="fade-up" data-aos-duration="2000">
         <div className="w-full">

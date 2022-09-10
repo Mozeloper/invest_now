@@ -51,12 +51,6 @@ export default function LandingPageProduct() {
             <Text weight="bold" color="text-white" variant="h0" format="tracking-wide absolute top-24 left-20">
               {productData?.name}
             </Text>
-            <div
-              className="text-base text-white font-bold absolute tracking-wide top-40 left-20 w-[70%]"
-              dangerouslySetInnerHTML={{
-                __html: productData?.introHtml.substring(0, 140).concat("..."),
-              }}
-            />
           </div>
 
           <div className="wrapper w-full mt-5 flex flex-col gap-5">

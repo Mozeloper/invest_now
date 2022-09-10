@@ -251,7 +251,7 @@ export default function ProfileUpdate() {
                   isLoading={authReducer?.isGenderLoading}
                   setFieldValue={setFieldValue}
                   placeholder="Select gender"
-                  defaultValue={values.gender_type}
+                  defaultInputValue={values.gender_type}
                 />
                 {errors.gender_type && touched.gender_type ? (
                   <Text variant="small" weight="normal" color="text-red">
@@ -302,12 +302,10 @@ export default function ProfileUpdate() {
             <div className="mt-4 w-full">
               <MyInput
                 className="w-full"
-                disabled
                 placeholder="*Residential Address"
                 label="Residential Address"
                 name="residential_address"
                 type="text"
-                readOnly
                 handleChange={handleChange}
               />
             </div>

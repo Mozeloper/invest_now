@@ -138,6 +138,7 @@ export const dashboardSlice = createSlice({
     },
     [handleGetReferralProduct.pending]: (state) => {
       state.activeProductReferralIsLoading = true;
+      state.referralProduct = null;
     },
     [handleGetReferralProduct.fulfilled]: (state, action) => {
       state.activeProductReferralIsLoading = false;
@@ -145,6 +146,7 @@ export const dashboardSlice = createSlice({
     },
     [handleGetReferralProduct.rejected]: (state) => {
       state.activeProductReferralIsLoading = false;
+      state.referralProduct = null;
     },
     [handleGetReferralCode.pending]: (state) => {
       state.referralCodeIsLoading = true;

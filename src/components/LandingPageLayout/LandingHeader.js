@@ -51,7 +51,7 @@ export default function LandingHeader() {
               >
                 <div className="w-full flex justify-between">
                   <Text
-                    onClick={() => navigate("/Mutual_Funds/Fixed_Income_Funds", { state: "AM_BON" })}
+                    onClick={() => navigate("/Mutual_Funds/fixed_income_fund", { state: "AM_BON" })}
                     variant="h3"
                     format="font-normal cursor-pointer"
                     color="text-[#000000]"
@@ -74,7 +74,7 @@ export default function LandingHeader() {
                     format="font-normal cursor-pointer"
                     color="text-[#000000]"
                   >
-                    Money market Fund
+                    Money Market Fund
                   </Text>
                   <Text
                     onClick={() => navigate("/Mutual_Funds/balanced_fund", { state: "AM_BF" })}
@@ -87,30 +87,30 @@ export default function LandingHeader() {
                 </div>
                 <div className="w-full flex justify-between">
                   <Text
-                    onClick={() => navigate("/Mutual_Funds/wealth_for_women_funds", { state: "AM_WFW" })}
+                    onClick={() => navigate("/Mutual_Funds/wealth_for_women_fund", { state: "AM_WFW" })}
                     variant="h3"
                     format="font-normal cursor-pointer"
                     color="text-[#000000]"
                   >
-                    Wealth for women Funds
+                    Wealth for Women Fund
                   </Text>
                   <Text
-                    onClick={() => navigate("/Mutual_Funds/skuk_fund", { state: "AM_SUKUK" })}
+                    onClick={() => navigate("/Mutual_Funds/sukuk_fund", { state: "AM_SUKUK" })}
                     variant="h3"
                     format="font-normal cursor-pointer"
                     color="text-[#000000]"
                   >
-                    Skuk Fund
+                    Sukuk Fund
                   </Text>
                 </div>
                 <div className="w-full flex justify-between">
                   <Text
-                    onClick={() => navigate("/Mutual_Funds/nigerian_euroband_fund", { state: "AM_EURO" })}
+                    onClick={() => navigate("/Mutual_Funds/nigerian_eurobond_fund", { state: "AM_EURO" })}
                     variant="h3"
                     format="font-normal cursor-pointer"
                     color="text-[#000000]"
                   >
-                    Nigerian Euroband Funds
+                    Nigerian Eurobond Fund
                   </Text>
                 </div>
               </div>

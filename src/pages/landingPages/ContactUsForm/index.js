@@ -179,9 +179,14 @@ export default function ContactUsForm() {
             <Text weight="bold" variant="h3" color="text-[#000000]">
               Send us a message
             </Text>
-            <Text weight="normal" variant="h4" color="text-[#000000] text-center">
-              Contact us on Whatsapp: +2348168282396
-            </Text>
+            <div>
+              <Text weight="normal" variant="h4" color="text-[#000000] text-center">
+                Contact us on Whatsapp: +2348168282396
+              </Text>
+              <Text weight="normal" variant="h4" color="text-[#000000] text-right">
+                Email: UnitedCustomerService@unitedcapitalplcgroup.com
+              </Text>
+            </div>
             <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
               8am - 4pm Support 070000INVEST (07000468378) 014631130 014631131
             </Text>

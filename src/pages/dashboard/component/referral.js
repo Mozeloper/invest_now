@@ -24,7 +24,7 @@ const colourStyles = {
   },
 };
 
-export default function Referral({ setIsReferralModalOpen }) {
+export default function Referral({ setIsReferralModalOpen, setIsSocialMediaModalOpen }) {
   const dashboardReducer = useSelector((state) => state.dashboardReducer);
   const [referralLink, setReferralLink] = useState("");
   const [referralCode, setReferralCode] = useState("");
@@ -168,13 +168,21 @@ export default function Referral({ setIsReferralModalOpen }) {
               {`${originLocation}/products/buy_product?code=${referralLink}`}
             </Text>
             <div
-              onClick={() =>
-                copyCodeToClipBoard(`${originLocation}/products/buy_product?code=${referralLink}`, "link")
-              }
+              onClick={() => copyCodeToClipBoard(`${originLocation}/products/buy_product?code=${referralLink}`, "link")}
               className="bg-[#FFD8D8] whitespace-nowrap cursor-pointer p-1 flex items-center rounded-lg text-xs text-tertiary mb-2"
             >
               Click to Copy
             </div>
+            {/* <div
+              onClick={() => {
+                copyCodeToClipBoard(`${originLocation}/products/buy_product?code=${referralLink}`, "link");
+                setIsReferralModalOpen(false);
+                setIsSocialMediaModalOpen(true);
+              }}
+              className="bg-[#FFD8D8] whitespace-nowrap cursor-pointer p-1 flex items-center rounded-lg text-xs text-tertiary mb-2"
+            >
+              Share link
+            </div> */}
           </div>
           {successCopy.link && (
             <Text variant="body" weight="bold" format="mb-2" color="text-green-600">
