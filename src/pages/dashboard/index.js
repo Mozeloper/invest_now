@@ -246,20 +246,7 @@ export default function Dashboard() {
                     </Text>
                   </div>
                 </div>
-                <div
-                  style={{ backgroundImage: `url(${redFrame})` }}
-                  className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text color="text-white" variant="body">
-                      Trust
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-white">
-                      &#8358; 0.00
-                    </Text>
-                  </div>
-                </div>
+
                 <div
                   style={{ backgroundImage: `url(${greenFrame})` }}
                   className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
