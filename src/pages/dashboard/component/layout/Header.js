@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Text from "../../../../components/Typography/Typography";
 import NotificationIcon from "../../../../assets/icons/notification_icon.svg";
 import ratesIcon from "../../../../assets/icons/rates.svg";
-import { SearchBar } from "../../../../components/SearchBar";
+// import { SearchBar } from "../../../../components/SearchBar";
 import SideLeftModal from "../../../../components/modals/SideLeftModal";
 import MobileSideBar from "./mobileSideBar";
 import NotificationModal from "../../../../components/modals/notificationModal";
@@ -29,7 +29,7 @@ export default function Header() {
       <div className="bg-BACKGROUND_WHITE h-[88px] fixed w-full lg:w-[84%] z-50">
         <div className="hidden h-[88px] w-full lg:block p-4">
           <div className="w-full flex gap-4 justify-end items-center">
-            <SearchBar placeholder="search transactions, products, portfolios e.t.c" />
+            {/* <SearchBar placeholder="search transactions, products, portfolios e.t.c" /> */}
             <div
               onClick={() => setViewDailyRates(true)}
               className="flex gap-2 justify-center items-center cursor-pointer"
@@ -51,9 +51,8 @@ export default function Header() {
             <div className="hambuger"></div>
             <div className="hambuger"></div>
           </div>
-          <div className="w-full flex justify-around items-center">
-            <SearchBar placeholder="search transactions, products, portfolios e.t.c" />
-
+          <div className="w-full flex gap-3 justify-end my-auto mr-3">
+            {/* <SearchBar placeholder="search transactions, products, portfolios e.t.c" /> */}
             <div
               onClick={() => setViewDailyRates(true)}
               className="flex gap-2 justify-center items-center cursor-pointer"
