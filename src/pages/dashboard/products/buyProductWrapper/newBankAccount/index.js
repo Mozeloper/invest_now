@@ -270,7 +270,7 @@ export default function NewBankAccount() {
               />
             </div>
             {buyProductReducer?.existingBankAccountIsLoading && (
-              <div className="mt-2">
+              <div className="lg:w-[534px] md:w-full w-full mt-2">
                 <Box>
                   <Skeleton animation="wave" />
                   <Skeleton animation={false} />

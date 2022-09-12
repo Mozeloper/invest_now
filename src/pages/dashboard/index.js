@@ -141,7 +141,9 @@ export default function Dashboard() {
                     {completion_statuses?.total_percent}% of profile complete
                   </Text>
                   <Text format="whitespace-nowrap" variant="body">
-                    Complete your profile so you can start investing
+                    {completion_statuses?.total_percent === 100
+                      ? "You can start Investing"
+                      : "Complete your profile so you can start investing"}
                   </Text>
                 </div>
               </div>

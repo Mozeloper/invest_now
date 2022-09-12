@@ -128,7 +128,7 @@ export default function Referral({ setIsReferralModalOpen, setIsSocialMediaModal
       <Select
         className="w-full bg-secondary mb-6"
         isLoading={dashboardReducer?.activeProductReferralIsLoading}
-        placeholder={dashboardReducer?.activeProductReferralIsLoading ? "" : "Select Product"}
+        placeholder={dashboardReducer?.activeProductReferralIsLoading ? "" : "Select  a product to refer"}
         onChange={handleGetProduct}
         name="product"
         options={activeProduct}

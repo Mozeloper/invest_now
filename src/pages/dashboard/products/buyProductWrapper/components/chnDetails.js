@@ -127,18 +127,18 @@ export default function ChnDetails() {
   };
 
   const chnDetailsSchema = Yup.object().shape({
-    cscsNumber: Yup.string()
-      .required("This field is Required")
-      .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-        "cscs Number is not valid"
-      ),
-    id_number: Yup.string()
-      .required("This field is Required")
-      .matches(
-        /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
-        "cscs Number is not valid"
-      ),
+    // cscsNumber: Yup.string()
+    //   .required("This field is Required")
+    //   .matches(
+    //     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+    //     "cscs Number is not valid"
+    //   ),
+    // id_number: Yup.string()
+    //   .required("This field is Required")
+    //   .matches(
+    //     /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+    //     "cscs Number is not valid"
+    //   ),
     id_type: Yup.string(),
   });
   return (
