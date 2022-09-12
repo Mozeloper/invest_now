@@ -123,12 +123,12 @@ export default function Referral({ setIsReferralModalOpen, setIsSocialMediaModal
         Your Referral Code and link will be displayed once you select a product
       </Text>
       <Text variant="h4" weight="normal" format="mb-2">
-        what product do u want to refer
+        Select a product to refer
       </Text>
       <Select
         className="w-full bg-secondary mb-6"
         isLoading={dashboardReducer?.activeProductReferralIsLoading}
-        placeholder={dashboardReducer?.activeProductReferralIsLoading ? "" : "Select  a product to refer"}
+        placeholder={dashboardReducer?.activeProductReferralIsLoading ? "" : "Select product"}
         onChange={handleGetProduct}
         name="product"
         options={activeProduct}

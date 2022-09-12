@@ -155,7 +155,7 @@ export default function Dashboard() {
                   Refer and Earn
                 </Text>
                 <Text color="text-[#E32526]" variant="body">
-                  Become an Investnow affiliate marketer and earn up 3% commission
+                  Refer friends and family and earn 250 naira for every account opened and funded
                 </Text>
               </div>
             </div>
