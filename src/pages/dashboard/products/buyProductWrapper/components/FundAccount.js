@@ -76,6 +76,20 @@ export default function FundAccount({ handleCloseModal }) {
   const [amount, setAmount] = useState("");
   const [howFrequentState, setHowFrequentState] = useState("");
   const [dayOfWeek, setDayOfWeek] = useState("");
+  // const [refNumber, setRefNumber] = useState(null);
+
+  // useEffect(() => {
+  //   let mounted = false;
+  //   (async () => {
+  //     mounted = true;
+  //     if (mounted) {
+  //       setRefNumber(ref_number)
+  //     }
+  //   })();
+  //   return () => {
+  //     mounted = false;
+  //   };
+  // }, [refNumber]);
 
   const config = {
     reference: ref_number.current,
@@ -159,6 +173,8 @@ export default function FundAccount({ handleCloseModal }) {
         if (res?.data?.success) {
           attemptId.current = res?.data?.data?.id;
           ref_number.current = res?.data?.data?.ref_number;
+          // console.log(ref_number.current);
+          // initializePaymentsToPaystack(onSuccess, onClose);
           setShowErrorModals((prev) => ({
             ...prev,
             initializePaymentSuccess: true,

@@ -48,7 +48,6 @@ export default function DependentInfo() {
     lastName: Yup.string().required("Last Name is Required"),
     middleName: Yup.string(),
     dateOfBirth: Yup.string().required("Date Of Birth is Required"),
-    bvn: Yup.string().required("Bvn is Required"),
     gender: Yup.string().required("Gender is Required"),
     email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
   });
@@ -72,7 +71,6 @@ export default function DependentInfo() {
             gender: "",
             email: "",
             dateOfBirth: "",
-            bvn: "",
           }}
           validationSchema={dependentInfoSchema}
           enableReinitialize={true}
@@ -180,15 +178,6 @@ export default function DependentInfo() {
                     label="Date of birth"
                     name="dateOfBirth"
                     type="date"
-                    handleChange={handleChange}
-                  />
-                </div>
-                <div className="w-full">
-                  <MyInput
-                    className="w-full"
-                    label="Bank Verification Number"
-                    name="bvn"
-                    type="text"
                     handleChange={handleChange}
                   />
                 </div>

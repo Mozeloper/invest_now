@@ -26,6 +26,7 @@ export default function RatingModal({ handleCloseModal, setIsModalOpen }) {
       emailAddress: customerDetails?.email,
       platform: "web",
     };
+
     await dispatch(handleRatingExperience(data))
       .unwrap()
       .then((res) => {
@@ -118,8 +119,7 @@ export default function RatingModal({ handleCloseModal, setIsModalOpen }) {
               Thank you for the feedback
             </Text>
             <Text weight="normal" variant="body" color="text-[#465174]" format="tracking-wide text-center">
-              You now have a United Capital Trust Fund Account. An activation Link has been sent to your mail. Use it to
-              activate your account and create a password
+              Rating saved successfully
             </Text>
           </div>
           <div className="mt-10 w-full flex justify-center">

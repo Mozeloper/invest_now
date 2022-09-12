@@ -112,6 +112,7 @@ export const portfolioSlice = createSlice({
     },
     [handleGetPortfolioPerfomance.pending]: (state) => {
       state.portfolioPerformanceIsLoading = true;
+      state.portfolioPerformanceData = null;
     },
     [handleGetPortfolioPerfomance.fulfilled]: (state, action) => {
       state.portfolioPerformanceIsLoading = false;
@@ -119,6 +120,7 @@ export const portfolioSlice = createSlice({
     },
     [handleGetPortfolioPerfomance.rejected]: (state) => {
       state.portfolioPerformanceIsLoading = false;
+      state.portfolioPerformanceData = null;
     },
     [handleGetPortfolioDetails.pending]: (state) => {
       state.portfolioDetailsIsLoading = true;
