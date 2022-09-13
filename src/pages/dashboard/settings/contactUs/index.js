@@ -18,30 +18,51 @@ export default function ContactUs() {
           <div className="border-b border-[#BCBCBC] w-full my-5"></div>
           <div className="flex items-center gap-2">
             <div className="w-[8px] h-[8px] rounded-full bg-headerColor"></div>
-            <Text weight="normal" variant="h4" color="text-headerColor">
+            <a
+              className="font-normal text-headerColor text-base"
+              target="_blank"
+              rel="noreferrer"
+              href="https://wa.me/08168282396"
+            >
               Whatsapp: 08168282396
-            </Text>
+            </a>
           </div>
           <div className="border-b border-[#BCBCBC] w-full my-5"></div>
           <div className="flex items-center gap-2">
             <div className="w-[8px] h-[8px] rounded-full bg-headerColor"></div>
-            <Text weight="normal" variant="h4" color="text-headerColor">
+            <a
+              className="font-normal text-headerColor text-base"
+              target="_blank"
+              rel="noreferrer"
+              href="mailto:UnitedCustomerService@unitedcapitalplcgroup.com?subject = Feedback&body = Message"
+            >
               Email: CustomerService@unitedcapitalplcgroup.com
-            </Text>
+            </a>
           </div>
           <div className="border-b border-[#BCBCBC] w-full my-5"></div>
           <div className="flex items-center gap-2">
             <div className="w-[8px] h-[8px] rounded-full bg-headerColor"></div>
-            <Text weight="normal" variant="h4" color="text-headerColor">
+            <a
+              className="font-normal text-headerColor text-base"
+              href="https://www.instagram.com/unitedcapitalplc"
+              target="_blank"
+              rel="noreferrer"
+            >
               Instagram: @unitedcapitalplc
-            </Text>
+            </a>
           </div>
           <div className="border-b border-[#BCBCBC] w-full my-5"></div>
           <div className="flex items-center gap-2">
             <div className="w-[8px] h-[8px] rounded-full bg-headerColor"></div>
-            <Text weight="normal" variant="h4" color="text-headerColor">
+
+            <a
+              className="font-normal text-headerColor text-base"
+              href="https://twitter.com/UnitedCap"
+              target="_blank"
+              rel="noreferrer"
+            >
               Twitter: @UnitedCap
-            </Text>
+            </a>
           </div>
         </div>
       </div>

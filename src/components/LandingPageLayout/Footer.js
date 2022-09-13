@@ -178,15 +178,15 @@ export default function Footer() {
                     </a>
                   </li>
                   <li className="text-white cursor-pointer text-sm mb-6 hover:scale-110">
-                    <a target="_blank" rel="noreferrer" href="https://wa.me/090768456789">
+                    <a target="_blank" rel="noreferrer" href="https://wa.me/08168282396">
                       Whatsapp
                     </a>
                   </li>
                   <li
-                    onClick={() => copyCodeToClipBoard("090768456789")}
+                    onClick={() => copyCodeToClipBoard("08168282396")}
                     className="text-white cursor-pointer text-sm mb-2 hover:scale-110"
                   >
-                    <a href="tel:(+234)90768456789">(+234) 90768456789</a>
+                    <a href="tel:(+234)8168282396">(+234) 8168282396</a>
                   </li>
                   {successCopy.link && (
                     <Text variant="small" weight="bold" format="mb-2" color="text-green-600">

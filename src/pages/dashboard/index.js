@@ -16,6 +16,8 @@ import empty from "../../assets/icons/empty.svg";
 import redFrame from "../../assets/icons/red_frame.svg";
 import purpleFrame from "../../assets/icons/purple_frame.svg";
 import greenFrame from "../../assets/icons/green_frame.svg";
+import rightArrow from "../../assets/icons/big_chrevon_right.svg";
+import downArrow from "../../assets/icons/down_arrow.svg";
 import {
   handlecompletionSummary,
   handleDashboardSummary,
@@ -79,6 +81,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
   const [isReferralModalOpen, setIsReferralModalOpen] = useState(false);
   const [isSocialMediaModalOpen, setIsSocialMediaModalOpen] = useState(false);
+  const [showCompletionStatus, setCompletionStatus] = useState(true);
   const portfolioReducer = useSelector((state) => state.portfolioReducer);
   const portfolio_items = portfolioReducer?.portfolioPerformanceData?.payload?.data?.data?.portfolio_items;
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
@@ -133,6 +136,23 @@ export default function Dashboard() {
         )}
         {!!!dashboardSummaryDetails?.completionSummaryIsLoading && (
           <div className="w-full bg-[#FFFBF0] p-5 rounded-md overflow-hidden">
+            <div className="w-full flex justify-end mb-3">
+              {showCompletionStatus ? (
+                <img
+                  onClick={() => setCompletionStatus(false)}
+                  src={downArrow}
+                  alt="down_arrow"
+                  className="cursor-pointer w-[20px] h-[20px]"
+                />
+              ) : (
+                <img
+                  onClick={() => setCompletionStatus(true)}
+                  src={rightArrow}
+                  alt="down_arrow"
+                  className="cursor-pointer w-[20px] h-[20px]"
+                />
+              )}
+            </div>
             <div className="w-full flex lg:flex-row flex-col gap-2 justify-between">
               <div className="w-full flex gap-2 items-center">
                 <img src={setupIcon} className="w-[40px] h-[40px]" alt="set_icon" />
@@ -159,33 +179,37 @@ export default function Dashboard() {
                 </Text>
               </div>
             </div>
-            <div className="border-b-2 border-[#7B839C] w-full my-4"></div>
-            <div className="overflow-x-auto no-scrollbar py-4 w-full flex gap-8">
-              {completion_statuses?.completion_status.map((step, index) => {
-                return (
-                  <div key={index + 1} className="flex gap-3 items-center">
-                    <div
-                      className={`${
-                        step?.is_completed ? "bg-[#FFCF5C]" : "bg-[#A4A5A7]"
-                      } rounded-full h-[24px] w-[24px] text-center font-bold text-[#000000]`}
-                    >
-                      {index + 1}
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="flex gap-2 items-center">
-                        <Text format="whitespace-nowrap" weight="extrabold" variant="h4">
-                          {step?.label}
-                        </Text>
-                        {step?.is_completed && <img src={checked} className="w-[12px] h-[12px]" alt="set_icon" />}
+            {showCompletionStatus && (
+              <>
+                <div className="border-b-2 border-[#7B839C] w-full my-4"></div>
+                <div className="overflow-x-auto no-scrollbar py-4 w-full flex gap-8">
+                  {completion_statuses?.completion_status.map((step, index) => {
+                    return (
+                      <div key={index + 1} className="flex gap-3 items-center">
+                        <div
+                          className={`${
+                            step?.is_completed ? "bg-[#FFCF5C]" : "bg-[#A4A5A7]"
+                          } rounded-full h-[24px] w-[24px] text-center font-bold text-[#000000]`}
+                        >
+                          {index + 1}
+                        </div>
+                        <div className="flex flex-col">
+                          <div className="flex gap-2 items-center">
+                            <Text format="whitespace-nowrap" weight="extrabold" variant="h4">
+                              {step?.label}
+                            </Text>
+                            {step?.is_completed && <img src={checked} className="w-[12px] h-[12px]" alt="set_icon" />}
+                          </div>
+                          <Text format="tracking-wide whitespace-nowrap" variant="body">
+                            Completes your profile up to {step?.percent}
+                          </Text>
+                        </div>
                       </div>
-                      <Text format="tracking-wide whitespace-nowrap" variant="body">
-                        Completes your profile up to {step?.percent}
-                      </Text>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
         )}
         {dashboardSummaryDetails?.dashboardSummaryIsLoading && (
@@ -246,7 +270,6 @@ export default function Dashboard() {
                     </Text>
                   </div>
                 </div>
-
                 <div
                   style={{ backgroundImage: `url(${greenFrame})` }}
                   className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"

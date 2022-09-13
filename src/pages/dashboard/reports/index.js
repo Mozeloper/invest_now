@@ -31,7 +31,7 @@ export default function Reports() {
     });
   }
 
-  const requestStatementAccount = async (values, resetForm) => {
+  const requestStatementAccount = async (values) => {
     let data = null;
     if (reportType === 1) {
       data = {
@@ -64,8 +64,6 @@ export default function Reports() {
             success: true,
             message: res?.data?.message,
           }));
-          setReportType(null);
-          resetForm();
           setTimeout(() => {
             window.open(res?.data?.data);
             setShowModal((prev) => ({
