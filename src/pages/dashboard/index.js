@@ -271,17 +271,32 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div
-                  style={{ backgroundImage: `url(${greenFrame})` }}
+                  style={{ backgroundImage: `url(${redFrame})` }}
                   className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
                 >
-                  <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
                   <div className="flex flex-col justify-center">
-                    <Text color="text-[#65666A]" variant="body">
+                    <Text color="text-white" variant="body">
                       Mutual Funds
                     </Text>
-                    <Text weight="bold" variant="h2" color="text-[#65666A]">
+                    <Text weight="bold" variant="h2" color="text-white">
                       {currencyEntities[account_summary?.mutualFundsSummary[0]?.CurrencyId]}{" "}
                       {account_summary?.mutualFundsSummary[0]?.Total}
+                    </Text>
+                  </div>
+                </div>
+                <div
+                  style={{ backgroundImage: `url(${redFrame})` }}
+                  className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
+                >
+                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                  <div className="flex flex-col justify-center">
+                    <Text color="text-white" variant="body">
+                      Trust
+                    </Text>
+                    <Text weight="bold" variant="h2" color="text-white">
+                      {currencyEntities[account_summary?.placementSummary[0]?.CurrencyId]}{" "}
+                      {account_summary?.placementSummary[0]?.Total}
                     </Text>
                   </div>
                 </div>
