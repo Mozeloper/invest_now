@@ -47,7 +47,7 @@ export default function Transactions() {
             className="h-fit px-12 py-6 whitespace-nowrap font-extrabold"
             type="button"
             textColor="#fff"
-            onClick={() => navigate("/reports")}
+            onClick={() => navigate("/statements")}
           />
 
           <Button

@@ -63,7 +63,7 @@ export default function Accounts() {
         }));
         break;
       case "get_statement":
-        navigate("/reports");
+        navigate("/statements");
         break;
       case "transaction_history":
         navigate("/transactions");
