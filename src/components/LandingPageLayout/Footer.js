@@ -163,38 +163,23 @@ export default function Footer() {
                   </li>
                 </ul>
               </div>
-              {/* <div className="">
+              <div className="">
                 <Text color="text-white" variant="h3" format="tracking-wide font-bold mb-2">
-                  Contact
+                  Research
                 </Text>
                 <ul>
                   <li className="text-white cursor-pointer text-sm mb-6 hover:scale-110">
-                    <a
-                      target="_blank"
-                      rel="noreferrer"
-                      href="mailto:Support@investnow.com?subject = Feedback&body = Message"
-                    >
-                      Support@investnow.com
+                    <a target="_blank" rel="noreferrer" href="https://unitedcapitalplcgroup.com/market-news">
+                      Market News
                     </a>
                   </li>
                   <li className="text-white cursor-pointer text-sm mb-6 hover:scale-110">
-                    <a target="_blank" rel="noreferrer" href="https://wa.me/08168282396">
-                      Whatsapp
+                    <a target="_blank" rel="noreferrer" href="https://unitedcapitalplcgroup.com/pan-africa-monitor">
+                      Pan African Monitor
                     </a>
                   </li>
-                  <li
-                    onClick={() => copyCodeToClipBoard("08168282396")}
-                    className="text-white cursor-pointer text-sm mb-2 hover:scale-110"
-                  >
-                    <a href="tel:(+234)8168282396">(+234) 8168282396</a>
-                  </li>
-                  {successCopy.link && (
-                    <Text variant="small" weight="bold" format="mb-2" color="text-green-600">
-                      {successCopy?.text}
-                    </Text>
-                  )}
                 </ul>
-              </div> */}
+              </div>
             </div>
             <div className="flex flex-col justify-between">
               <div>

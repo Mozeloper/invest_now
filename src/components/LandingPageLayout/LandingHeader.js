@@ -3,9 +3,13 @@ import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import Text from "../Typography/Typography";
 import Logo from "../../assets/icons/logo.svg";
+import ViewDailyRates from "../../pages/dashboard/component/layout/other/viewDailyRates";
+import SideRightModal from "../modals/SideRightModal";
 
 export default function LandingHeader() {
   const navigate = useNavigate();
+  const [viewDailyRates, setViewDailyRates] = useState(false);
+
   const [showDropDownMenu, setShowDropDownMenu] = useState({
     mutual_funds: false,
     trust: false,
@@ -28,6 +32,9 @@ export default function LandingHeader() {
   };
   return (
     <>
+      <SideRightModal modalWidth="500px" bgColor={true} isOpen={viewDailyRates}>
+        <ViewDailyRates setViewDailyRates={setViewDailyRates} />
+      </SideRightModal>
       <div className="z-20 w-full bg-BACKGROUND_WHITE shadow flex gap-8 lg:gap-16 justify-between header">
         <img
           onClick={() => navigate("/")}
@@ -198,40 +205,24 @@ export default function LandingHeader() {
                 style={{ backgroundColor: "#FFF0F0", height: "auto", width: "auto" }}
                 className="absolute left-0 top-[72px] z-10 p-[25%] flex flex-col gap-6 cursor-default"
               >
-                <Text
-                  // onClick={() => navigate("/analysis/weekly_investment_view")}
-                  variant="h3"
-                  format="font-normal cursor-pointer"
-                  color="text-[#000000]"
+                <a
+                  className="font-normal text-xl text-[#000000]"
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://unitedcapitalplcgroup.com/market-news"
                 >
-                  Weekly Investment View
-                </Text>
-                <Text
-                  // onClick={() => navigate("/analysis/pan_african_monitor")}
-                  variant="h3"
-                  format="font-normal cursor-pointer"
-                  color="text-[#000000]"
+                  Market News
+                </a>
+                <a
+                  className="font-normal text-xl text-[#000000]"
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://unitedcapitalplcgroup.com/pan-africa-monitor"
                 >
                   Pan African Monitor
-                </Text>
+                </a>
                 <Text
-                  // onClick={() => navigate("/analysis/daily_price_list")}
-                  variant="h3"
-                  format="font-normal cursor-pointer"
-                  color="text-[#000000]"
-                >
-                  Daily Price List
-                </Text>
-                <Text
-                  // onClick={() => navigate("/analysis/interest_calculator")}
-                  variant="h3"
-                  format="font-normal cursor-pointer"
-                  color="text-[#000000]"
-                >
-                  Interest Calculator
-                </Text>
-                <Text
-                  // onClick={() => navigate("/analysis/mutual_funds_return")}
+                  onClick={() => setViewDailyRates(true)}
                   variant="h3"
                   format="font-normal cursor-pointer"
                   color="text-[#000000]"
