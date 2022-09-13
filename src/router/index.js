@@ -133,7 +133,7 @@ export default function AppRoute() {
           <Route path="/active_reccurent_payments" element={<ReccuringFunding />} />
           <Route path="/active_reccurent_payments/:id/:customer_id" element={<SingleReccuringFunding />} />
           <Route path="/loans" element={<Loans />} />
-          <Route path="/reports" element={<Reports />} />
+          <Route path="/statements" element={<Reports />} />
           <Route path="/settings/*" element={<Settings />}>
             <Route path="accounts" element={<Accounts />} />
             <Route path="security" element={<Security />} />

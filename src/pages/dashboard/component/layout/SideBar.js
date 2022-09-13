@@ -10,7 +10,7 @@ import Products from "../../../../assets/icons/products.svg";
 import Transactions from "../../../../assets/icons/transactions.svg";
 import Loans from "../../../../assets/icons/loans.svg";
 import Trading from "../../../../assets/icons/live_trading.svg";
-import Reports from "../../../../assets/icons/reports.svg";
+import Statement from "../../../../assets/icons/reports.svg";
 import Settings from "../../../../assets/icons/settings.svg";
 import embassy from "../../../../assets/icons/embassy_statement.svg";
 import contact from "../../../../assets/icons/contact.svg";
@@ -105,9 +105,9 @@ export default function SideBar() {
       path: "/loans",
     },
     {
-      title: "Reports",
-      img: Reports,
-      path: "/reports",
+      title: "Statements",
+      img: Statement,
+      path: "/statements",
     },
     {
       title: "Settings",

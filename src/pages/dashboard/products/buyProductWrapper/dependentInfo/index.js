@@ -186,7 +186,7 @@ export default function DependentInfo() {
                 <input className="accent-primary" type="checkbox" name="agreement" onChange={handleChange} />
                 <Text variant="body">
                   By clicking on the I agree button, I hereby affirm that in line with the relevant Data Prottection
-                  laws in Nigeria, I consent to the coleection and processing of my personal data and information
+                  laws in Nigeria, I consent to the collection and processing of my personal data and information
                 </Text>
               </div>
               <div className="mt-6 w-full flex justify-center">

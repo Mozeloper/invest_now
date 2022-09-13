@@ -179,23 +179,29 @@ export default function ContactUsForm() {
             <Text weight="bold" variant="h3" color="text-[#000000]">
               Send us a message
             </Text>
-            <div className="flex flex-col">
-              <a
-                className="font-normal text-base text-[#000000] text-center"
-                target="_blank"
-                rel="noreferrer"
-                href="https://wa.me/08168282396"
-              >
-                Whatsapp Contact us on Whatsapp: +2348168282396
-              </a>
-              <a
-                className="font-normal text-base text-[#000000] text-center"
-                target="_blank"
-                rel="noreferrer"
-                href="mailto:UnitedCustomerService@unitedcapitalplcgroup.com?subject = Feedback&body = Message"
-              >
-                Email: UnitedCustomerService@unitedcapitalplcgroup.com
-              </a>
+            <div className="flex flex-col gap-3">
+              <div className="flex gap-2 justify-center">
+                <div className="font-normal text-base text-[#000000] text-center">Whatsapp Contact:</div>
+                <a
+                  className="font-bold text-base text-primary text-center"
+                  target="_blank"
+                  rel="noreferrer"
+                  href="https://wa.me/08168282396"
+                >
+                  08168282396
+                </a>
+              </div>
+              <div className="flex gap-2 justify-center">
+                <div className="font-normal text-base text-[#000000] text-center">Email:</div>
+                <a
+                  className="font-bold text-base text-primary text-center"
+                  target="_blank"
+                  rel="noreferrer"
+                  href="mailto:UnitedCustomerService@unitedcapitalplcgroup.com?subject = Feedback&body = Message"
+                >
+                  UnitedCustomerService@unitedcapitalplcgroup.com
+                </a>
+              </div>
             </div>
             <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
               8am - 4pm Support 070000INVEST (07000468378) 014631130 014631131
