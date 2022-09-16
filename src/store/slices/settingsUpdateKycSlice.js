@@ -144,6 +144,15 @@ export const handleResetPassword = createAsyncThunk("settings/resetPassword", as
   }
 });
 
+export const handlePepStatus = createAsyncThunk("settings/pepStatus", async (values, { rejectWithValue }) => {
+  try {
+    const data = await api.put(appUrls.pepStatusUrl, values);
+    return data;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+});
+
 const initialState = {
   isLoading: false,
   utilityBillState: null,
@@ -315,6 +324,15 @@ export const updateKycSlice = createSlice({
     },
     [handleResetPassword.rejected]: (state, action) => {
       state.resetPasswordIsLoading = false;
+    },
+    [handlePepStatus.pending]: (state) => {
+      state.setPepStatusIsLoading = true;
+    },
+    [handlePepStatus.fulfilled]: (state) => {
+      state.setPepStatusIsLoading = false;
+    },
+    [handlePepStatus.rejected]: (state, action) => {
+      state.setPepStatusIsLoading = false;
     },
   },
 });

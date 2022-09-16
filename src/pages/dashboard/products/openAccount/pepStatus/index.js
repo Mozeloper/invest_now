@@ -14,8 +14,8 @@ export default function PepStatus({ handleDispatchNextStep, handleDispatchPrevio
   });
 
   const exposed = [
-    { label: "Yes", value: "yes" },
-    { label: "No", value: "no" },
+    { label: "Yes", value: true },
+    { label: "No", value: false },
   ];
 
   return (

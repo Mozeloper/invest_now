@@ -37,12 +37,8 @@ export default function SelfCertification({ handleCloseModals }) {
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(handleGetCountry());
-          dispatch(getReasonList());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(handleGetCountry());
+        dispatch(getReasonList());
       }
     })();
     return () => {

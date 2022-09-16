@@ -11,7 +11,7 @@ export const appUrls = {
   relationShipURL: "api/v2/onboarding/get-next-of-kin-types",
   createAccountURL: "api/v2/accounts/create",
   ratingExperience: "customer/customer-rating/rate",
-  // portfolioItemDetail: "api/v2/portfolios/get",
+  pepStatusUrl: "api/v2/customers/save-pep-status",
   paymentFrequency: "payment/frequencies",
   countryURL: "api/v2/onboarding/countries",
   stateURL: "api/v2/onboarding/states",

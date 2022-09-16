@@ -134,11 +134,7 @@ export default function UploadValidId({ handleCloseModals }) {
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(getIdentityTypes());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(getIdentityTypes());
       }
     })();
     return () => {

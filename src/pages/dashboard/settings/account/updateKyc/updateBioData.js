@@ -31,13 +31,9 @@ export default function UpdateBioData({ handleCloseModals }) {
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(getcustomerTitle());
-          dispatch(getReligion());
-          dispatch(getMaritalStatus());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(getcustomerTitle());
+        dispatch(getReligion());
+        dispatch(getMaritalStatus());
       }
     })();
     return () => {

@@ -33,12 +33,8 @@ export default function EmploymentDetails({ handleCloseModals }) {
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(getEmployementStatus());
-          dispatch(getSalaryBand());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(getEmployementStatus());
+        dispatch(getSalaryBand());
       }
     })();
     return () => {

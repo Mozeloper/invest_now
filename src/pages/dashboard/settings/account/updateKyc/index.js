@@ -14,6 +14,7 @@ import SignatureSetup from "./signatureSetup";
 import UploadPassport from "./uploadPassport";
 import { useSelector } from "react-redux";
 import Button from "../../../../../components/Button";
+import PepStatus from "./pepStatus";
 
 export default function UpdateKyc({ handleCloseItemRouting }) {
   const [openModal, setOpenModal] = useState({
@@ -22,6 +23,7 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
     signature_setup: false,
     upload_passport: false,
     bio_data: false,
+    pep_status: false,
     employment_details: false,
     self_certification: false,
     showPopup: false,
@@ -46,6 +48,7 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
   const customerKycStepTier_1 =
     dashboardReducer?.customerDetails?.payload?.data?.data?.tier_status === "TIER_1" ? true : false;
   const ifAnyTierExist = customerKycStepTier_0 || customerKycStepTier_1;
+  const pepStatus = dashboardReducer?.customerDetails?.payload?.data?.data?.pep_status?.status ?? false;
 
   useEffect(() => {
     let mounted = false;
@@ -87,6 +90,12 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
         }));
         break;
       case "bio_data":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "pep_status":
         setOpenModal((prev) => ({
           ...prev,
           [type]: true,
@@ -142,6 +151,12 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
         }));
         break;
       case "bio_data":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "pep_status":
         setOpenModal((prev) => ({
           ...prev,
           [type]: false,
@@ -262,6 +277,15 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
 
       <div className="flex flex-col gap-3">
         <div
+          onClick={() => (pepStatus ? null : handleOpenModals("pep_status"))}
+          className="flex items-center justify-between w-full cursor-pointer p-3 bg-secondary"
+        >
+          <Text variant="body" weight="bold">
+            Pep Status
+          </Text>
+          {pepStatus ? <img src={checked} alt="upload_icon" /> : <img src={rightArrow} alt="right_arrow" />}
+        </div>
+        <div
           onClick={() => (employmentKycStatus ? null : handleOpenModals("employment_details"))}
           className="flex items-center justify-between w-full cursor-pointer p-3 bg-secondary"
         >
@@ -333,6 +357,9 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
       </MessageModal>
       <MessageModal modalHeight="100vh" isOpen={openModal?.bio_data}>
         <UpdateBioData handleCloseModals={handleCloseModals} />
+      </MessageModal>
+      <MessageModal modalHeight="90vh" isOpen={openModal?.pep_status}>
+        <PepStatus handleCloseModals={handleCloseModals} />
       </MessageModal>
       <MessageModal modalHeight="70vh" isOpen={openModal?.employment_details}>
         <EmploymentDetails handleCloseModals={handleCloseModals} />
