@@ -54,7 +54,7 @@ export default function LandingHeader() {
             {showDropDownMenu?.mutual_funds && (
               <div
                 style={{ minWidth: "500px", backgroundColor: "#FFF0F0", height: "auto" }}
-                className="absolute left-0 top-[72px] z-10 p-[25%] flex flex-col gap-6 cursor-default"
+                className="absolute left-0 top-[72px] z-50 p-[25%] flex flex-col gap-6 cursor-default"
               >
                 <div className="w-full flex justify-between">
                   <Text
@@ -132,7 +132,7 @@ export default function LandingHeader() {
             {showDropDownMenu?.trust && (
               <div
                 style={{ backgroundColor: "#FFF0F0", height: "auto", width: "auto" }}
-                className="absolute left-0 top-[72px] z-10 p-[25%] flex flex-col gap-6 cursor-default"
+                className="absolute left-0 top-[72px] z-50 p-[25%] flex flex-col gap-6 cursor-default"
               >
                 <Text
                   onClick={() => navigate("/trust/education_trust", { state: "T_EDU" })}
@@ -170,7 +170,7 @@ export default function LandingHeader() {
             {showDropDownMenu?.securities && (
               <div
                 style={{ backgroundColor: "#FFF0F0", height: "auto", width: "auto" }}
-                className="absolute left-0 top-[72px] z-10 p-[25%] flex flex-col gap-6 cursor-default"
+                className="absolute left-0 top-[72px] z-50 p-[25%] flex flex-col gap-6 cursor-default"
               >
                 <Text
                   onClick={() => navigate("/securities/stock_trading", { state: "S" })}
@@ -203,7 +203,7 @@ export default function LandingHeader() {
             {showDropDownMenu?.analysis && (
               <div
                 style={{ backgroundColor: "#FFF0F0", height: "auto", width: "auto" }}
-                className="absolute left-0 top-[72px] z-10 p-[25%] flex flex-col gap-6 cursor-default"
+                className="absolute left-0 top-[72px] z-50 p-[25%] flex flex-col gap-6 cursor-default"
               >
                 <a
                   className="font-normal text-xl text-[#000000]"

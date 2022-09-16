@@ -41,18 +41,19 @@ export default function LandingPageProduct() {
       )}
       {!!!productsReducer?.productDetailIsLoading && (
         <div className="wrapper w-full">
-          <div className="w-full relative">
+          <div className="w-full relative flex flex-col justify-center items-start">
             <img
               src={productData?.imageUrlHome}
-              alt="bg"
+              alt="bg_product"
               loading="lazy"
-              className="max-w-[90%] w-full h-[300px] rounded-lg"
+              className="max-w-[70%] w-full h-[300px] rounded-lg blur-[1px]"
             />
-            <Text weight="bold" color="text-white" variant="h0" format="tracking-wide absolute top-24 left-20">
-              {productData?.name}
-            </Text>
+            <div className="top-[75%] left-0 absolute bg-black opacity-100 px-2">
+              <Text weight="bold" color="text-white" variant="h0" format="tracking-wide text-center">
+                {productData?.name}
+              </Text>
+            </div>
           </div>
-
           <div className="wrapper w-full mt-5 flex flex-col gap-5">
             <Text weight="bold" color="text-[#65666A]" variant="h2" format="tracking-wide">
               Benefits and features of {productData?.name}
