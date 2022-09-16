@@ -83,7 +83,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
       {image !== "" && (
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <div className="w-[50%]">
+          <div className="flex flex-col gap-1 w-[50%]">
             <Button
               onClick={() => utilityBillSefie()}
               title="Save Picture"
@@ -91,6 +91,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
               type="button"
               isLoading={dashboardReducer?.profileIsUploading}
             />
+            <Button onClick={() => setImage("")} title="Retake" className="cursor-pointer w-full" type="button" />
           </div>
         </>
       )}

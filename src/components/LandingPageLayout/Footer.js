@@ -39,7 +39,7 @@ export default function Footer() {
       setAlertMessage((prev) => ({
         ...prev,
         reason: "Successful",
-        message: `Email Sent to ${emailValue}`,
+        message: `${emailValue} Subscribed to newsletter`,
       }));
       setOpenModal(true);
     } else {
@@ -88,7 +88,7 @@ export default function Footer() {
         <div className="wrapper w-full py-[4%]">
           <img src={LogoFooter} alt="footerLogo" loading="lazy" />
           <div className="w-full mt-8 flex justify-between flex-wrap">
-            <div className="flex gap-16 lg:gap-36 flex-wrap">
+            <div className="flex justify-between w-full flex-wrap">
               <div className="">
                 <Text color="text-white" variant="h3" format="tracking-wide font-bold mb-2">
                   Company
@@ -180,49 +180,49 @@ export default function Footer() {
                   </li>
                 </ul>
               </div>
-            </div>
-            <div className="flex flex-col justify-between">
-              <div>
-                <Text color="text-white" variant="h4" format="w-[60%] whitespace-nowrap  tracking-wide mb-2">
-                  Never miss out on investment opportunities
-                </Text>
-                <Text color="text-white" variant="h4" format="tracking-wide font-bold mb-2">
-                  Join our newsletter
-                </Text>
-                <div className="flex gap-3">
-                  <input
-                    placeholder="Email address"
-                    type="text"
-                    name="email"
-                    value={emailValue}
-                    className="border-white outline-none border-2 p-2 bg-none"
-                    onChange={(e) => setEmailValue(e.target.value)}
-                  />
-                  <Button
-                    title="Submit"
-                    onClick={(e) => handleNewsLetterEmail(e)}
-                    className="whitespace-nowrap justify-start font-extrabold capitalize"
-                    style={{ border: "3px solid #E32526" }}
-                  />
+              <div className="flex flex-col justify-between">
+                <div>
+                  <Text color="text-white" variant="h4" format="w-[60%] whitespace-nowrap  tracking-wide mb-2">
+                    Never miss out on investment opportunities
+                  </Text>
+                  <Text color="text-white" variant="h4" format="tracking-wide font-bold mb-2">
+                    Join our newsletter
+                  </Text>
+                  <div className="flex gap-3">
+                    <input
+                      placeholder="Email address"
+                      type="text"
+                      name="email"
+                      value={emailValue}
+                      className="border-white outline-none border-2 p-2 bg-none"
+                      onChange={(e) => setEmailValue(e.target.value)}
+                    />
+                    <Button
+                      title="Submit"
+                      onClick={(e) => handleNewsLetterEmail(e)}
+                      className="whitespace-nowrap justify-start font-extrabold capitalize"
+                      style={{ border: "3px solid #E32526" }}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div>
-                <Text color="text-white" variant="h3" format="w-[60%] tracking-wide mb-2">
-                  We are sociable
-                </Text>
-                <div className="flex gap-4">
-                  <a href="https://twitter.com/UnitedCap" target="_blank" rel="noreferrer">
-                    <img className="cursor-pointer hover:scale-110" loading="lazy" src={twitter} alt="twitter" />
-                  </a>
-                  <a href="https://web.facebook.com/UnitedCapitalPlc/?_rdc=1&_rdr" target="_blank" rel="noreferrer">
-                    <img className="cursor-pointer hover:scale-110" loading="lazy" src={facebook} alt="facebook" />
-                  </a>
-                  <a href="https://www.instagram.com/unitedcapitalplc" target="_blank" rel="noreferrer">
-                    <img className="cursor-pointer hover:scale-110" loading="lazy" src={instagram} alt="instagram" />
-                  </a>
-                  <a href="https://www.youtube.com/channel/UC07ZLKfSkCUUm3CBHIWBL_Q" target="_blank" rel="noreferrer">
-                    <img className="cursor-pointer hover:scale-110" loading="lazy" src={youtube} alt="youtube" />
-                  </a>
+                <div>
+                  <Text color="text-white" variant="h3" format="w-[60%] tracking-wide mb-2">
+                    We are sociable
+                  </Text>
+                  <div className="flex gap-4">
+                    <a href="https://twitter.com/UnitedCap" target="_blank" rel="noreferrer">
+                      <img className="cursor-pointer hover:scale-110" loading="lazy" src={twitter} alt="twitter" />
+                    </a>
+                    <a href="https://web.facebook.com/UnitedCapitalPlc/?_rdc=1&_rdr" target="_blank" rel="noreferrer">
+                      <img className="cursor-pointer hover:scale-110" loading="lazy" src={facebook} alt="facebook" />
+                    </a>
+                    <a href="https://www.instagram.com/unitedcapitalplc" target="_blank" rel="noreferrer">
+                      <img className="cursor-pointer hover:scale-110" loading="lazy" src={instagram} alt="instagram" />
+                    </a>
+                    <a href="https://www.youtube.com/channel/UC07ZLKfSkCUUm3CBHIWBL_Q" target="_blank" rel="noreferrer">
+                      <img className="cursor-pointer hover:scale-110" loading="lazy" src={youtube} alt="youtube" />
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>

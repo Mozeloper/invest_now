@@ -116,7 +116,7 @@ export default function Dashboard() {
           setIsReferralModalOpen={setIsReferralModalOpen}
         />
       </MessageModal>
-      <MessageModal bgColor={true} modalHeight="30vh" modalWidth="400px" isOpen={isSocialMediaModalOpen}>
+      <MessageModal bgColor={true} modalHeight="auto" modalWidth="400px" isOpen={isSocialMediaModalOpen}>
         <SocialMedia setIsSocialMediaModalOpen={setIsSocialMediaModalOpen} />
       </MessageModal>
       <div data-aos="fade-up" data-aos-duration="2000">

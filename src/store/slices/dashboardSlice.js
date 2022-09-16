@@ -69,6 +69,18 @@ export const handleCustomerDetails = createAsyncThunk("dashboard/customerDetails
   }
 });
 
+export const handleDeleteProfilePicture = createAsyncThunk(
+  "dashboard/deleteProfilePicture",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await api.put(appUrls.deleteProfilePicture);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error);
+    }
+  }
+);
+
 const initialState = {
   dashboardSummary: null,
   dashboardSummaryIsLoading: false,
@@ -135,6 +147,15 @@ export const dashboardSlice = createSlice({
     },
     [handleCustomerDetails.rejected]: (state) => {
       state.customerIsLoading = false;
+    },
+    [handleDeleteProfilePicture.pending]: (state) => {
+      state.deleteProfilePicIsLoading = true;
+    },
+    [handleDeleteProfilePicture.fulfilled]: (state, action) => {
+      state.deleteProfilePicIsLoading = false;
+    },
+    [handleDeleteProfilePicture.rejected]: (state) => {
+      state.deleteProfilePicIsLoading = false;
     },
     [handleGetReferralProduct.pending]: (state) => {
       state.activeProductReferralIsLoading = true;

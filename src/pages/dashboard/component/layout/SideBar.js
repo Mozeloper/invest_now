@@ -19,8 +19,9 @@ import Text from "../../../../components/Typography/Typography";
 import { resetInitialState } from "../../../../store/slices/authSlices";
 import MessageModal from "../../../../components/modals/MessageModal";
 import ProfilePicSetup from "./other/profilePicSetup";
-import { handleCustomerDetails } from "../../../../store/slices/dashboardSlice";
+import { handleCustomerDetails, handleDeleteProfilePicture } from "../../../../store/slices/dashboardSlice";
 import { reintializeState } from "../../../../store/slices/buyProductSlice";
+import Button from "../../../../components/Button";
 
 export default function SideBar() {
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
@@ -29,10 +30,15 @@ export default function SideBar() {
   const lastName = userDetails?.data?.customer?.lastname;
   const customerPic = dashboardReducer?.customerDetails?.payload?.data?.data?.profile_pic ?? "";
   const tierStatus = dashboardReducer?.customerDetails?.payload?.data?.data?.tier_status;
+  const deleteProfilePicIsLoading = dashboardReducer?.deleteProfilePicIsLoading;
+  const customerIsLoading = dashboardReducer?.customerIsLoading;
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [openModal, setOpenModal] = useState({
     upload_profile_pic: false,
+    delete_profile_pic: false,
+    message: null,
   });
 
   useEffect(() => {
@@ -40,11 +46,7 @@ export default function SideBar() {
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(handleCustomerDetails());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(handleCustomerDetails());
       }
     })();
     return () => {
@@ -60,6 +62,12 @@ export default function SideBar() {
           [type]: true,
         }));
         break;
+      case "delete_profile_pic":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
       default:
         break;
     }
@@ -68,6 +76,12 @@ export default function SideBar() {
   const handleCloseModals = (type) => {
     switch (type) {
       case "upload_profile_pic":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "delete_profile_pic":
         setOpenModal((prev) => ({
           ...prev,
           [type]: false,
@@ -122,29 +136,73 @@ export default function SideBar() {
     localStorage.clear();
     navigate("/login");
   };
+
+  const handleDeleteProfilePic = async () => {
+    await dispatch(handleDeleteProfilePicture())
+      .unwrap()
+      .then((res) => {
+        if (res?.data?.success) {
+          setOpenModal((prev) => ({
+            ...prev,
+            message: res?.data?.message,
+          }));
+          setTimeout(() => {
+            setOpenModal((prev) => ({
+              ...prev,
+              message: null,
+            }));
+            handleCloseModals("delete_profile_pic");
+            dispatch(handleCustomerDetails());
+          }, 2000);
+        }
+      });
+  };
+
   return (
     <>
       <div className="w-full overflow-y-auto overflow-hidden no-scrollbar h-screen p-3 bg-BACKGROUND_WHITE">
         <div className="flex justify-center my-4">
-          <img src={Logosmall} alt="logo" className="min-w-[100px] max-w-[150px]" />
+          <img loading="lazy" src={Logosmall} alt="logo" className="min-w-[100px] max-w-[150px]" />
         </div>
-        <div
-          onClick={() => handleOpenModals("upload_profile_pic")}
-          className="flex gap-2 cursor-pointer bg-[#F7F7F8] mb-5 p-3 rounded-md"
-        >
-          <img
-            src={customerPic !== "" ? customerPic : ProfileImg}
-            alt="logo"
-            className="lg:h-[52px] lg:w-[52px] h-[40px] w-[40px] rounded-full"
-          />
-          <div className="flex flex-col gap-1">
-            <Text color="text-[#465174]" variant="h4" format="whitespace-nowrap font-bold">
-              {firstName} {lastName}
-            </Text>
-            <Text color="text-red" variant="body" format="whitespace-nowrap font-bold">
-              {tierStatus?.replace("_", " ")}
-            </Text>
-          </div>
+        <div className="flex gap-2 bg-[#F7F7F8] mb-5 p-3 rounded-md">
+          {customerIsLoading && (
+            <div className="flex justify-center items-center">
+              <Text variant="body" format="font-bold cursor-pointer">
+                Loading...
+              </Text>
+            </div>
+          )}
+          {!!!customerIsLoading && (
+            <>
+              <div className="flex flex-col gap-2 items-center">
+                <img
+                  onClick={() => handleOpenModals("upload_profile_pic")}
+                  src={customerPic !== "" ? customerPic : ProfileImg}
+                  alt="logo"
+                  loading="lazy"
+                  className="lg:h-[52px] lg:w-[52px] h-[40px] w-[40px] rounded-full cursor-pointer"
+                />
+                {customerPic !== "" && (
+                  <Text
+                    onClick={() => handleOpenModals("delete_profile_pic")}
+                    color="text-primary"
+                    variant="body"
+                    format="font-bold cursor-pointer"
+                  >
+                    Delete
+                  </Text>
+                )}
+              </div>
+              <div className="flex flex-col gap-1">
+                <Text color="text-[#465174]" variant="h4" format="font-bold">
+                  {firstName} {lastName}
+                </Text>
+                <Text color="text-red" variant="body" format="whitespace-nowrap font-bold">
+                  {tierStatus?.replace("_", " ")}
+                </Text>
+              </div>
+            </>
+          )}
         </div>
         <div className="w-full">
           <div className="border-b border-[#BCBCBC] w-full">
@@ -167,7 +225,7 @@ export default function SideBar() {
                     fontSize: "",
                   }}
                 >
-                  <img src={list.img} alt="dashboard_icon" />
+                  <img loading="lazy" src={list.img} alt="dashboard_icon" />
                   <Text variant="body">{list.title}</Text>
                 </NavLink>
               );
@@ -206,7 +264,7 @@ export default function SideBar() {
                 fontSize: "",
               }}
             >
-              <img src={embassy} alt="dashboard_icon" />
+              <img loading="lazy" src={embassy} alt="dashboard_icon" />
               <Text variant="body">
                 {""}
                 Request embassy Statement
@@ -241,7 +299,7 @@ export default function SideBar() {
               fontSize: "",
             }}
           >
-            <img src={logout} alt="dashboard_icon" />
+            <img loading="lazy" src={logout} alt="dashboard_icon" />
             <Text variant="h4" color="text-[#E32526]">
               Log out
             </Text>
@@ -250,6 +308,37 @@ export default function SideBar() {
       </div>
       <MessageModal bgColor={true} modalHeight="450px" isOpen={openModal?.upload_profile_pic}>
         <ProfilePicSetup handleCloseModals={handleCloseModals} />
+      </MessageModal>
+      <MessageModal bgColor={true} modalHeight="200px" modalWidth="300px" isOpen={openModal?.delete_profile_pic}>
+        <div className="flex flex-col justify-center items-center w-full">
+          <Text format="text-center mt-3" variant="h4" color="text-[#465174]" weight="bold">
+            Delete Profile Picture
+          </Text>
+          <div className="flex gap-3 mt-6 w-full">
+            <Button
+              onClick={() => handleDeleteProfilePic()}
+              title="Delete"
+              className="cursor-pointer w-full"
+              type="button"
+              isLoading={deleteProfilePicIsLoading}
+            />
+            <Button
+              onClick={() => handleCloseModals("delete_profile_pic")}
+              title="Close"
+              className="cursor-pointer w-full border border-primary"
+              type="button"
+              backgroundColor="none"
+              textColor="#E32526"
+            />
+          </div>
+          {openModal?.message !== null && (
+            <div className="w-full text-center mt-2">
+              <Text variant="h4" color="text-green-600">
+                {openModal?.message}
+              </Text>
+            </div>
+          )}
+        </div>
       </MessageModal>
     </>
   );

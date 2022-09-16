@@ -25,11 +25,7 @@ export default function MutualFunds() {
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(handleGetAllProducts());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(handleGetAllProducts());
       }
     })();
     return () => {
@@ -96,7 +92,11 @@ export default function MutualFunds() {
                                 </div> */}
                                   </div>
                                 ) : (
-                                  <img src={info?.imageUrlHome} alt="product_img" className="min-w-[270px] h-[171px]" />
+                                  <img
+                                    src={info?.imageUrlHome}
+                                    alt="product_img"
+                                    className="rounded-lg min-w-[270px] h-[171px]"
+                                  />
                                 )}
                                 <div className="mt-3 flex flex-col justify-between h-[170px]">
                                   <div

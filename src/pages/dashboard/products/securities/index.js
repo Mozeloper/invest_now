@@ -34,11 +34,7 @@ export default function Securities() {
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(handleGetAllProducts());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(handleGetAllProducts());
       }
     })();
     return () => {

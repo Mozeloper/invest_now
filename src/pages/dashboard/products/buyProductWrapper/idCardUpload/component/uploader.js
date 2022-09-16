@@ -69,7 +69,7 @@ const WebcamCapture = ({ handleCloseUploadModals, customerId, isLoading }) => {
       {image !== "" && (
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <div className="w-[50%]">
+          <div className="w-[50%] flex flex-col gap-1">
             <Button
               isLoading={isLoading}
               onClick={() => {
@@ -79,6 +79,7 @@ const WebcamCapture = ({ handleCloseUploadModals, customerId, isLoading }) => {
               className="cursor-pointer w-full"
               type="button"
             />
+            <Button onClick={() => setImage("")} title="retake" className="cursor-pointer" type="button" />
           </div>
         </>
       )}

@@ -85,9 +85,9 @@ export default function NewBankAccount() {
       }
       if (mounted && state !== null) {
         const data = {
-          core_system: state?.Account?.CoreSystem,
+          core_system: state?.ACCOUNT?.CoreSystem,
           account_type: state?.TYPEID,
-          customer_id: state?.Account?.CustomerId,
+          customer_id: state?.ACCOUNT?.CustomerId,
         };
         dispatch(handleExistingCashAccountDetails(data));
       }

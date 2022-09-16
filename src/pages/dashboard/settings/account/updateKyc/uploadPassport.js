@@ -83,7 +83,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
       {image !== "" && (
         <>
           <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <div className="w-[50%]">
+          <div className="w-[50%] flex flex-col gap-1">
             <Button
               onClick={() => utilityBillSefie()}
               title="Save Picture"
@@ -91,6 +91,7 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
               type="button"
               isLoading={updateKycSliceReducer?.isLoadingPassport}
             />
+            <Button onClick={() => setImage("")} title="retake" className="cursor-pointer" type="button" />
           </div>
         </>
       )}

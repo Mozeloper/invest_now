@@ -21,11 +21,7 @@ export default function Trust() {
     (async () => {
       mounted = true;
       if (mounted) {
-        try {
-          dispatch(handleGetAllProducts());
-        } catch (error) {
-          console.log(error);
-        }
+        dispatch(handleGetAllProducts());
       }
     })();
     return () => {
@@ -98,7 +94,7 @@ export default function Trust() {
                                 <div className="mt-3 flex flex-col justify-between h-[170px]">
                                   <div
                                     dangerouslySetInnerHTML={{
-                                      __html: info?.introHtml.substring(0, 200).concat("..."),
+                                      __html: info?.introHtml.substring(0, 150).concat("..."),
                                     }}
                                   />
 

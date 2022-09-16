@@ -173,7 +173,7 @@ export default function Referral({ setIsReferralModalOpen, setIsSocialMediaModal
             >
               Click to Copy
             </div>
-            {/* <div
+            <div
               onClick={() => {
                 copyCodeToClipBoard(`${originLocation}/products/buy_product?code=${referralLink}`, "link");
                 setIsReferralModalOpen(false);
@@ -182,7 +182,7 @@ export default function Referral({ setIsReferralModalOpen, setIsSocialMediaModal
               className="bg-[#FFD8D8] whitespace-nowrap cursor-pointer p-1 flex items-center rounded-lg text-xs text-tertiary mb-2"
             >
               Share link
-            </div> */}
+            </div>
           </div>
           {successCopy.link && (
             <Text variant="body" weight="bold" format="mb-2" color="text-green-600">

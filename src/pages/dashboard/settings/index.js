@@ -41,6 +41,7 @@ export default function Settings() {
           <img
             src={customerPic !== null ? customerPic : ProfileImg}
             alt="logo"
+            loading="lazy"
             className="lg:h-[96px] lg:w-[96px] h-[80px] w-[80px] rounded-full"
           />
           <Text color="text-[#465174]" variant="h3" format="whitespace-nowrap mt-3 font-bold">
