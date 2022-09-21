@@ -228,10 +228,10 @@ export default function ContactUsForm() {
               Western Region UBA Building, Lbanon/Jubilee Market Street, Dugbe, Ibadan Nigeria.
             </Text>
             <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
-              Abuja No.33 Monrovia Street, Wuse 2, Abuja, Nigeria.
+              Northern region Abuja No.33 Monrovia Street, Wuse 2, Abuja, Nigeria.
             </Text>
             <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
-              Port Harcourt No.14 Azikiwe Road, Port Harcourt, Nigeria.
+              southern region Port Harcourt No.14 Azikiwe Road, Port Harcourt, Nigeria.
             </Text>
           </div>
         </div>
