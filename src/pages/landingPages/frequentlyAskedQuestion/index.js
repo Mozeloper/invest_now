@@ -46,7 +46,7 @@ export default function FrequentlyAskedQuestion() {
     <div className="mt-[120px] min-h-[60vh] w-full">
       <div className="wrapper w-full">
         <Text weight="bold" variant="h1" format="tracking-wide mb-4">
-          Frequently asked questions
+          Frequently Asked Questions
         </Text>
         <div
           onClick={() => {
@@ -56,8 +56,8 @@ export default function FrequentlyAskedQuestion() {
           }}
           className="p-[1%] bg-[#EDEDED] my-3 flex justify-between cursor-pointer"
         >
-          <Text weight="bold" variant="h3" color="text-headerColor">
-            Investnow Related
+          <Text weight="bold" variant="h3">
+            General
           </Text>
           {isActive?.investnow_related ? (
             <img src={downArrow} alt="down_arrow" />
@@ -355,7 +355,7 @@ export default function FrequentlyAskedQuestion() {
             }}
             className="p-[1%] bg-[#EDEDED] my-3 flex justify-between cursor-pointer"
           >
-            <Text weight="bold" variant="h3" color="text-headerColor">
+            <Text weight="bold" variant="h3">
               Mutual Funds & Trusteeship
             </Text>
             {isActive?.mutual_funds ? (
@@ -638,14 +638,14 @@ export default function FrequentlyAskedQuestion() {
           }}
           className="p-[1%] bg-[#EDEDED] my-3 flex justify-between cursor-pointer"
         >
-          <Text weight="bold" variant="h3" color="text-headerColor">
+          <Text weight="bold" variant="h3">
             SECURITIES (STOCK TRADING)
           </Text>
           {isActive?.equity ? <img src={downArrow} alt="down_arrow" /> : <img src={rightArrow} alt="right_arrow" />}
         </div>
         {isActive?.equity && (
           <div className="px-[4%] flex flex-col gap-4 mt-3 mb-10">
-            <Text weight="bold" variant="h4" color="text-headerColor">
+            <Text weight="bold" variant="h4">
               How do I buy shares?
             </Text>
             <Text format="ml-[2%]" weight="normal" variant="body" color="text-headerColor">

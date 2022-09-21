@@ -29,7 +29,7 @@ export default function SocialMedia({ setIsSocialMediaModalOpen }) {
             </a>
           </div>
           <Text variant="sub" weight="normal">
-            facebook
+            Facebook
           </Text>
         </div>
         <div className="flex flex-col gap-1">
@@ -39,7 +39,7 @@ export default function SocialMedia({ setIsSocialMediaModalOpen }) {
             </a>
           </div>
           <Text variant="sub" weight="normal">
-            instagram
+            Instagram
           </Text>
         </div>
         <div className="flex flex-col gap-1">
@@ -49,7 +49,7 @@ export default function SocialMedia({ setIsSocialMediaModalOpen }) {
             </a>
           </div>
           <Text variant="sub" weight="normal">
-            twitter
+            Twitter
           </Text>
         </div>
         <div className="flex flex-col gap-1">
@@ -59,7 +59,7 @@ export default function SocialMedia({ setIsSocialMediaModalOpen }) {
             </a>
           </div>
           <Text variant="sub" weight="normal">
-            youtube
+            Youtube
           </Text>
         </div>
         <div className="flex flex-col gap-1">
@@ -69,7 +69,7 @@ export default function SocialMedia({ setIsSocialMediaModalOpen }) {
             </a>
           </div>
           <Text variant="sub" weight="normal">
-            whatsapp
+            WhatsApp
           </Text>
         </div>
       </div>

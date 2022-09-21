@@ -70,7 +70,7 @@ export default function ContactUsForm() {
                   <MyInput
                     className="w-full"
                     placeholder=""
-                    label="First Name"
+                    label="First Name *"
                     name="firstName"
                     type="text"
                     handleChange={handleChange}
@@ -90,7 +90,7 @@ export default function ContactUsForm() {
               <div className="flex md:flex-row flex-col gap-3 w-full mt-4">
                 <div className="w-full">
                   <label htmlFor="phone_number" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
-                    Phone Number
+                    Phone Number *
                   </label>
                   <PhoneInput
                     inputProps={{
@@ -117,7 +117,7 @@ export default function ContactUsForm() {
                   <MyInput
                     className="w-full"
                     placeholder=""
-                    label="Email Address"
+                    label="Email Address *"
                     name="email"
                     type="text"
                     handleChange={handleChange}
@@ -127,7 +127,7 @@ export default function ContactUsForm() {
               <div className="flex md:flex-row flex-col gap-3 w-full mt-4">
                 <div className="w-full">
                   <label htmlFor="category" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
-                    Select Category
+                    Select Category *
                   </label>
                   <SearchableSelect
                     options={[]}
@@ -147,16 +147,16 @@ export default function ContactUsForm() {
                   <MyInput
                     className="w-full"
                     placeholder=""
-                    label="subject"
+                    label="Subject *"
                     name="subject"
-                    type="email"
+                    type="text"
                     handleChange={handleChange}
                   />
                 </div>
               </div>
               <div className="flex flex-col w-full mt-4">
                 <label htmlFor="message" className="font-normal text-sm text-NEUTRAL-_900 pb-2">
-                  Your Message
+                  Your Message *
                 </label>
                 <Field className="w-[50%] h-[153px] p-4 outline-none bg-[#f2f2f2]" name="message" as="textarea" />
               </div>
@@ -181,7 +181,7 @@ export default function ContactUsForm() {
             </Text>
             <div className="flex flex-col gap-3">
               <div className="flex gap-2 justify-center">
-                <div className="font-normal text-base text-[#000000] text-center">Whatsapp Contact:</div>
+                <div className="font-normal text-base text-[#000000] text-center">WhatsApp Contact:</div>
                 <a
                   className="font-bold text-base text-primary text-center"
                   target="_blank"
@@ -197,14 +197,14 @@ export default function ContactUsForm() {
                   className="font-bold text-base text-primary text-center"
                   target="_blank"
                   rel="noreferrer"
-                  href="mailto:UnitedCustomerService@unitedcapitalplcgroup.com?subject = Feedback&body = Message"
+                  href="mailto:CustomerService@unitedcapitalplcgroup.com?subject = Feedback&body = Message"
                 >
-                  UnitedCustomerService@unitedcapitalplcgroup.com
+                  CustomerService@unitedcapitalplcgroup.com
                 </a>
               </div>
             </div>
             <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
-              8am - 4pm Support 070000INVEST (07000468378) 014631130 014631131
+              Support 070000INVEST (07000468378) 014631130 014631131
             </Text>
           </div>
           <div className="flex flex-col items-center gap-3 w-full">

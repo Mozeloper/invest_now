@@ -3,8 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ReactStars from "react-rating-stars-component";
-import Slider from "react-slick";
-
+// import Slider from "react-slick";
 import Text from "../components/Typography/Typography";
 import Button from "../components/Button";
 import banner from "../assets/images/banner.svg";
@@ -20,7 +19,7 @@ import stepFour from "../assets/images/step4.svg";
 import bag from "../assets/images/bag.svg";
 import hand from "../assets/images/hand.svg";
 import chart from "../assets/images/chart.svg";
-import Ted from "../assets/images/ted.svg";
+// import Ted from "../assets/images/ted.svg";
 import Correct from "../assets/icons/correct.svg";
 import googleplayStore from "../assets/icons/googlePlayStore_icon.svg";
 import appleIcon from "../assets/icons/apple_icon.svg";
@@ -37,17 +36,17 @@ const slideImages = [
   },
 ];
 
-const settings = {
-  infinite: true,
-  speed: 1000,
-  lazyLoad: true,
-  initialSlide: 0,
-  vertical: true,
-  autoplay: true,
-  // slidesToShow: 1,
-  // slidesToScroll: 1,
-  adaptiveHeight: true,
-};
+// const settings = {
+//   infinite: true,
+//   speed: 1000,
+//   lazyLoad: true,
+//   initialSlide: 0,
+//   vertical: true,
+//   autoplay: true,
+//   // slidesToShow: 1,
+//   // slidesToScroll: 1,
+//   adaptiveHeight: true,
+// };
 
 export default function Index() {
   const navigate = useNavigate();
@@ -58,7 +57,7 @@ export default function Index() {
   setTimeout(() => {
     if (count === 2) return setCount(1);
     setCount(count + 1);
-  }, 3500);
+  }, 5000);
 
   useEffect(() => {
     dispatch(resetInitialState());
@@ -85,10 +84,12 @@ export default function Index() {
         >
           <div className="text-wrap lg:text-start text-center w-[60%] lg:w-[80%] h-[160px] md:mb-6 mb-20">
             {count === 1 && (
-              <div className="text-5xl font-bold smooth w-[80%]">All your investment needs now just one tap away</div>
+              <div className="text-5xl font-bold smooth w-[80%] text-tertiary">
+                All your investment needs now just one tap away
+              </div>
             )}
             {count === 2 && (
-              <div className="text-5xl font-bold smooth">
+              <div className="text-5xl font-bold smooth text-tertiary">
                 InvestNow enables you have complete control of your investment portfolio
               </div>
             )}
@@ -128,22 +129,26 @@ export default function Index() {
         </div>
         <div className="w-[50%] hidden lg:block h-full self-end">
           <div className="w-full">
-            <Slider {...settings}>
+            {/* <Slider {...settings}> */}
+            {count === 1 && (
               <div>
                 <img
                   alt="banner"
                   src={slideImages[0].url}
-                  className="w-full object-cover min-h-[calc(100vh-72px)] h-[calc(100vh-72px)]"
+                  className="w-full object-cover smooth min-h-[calc(100vh-72px)] h-[calc(100vh-72px)]"
                 />
               </div>
+            )}
+            {count === 2 && (
               <div>
                 <img
                   alt="banner"
                   src={slideImages[1].url}
-                  className="w-full object-cover min-h-[calc(100vh-72px)] h-[calc(100vh-72px)]"
+                  className="w-full object-cover smooth min-h-[calc(100vh-72px)] h-[calc(100vh-72px)]"
                 />
               </div>
-            </Slider>
+            )}
+            {/* </Slider> */}
           </div>
         </div>
       </div>
@@ -230,7 +235,7 @@ export default function Index() {
             Looking to do more with your money? Let’s help you kickstart your investment journey.
           </Text>
         </div>
-        <div className="w-full flex md:flex-row flex-col items-center justify-center gap-2 my-4 md:my-8">
+        <div className="w-full flex md:flex-row flex-col md:items-center md:justify-center gap-2 my-4 md:my-8">
           <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
             <img src={stepOne} alt="step-1" className="w-[50px] h-[50px]" loading="lazy" />
             <Text>Step 1</Text>
@@ -242,32 +247,32 @@ export default function Index() {
             </Text>
           </div>
           <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
-            <img src={stepTwo} alt="step-1" className="w-[50px] h-[50px]" loading="lazy" />
+            <img src={stepTwo} alt="step-2" className="w-[50px] h-[50px]" loading="lazy" />
             <Text>Step 2</Text>
             <Text variant="h4" format="text-[#000000] font-bold">
               Open an account
             </Text>
-            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[60%] font-normal">
+            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[65%] font-normal">
               Simply provide us with some information about you.
             </Text>
           </div>
           <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
-            <img src={stepThree} alt="step-1" className="w-[50px] h-[50px]" loading="lazy" />
+            <img src={stepThree} alt="step-3" className="w-[50px] h-[50px]" loading="lazy" />
             <Text>Step 3</Text>
             <Text variant="h4" format="text-[#000000] font-bold">
               Fund your account
             </Text>
-            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[60%] font-normal">
+            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[65%] font-normal">
               Put funds into your account with your debit card or bank account.
             </Text>
           </div>
           <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
-            <img src={stepFour} alt="step-1" className="w-[50px] h-[50px]" loading="lazy" />
+            <img src={stepFour} alt="step-4" className="w-[50px] h-[50px]" loading="lazy" />
             <Text>Step 4</Text>
             <Text variant="h4" format="text-[#000000] font-bold">
               Receive returns
             </Text>
-            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[60%] font-normal">
+            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[65%] font-normal">
               Start recieving returns!
             </Text>
           </div>
@@ -293,10 +298,10 @@ export default function Index() {
             <Text variant="h2" format="text-[#615F62] font-bold">
               Mutual funds
             </Text>
-            <Text variant="h4" format="text-[#000000] my-3 w-[60%] font-normal">
+            <Text variant="h4" format="text-[#000000] my-3 w-[80%] font-normal">
               Put your money to work with our Mutual Funds and start earning competitive returns.
             </Text>
-            <div onClick={() => navigate("/login")} className="flex gap-2">
+            <div onClick={() => navigate("/login")} className="flex gap-2 items-center">
               <Text variant="h3" color="text-primary" format="cursor-pointer self-start font-bold">
                 Get Started
               </Text>
@@ -311,7 +316,7 @@ export default function Index() {
             <Text variant="h4" format="text-[#000000] my-3 w-[60%] font-normal">
               Build your wealth and preserve your legacy to last for generations.
             </Text>
-            <div onClick={() => navigate("/login")} className="flex gap-2">
+            <div onClick={() => navigate("/login")} className="flex gap-2 items-center">
               <Text variant="h3" color="text-primary" format="cursor-pointer self-start font-bold">
                 Get Started
               </Text>
@@ -326,7 +331,7 @@ export default function Index() {
             <Text variant="h4" format="text-[#000000] my-3 w-[60%] font-normal">
               Trade stocks like a pro on the floor of the Nigerian Stock Exchange.
             </Text>
-            <div onClick={() => navigate("/login")} className="flex gap-2">
+            <div onClick={() => navigate("/login")} className="flex gap-2 items-center">
               <Text variant="h3" color="text-primary" format="cursor-pointer self-start font-bold">
                 Get Started
               </Text>
@@ -350,7 +355,7 @@ export default function Index() {
               measure, enabled me to achieve the much-needed objective of good returns on investment.
             </Text>
             <div className="flex gap-2">
-              <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" />
+              {/* <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" /> */}
               <Text variant="small" format="mt-4 font-extrabold mb-4">
                 Jimmy Oshinowo
               </Text>
@@ -362,7 +367,7 @@ export default function Index() {
               really added value to my business. They take pride in putting your interests first.
             </Text>
             <div className="flex gap-2">
-              <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" />
+              {/* <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" /> */}
               <Text variant="small" format="mt-4 font-extrabold mb-4">
                 Mrs Aremu Ejiro
               </Text>
@@ -375,7 +380,7 @@ export default function Index() {
             </Text>
 
             <div className="flex gap-2">
-              <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" />
+              {/* <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" /> */}
               <Text variant="small" format="mt-4 font-extrabold mb-4">
                 Chief Chimezie Eleberi
               </Text>

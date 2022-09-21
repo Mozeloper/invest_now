@@ -98,7 +98,7 @@ export default function Footer() {
                     onClick={() => navigate("/frequently_asked_question")}
                     className="text-white cursor-pointer text-sm mb-6 hover:scale-110"
                   >
-                    FAQ
+                    FAQs
                   </li>
                   <li
                     onClick={() => navigate("/contact_us_form")}
