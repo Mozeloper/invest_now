@@ -18,7 +18,6 @@ import stepFour from "../assets/images/step4.svg";
 import bag from "../assets/images/bag.svg";
 import hand from "../assets/images/hand.svg";
 import chart from "../assets/images/chart.svg";
-// import Ted from "../assets/images/ted.svg";
 import Correct from "../assets/icons/correct.svg";
 import googleplayStore from "../assets/icons/googlePlayStore_icon.svg";
 import appleIcon from "../assets/icons/apple_icon.svg";
@@ -34,18 +33,6 @@ const slideImages = [
     url: bannerSecond,
   },
 ];
-
-// const settings = {
-//   infinite: true,
-//   speed: 1000,
-//   lazyLoad: true,
-//   initialSlide: 0,
-//   vertical: true,
-//   autoplay: true,
-//   // slidesToShow: 1,
-//   // slidesToScroll: 1,
-//   adaptiveHeight: true,
-// };
 
 export default function Index() {
   const navigate = useNavigate();
@@ -128,7 +115,6 @@ export default function Index() {
         </div>
         <div className="w-[50%] hidden lg:block h-full self-end">
           <div className="w-full">
-            {/* <Slider {...settings}> */}
             {count === 1 && (
               <div>
                 <img
@@ -147,7 +133,6 @@ export default function Index() {
                 />
               </div>
             )}
-            {/* </Slider> */}
           </div>
         </div>
       </div>
@@ -354,7 +339,6 @@ export default function Index() {
               measure, enabled me to achieve the much-needed objective of good returns on investment.
             </Text>
             <div className="flex gap-2">
-              {/* <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" /> */}
               <Text variant="small" format="mt-4 font-extrabold mb-4">
                 Jimmy Oshinowo
               </Text>
@@ -366,7 +350,6 @@ export default function Index() {
               really added value to my business. They take pride in putting your interests first.
             </Text>
             <div className="flex gap-2">
-              {/* <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" /> */}
               <Text variant="small" format="mt-4 font-extrabold mb-4">
                 Mrs Aremu Ejiro
               </Text>
@@ -379,7 +362,6 @@ export default function Index() {
             </Text>
 
             <div className="flex gap-2">
-              {/* <img loading="lazy" className="w-[50px] h-[50px]" src={Ted} alt="img" /> */}
               <Text variant="small" format="mt-4 font-extrabold mb-4">
                 Chief Chimezie Eleberi
               </Text>
