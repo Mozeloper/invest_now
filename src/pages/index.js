@@ -297,7 +297,7 @@ export default function Index() {
             <Text variant="h2" format="text-[#615F62] font-bold">
               Trust
             </Text>
-            <Text variant="h4" format="text-[#000000] my-3 w-[60%] font-normal">
+            <Text variant="h4" format="text-[#000000] my-3 w-[80%] font-normal">
               Build your wealth and preserve your legacy to last for generations.
             </Text>
             <div onClick={() => navigate("/login")} className="flex gap-2 items-center">
