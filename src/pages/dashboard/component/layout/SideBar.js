@@ -160,7 +160,7 @@ export default function SideBar() {
 
   return (
     <>
-      <div className="w-full overflow-y-auto overflow-hidden no-scrollbar h-screen p-3 bg-BACKGROUND_WHITE">
+      <div className="w-full overflow-y-auto overflow-hidden h-screen p-3 bg-BACKGROUND_WHITE">
         <div className="flex justify-center my-4">
           <img loading="lazy" src={Logosmall} alt="logo" className="min-w-[100px] max-w-[150px]" />
         </div>
