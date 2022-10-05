@@ -19,7 +19,7 @@ const NotificationModal = ({
     <Background onClick={setNotificationBar}>
       <Slide in={isOpen ?? false} direction="left">
         <div
-          className={`${bgColor ? "bg-pink" : "bg-white"} mt-[4%] mr-[2%] overflow-y-auto overflow-hidden no-scrollbar`}
+          className={`${bgColor ? "bg-pink" : "bg-white"} mt-[4%] mr-[2%] overflow-y-auto overflow-hidden`}
           style={{ minWidth: minWidth, width: modalWidth, height: modalHeight }}
         >
           {children}

@@ -59,7 +59,7 @@ export default function LandingPageProduct() {
               Benefits and features of {productData?.name}
             </Text>
             <div
-              className="text-sm text-[#465174]"
+              className="text-lg text-[#465174]"
               dangerouslySetInnerHTML={{
                 __html: productData?.html,
               }}

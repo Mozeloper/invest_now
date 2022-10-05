@@ -91,7 +91,7 @@ export default function AllProducts() {
                         See All
                       </Text>
                     </div>
-                    <div className="mt-4 flex overflow-hidden overflow-x-auto no-scrollbar gap-4">
+                    <div className="mt-4 flex overflow-hidden overflow-x-auto gap-4">
                       <>
                         {product?.products.map((info, index) => {
                           return (
@@ -134,7 +134,15 @@ export default function AllProducts() {
                                   }}
                                 />
 
-                                <div className="self-end flex justify-end">
+                                <div className="w-full self-end flex justify-between items-center">
+                                  <Text
+                                    format="cursor-pointer"
+                                    onClick={() => handleOpenProductDetailsModal(info?.code)}
+                                    weight="bold"
+                                    variant="h4"
+                                  >
+                                    Read More
+                                  </Text>
                                   <div>
                                     <Button
                                       onClick={() => handleOpenProductDetailsModal(info?.code)}

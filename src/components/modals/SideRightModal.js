@@ -11,7 +11,7 @@ const SideRightModal = ({ children, isOpen, bgColor, minWidth, modalWidth = "600
     <Background>
       <Slide in={isOpen ?? false} direction="left">
         <div
-          className={`${bgColor ? "bg-pink" : "bg-white"} max-h-screen overflow-y-auto overflow-hidden no-scrollbar`}
+          className={`${bgColor ? "bg-pink" : "bg-white"} max-h-screen overflow-y-auto overflow-hidden`}
           style={{ minWidth: minWidth, width: modalWidth, height: modalHeight }}
         >
           {children}

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import ReactStars from "react-rating-stars-component";
-// import Slider from "react-slick";
 import Text from "../components/Typography/Typography";
 import Button from "../components/Button";
 import banner from "../assets/images/banner.svg";
@@ -84,12 +83,12 @@ export default function Index() {
         >
           <div className="text-wrap lg:text-start text-center w-[60%] lg:w-[80%] h-[160px] md:mb-6 mb-20">
             {count === 1 && (
-              <div className="text-5xl font-bold smooth w-[80%] text-tertiary">
+              <div className="text-5xl font-bold smooth w-[80%] text-tertiary tracking-wide">
                 All your investment needs now just one tap away
               </div>
             )}
             {count === 2 && (
-              <div className="text-5xl font-bold smooth text-tertiary">
+              <div className="text-5xl font-bold smooth text-tertiary tracking-wide">
                 InvestNow enables you have complete control of your investment portfolio
               </div>
             )}

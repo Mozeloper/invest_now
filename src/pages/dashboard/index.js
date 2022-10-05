@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
+// import Slider from "react-slick";
 import { useSelector, useDispatch } from "react-redux";
 import { ResponsiveContainer, LineChart, Line, XAxis, CartesianGrid, Tooltip } from "recharts";
 import { Skeleton, Box } from "@mui/material";
@@ -33,48 +34,68 @@ import SocialMedia from "./component/socialMedia";
 
 const data = [
   {
-    name: "Page A",
-    Mutual_Funds: 4000,
-    Trust_Fund: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Page B",
-    Mutual_Funds: 3000,
+    name: "Jan",
+    Mutual_Funds: 1398,
     Trust_Fund: 1398,
     amt: 2210,
   },
   {
-    name: "Page C",
+    name: "Feb",
     Mutual_Funds: 2000,
     Trust_Fund: 9800,
     amt: 2290,
   },
   {
-    name: "Page D",
+    name: "Mar",
     Mutual_Funds: 2780,
     Trust_Fund: 3908,
     amt: 2000,
   },
   {
-    name: "Page E",
+    name: "April",
     Mutual_Funds: 1890,
     Trust_Fund: 4800,
     amt: 2181,
   },
   {
-    name: "Page F",
+    name: "May",
     Mutual_Funds: 2390,
     Trust_Fund: 3800,
     amt: 2500,
   },
   {
-    name: "Page G",
+    name: "Jun",
     Mutual_Funds: 3490,
     Trust_Fund: 4300,
     amt: 2100,
   },
+  {
+    name: "July",
+    Mutual_Funds: 3490,
+    Trust_Fund: 4300,
+    amt: 2100,
+  },
+  {
+    name: "Aug",
+    Mutual_Funds: 3490,
+    Trust_Fund: 4300,
+    amt: 2100,
+  },
+  {
+    name: "Sept",
+    Mutual_Funds: 2456,
+    Trust_Fund: 1800,
+    amt: 2100,
+  },
 ];
+
+// const settings = {
+//   infinite: true,
+//   speed: 1000,
+//   // lazyLoad: true,
+//   slidesToShow: 3,
+//   slidesToScroll: 3,
+// };
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -182,7 +203,7 @@ export default function Dashboard() {
             {showCompletionStatus && (
               <>
                 <div className="border-b-2 border-[#7B839C] w-full my-4"></div>
-                <div className="overflow-x-auto no-scrollbar py-4 w-full flex gap-8">
+                <div className="overflow-x-auto py-4 w-full flex gap-8">
                   {completion_statuses?.completion_status.map((step, index) => {
                     return (
                       <div key={index + 1} className="flex gap-3 items-center">
@@ -225,7 +246,8 @@ export default function Dashboard() {
                   Account summary
                 </Text>
               </div>
-              <div className="w-full flex gap-2 no-scrollbar overflow-hidden overflow-x-auto">
+              <div className="w-full flex gap-2 overflow-hidden overflow-x-auto">
+                {/* <Slider {...settings}> */}
                 <div
                   style={{ backgroundImage: `url(${redFrame})` }}
                   className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
@@ -315,6 +337,7 @@ export default function Dashboard() {
                     </Text>
                   </div>
                 </div>
+                {/* </Slider> */}
               </div>
             </>
           )}
@@ -348,7 +371,9 @@ export default function Dashboard() {
               <ResponsiveContainer width="95%" height={400}>
                 <LineChart width={600} height={800} data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                   <XAxis dataKey="name" />
+                  {/* <YAxis /> */}
                   <Tooltip />
+                  {/* <Legend /> */}
                   <CartesianGrid stroke="#f5f5f5" />
                   <Line type="monotone" dataKey="Mutual_Funds" stroke="#EF69A7" yAxisId={0} />
                   <Line type="monotone" dataKey="Trust_Fund" stroke="#21C3F2" yAxisId={1} />
@@ -435,7 +460,7 @@ export default function Dashboard() {
             {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
               portfolioReducer?.portfolioPerformanceData?.type === "portfolio/portfolioPerfomance/fulfilled" &&
               portfolio_items?.length === 0 && (
-                <div className="w-full h-[80%] flex flex-col justify-center items-center">
+                <div className="w-full h-[70%] flex flex-col justify-center items-center mt-16">
                   <img src={empty} alt="empty" className="w-[200px] h-[100px]" />
                   <Text format="mb-3" weight="bold" variant="body">
                     You currently have no portfolio
@@ -452,7 +477,7 @@ export default function Dashboard() {
                 </div>
               )}
           </div>
-          <div className="bg-BACKGROUND_WHITE h-[400px] p-6 lg:basis-1/2 basis-1">
+          <div className="bg-BACKGROUND_WHITE min-h-[400px] p-6 lg:basis-1/2 basis-1">
             <div className="w-full mt-4">
               <Text format="mb-3" weight="bold" variant="h3">
                 My Loans

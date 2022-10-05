@@ -178,6 +178,11 @@ export default function Footer() {
                       Pan African Monitor
                     </a>
                   </li>
+                  <li className="text-white cursor-pointer text-sm mb-6 hover:scale-110">
+                    <a target="_blank" rel="noreferrer" href="https://unitedcapitalplcgroup.com">
+                      United Capital website
+                    </a>
+                  </li>
                 </ul>
               </div>
               <div className="flex flex-col justify-between">

@@ -11,9 +11,7 @@ const MessageModal = ({ children, isOpen, bgColor, minWidth, modalWidth = "500px
     <Background>
       <Slide in={isOpen ?? false}>
         <div
-          className={`${
-            bgColor ? "bg-pink" : "bg-white"
-          } p-10 max-h-screen overflow-y-auto overflow-hidden no-scrollbar`}
+          className={`${bgColor ? "bg-pink" : "bg-white"} p-10 max-h-screen overflow-y-auto overflow-hidden`}
           style={{ minWidth: minWidth, borderRadius: 10, width: modalWidth, height: modalHeight }}
         >
           {children}

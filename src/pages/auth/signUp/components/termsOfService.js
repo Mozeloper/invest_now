@@ -14,8 +14,8 @@ export default function TermsOfService({ setShowMessageAlert }) {
         <Text variant="h3" weight="extrabold" color="#000000">
           Terms Of Service
         </Text>
-        <Text variant="h4" weight="bold" color="#000000">
-          By clicking on the I Accept Button, I hereby affirm that in line with the relevant Data Protection laws in
+        <Text variant="h3" weight="bold" color="#000000" format="text-left">
+          By clicking on the Accept Button, I hereby affirm that in line with the relevant Data Protection laws in
           Nigeria, I consent to the collection and processing of my personal data/information in the absence of any
           fraud, duress, undue influence or coercion, for the purpose of this account opening and other necessary data
           processing activities which may arise therefrom, including for the performance of the relationship between
@@ -37,7 +37,7 @@ export default function TermsOfService({ setShowMessageAlert }) {
           onClick={() => navigate("/")}
           className="py-4 font-extrabold"
         />
-        <Button title="I Accept" onClick={setShowMessageAlert} className="py-4 font-extrabold" />
+        <Button title="Accept" onClick={setShowMessageAlert} className="py-4 font-extrabold" />
       </div>
     </div>
   );

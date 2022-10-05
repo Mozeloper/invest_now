@@ -103,11 +103,19 @@ export default function Securities() {
                                 <div className="mt-3 flex flex-col justify-between h-[170px]">
                                   <div
                                     dangerouslySetInnerHTML={{
-                                      __html: info?.introHtml.substring(0, 150).concat("..."),
+                                      __html: info?.introHtml.substring(0, 140).concat("..."),
                                     }}
                                   />
 
-                                  <div className="self-end flex justify-end">
+                                  <div className="w-full self-end flex justify-between items-center">
+                                    <Text
+                                      format="cursor-pointer"
+                                      onClick={() => handleOpenProductDetailsModal(info?.code)}
+                                      weight="bold"
+                                      variant="h4"
+                                    >
+                                      Read More
+                                    </Text>
                                     <div>
                                       <Button
                                         onClick={() => handleOpenProductDetailsModal(info?.code)}

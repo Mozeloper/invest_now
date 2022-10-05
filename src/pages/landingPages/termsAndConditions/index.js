@@ -66,18 +66,18 @@ export default function PrivacyStatement() {
           </div>
           {isActive?.terms_and_conditions && (
             <div className="px-[4%] flex flex-col gap-3 w-[85%]">
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 INVESTNOW TERMS AND CONDITIONS
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 PLEASE READ THESE TERMS AND CONDITIONS CAREFULLY BEFORE YOU PROCEED. BY USING THIS WEBSITE, YOU INDICATE
                 THAT YOU UNCONDITIONALLY ACCEPT THE TERMS AND YOU AGREE TO ABIDE BY THEM. IF YOU DO NOT AGREE WITH THE
                 TERMS, PLEASE DO NOT USE THIS WEBSITE
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 1. AGREEMENT AND ACCEPTANCE
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 1.1 All intending users and users are advised to read these terms and conditions carefully before using
                 the features of this website (“this Website” or “the Website”). By using this Website, you indicate
                 acceptance of these terms irrespective of whether you sign up for use of this Website or not. If these
@@ -86,10 +86,10 @@ export default function PrivacyStatement() {
                 an update/change to these terms. Kindly endeavor to review the terms as they will be binding on you if
                 you continue to use this Website after such change.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 2. CONTENT AND USE
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 2.1 The Website which is provided to you without any charge is designed to allow you open an account
                 with or us and/or access your account. Consequently, confidential information might be sent to you
                 following activities initiated by you on this Website. This information will be sent to the email
@@ -100,7 +100,7 @@ export default function PrivacyStatement() {
                 OBLIGATIONS AND COSTS RESULTING DIRECTLY OR INDIRECTLY FROM THE TRANSMISSION OF THE CONFIDENTIAL
                 INFORMATION TO YOUR EMAIL ADDRESS.
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 2.2 Certain parts of this Website may be accessed only by use of a user identification and/or password.
                 If you have access to any of these parts, you are responsible to ensure that your user identification
                 and/or password are not disclosed to any other person. If you disclose your user identification and/or
@@ -110,7 +110,7 @@ export default function PrivacyStatement() {
                 PROCEEDINGS, LIABILITIES, OBLIGATIONS, AND COSTS RESULTING DIRECTLY OR INDIRECTLY FROM THE USE OF YOUR
                 IDENTIFICATION AND/OR PASSWORD BY THE PERSON TO WHOM YOU DISCLOSED THEM OR BY ANY OTHER PERSON.
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 2.3 We reserve the right to revise the content, display, or functionality of this Website as we deem
                 necessary. Consequently, information may be changed, removed, or updated without prior notice to you.
                 Also, disruptions to this Website may occur as a consequence of the need to revise its content, display
@@ -118,10 +118,10 @@ export default function PrivacyStatement() {
                 disruptions to the Website, we do not guarantee that this Website will be available at all times. We
                 also reserve the right to remove this Website completely without prior notice to you.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 3. LIMITATION OF LIABILITY
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 IN NO EVENT SHALL ANY INDEMNIFIED PERSON BE LIABLE TO YOU FOR ANY DAMAGES WHATSOEVER, INCLUDING WITHOUT
                 LIMITATION INDIRECT, INCIDENTAL, SPECIAL, PUNITIVE, OR CONSEQUENTIAL DAMAGES, ARISING OUT OF OR IN
                 CONNECTION WITH YOUR USE OF THIS WEBSITE, CONTENT AND/OR USER INFORMATION, INCLUDING BUT NOT LIMITED TO
@@ -132,10 +132,10 @@ export default function PrivacyStatement() {
                 IN THE APPLICABLE JURISDICTION AND IN NO EVENT SHALL UNITED CAPITAL'S CUMULATIVE LIABILITY TO YOU EXCEED
                 THE AMOUNT PAID BY YOU TO US AS FEES.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 4. INTELLECTUAL PROPERTY
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 4.1 The Company maintains all copyrights and other Intellectual property rights with respect to
                 materials, logos, graphic designs, and other works on this Website. 4.2 All materials contained on this
                 Website are the Company’s registered/unregistered trademarks or those of third parties. Please note that
@@ -144,10 +144,10 @@ export default function PrivacyStatement() {
                 the Company remains the owner/custodian of all the materials on this Website. You are not entitled to
                 any right or title to the materials.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 5. FEATURES
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 5.1 This Website has various features that enable users carry out transactions including but not limited
                 to the following: (a) account opening; (b) account funding; (c) withdrawals; (d) equities trading; (e)
                 stock pricing list; (f) recurrent payments; (g) transactional and executional functions; (h) simple
@@ -155,10 +155,10 @@ export default function PrivacyStatement() {
                 website. A visitor may have access to general information but will not be able to carry out transactions
                 of any kind.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 6. REGISTRATION/SIGN ON
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 6.1 To access the features of this Website, an intending user will need to open an account by selecting
                 the type of account (s) they wish to open. On successful completion, an initial email will be sent
                 informing the user that an account has been created. A second email will be sent stating the details of
@@ -171,10 +171,10 @@ export default function PrivacyStatement() {
                 responsibility of ensuring your password is secure. 6.5 Registration on this website is limited to a
                 single user. No multi-party user registration is allowed.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 7. SERVICE ACCESS
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 7.1 Although this Website will be accessible 24 hours every day of the week, no Indemnified Person will
                 be liable if it becomes unavailable. 7.2 Where there is a system failure, malware, maintenance, upgrade
                 or for reasons beyond the Company’s control, access may be suspended provisionally without notice. 7.3
@@ -182,28 +182,28 @@ export default function PrivacyStatement() {
                 Exchange Limited. The trading times are from 10:00 am to 2:30 pm Mondays to Fridays only (excluding
                 public holidays). Instructions sent outside these times will not be processed until trading resumes.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 8. USER CONDUCT
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 8.1 You should ensure correctness and accuracy of the information you provide as this will be used in
                 processing your transactions. 8.2 You are implored to avoid using any harmful device that has been
                 exposed to malware such as trojan horses, viruses, worms, harmful components, corrupted data, or
                 malicious software on this Website. The Company may terminate your use of this Website automatically if
                 you breach this term or any other term.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 9. SENDING AND PROCESSING INFORMATION
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 Instructions, activities, and transactions received from you after you log in with your registered
                 log-in details (Username and Password) will be deemed received from you and will be taken as being
                 authorized by you and intended to have legal force and effect.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 10. CONFIRMATION OF RECEIPT OF INSTRUCTIONS
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 10.1 Transaction instructions are deemed received only when the Company has confirmed receipt to the
                 user via email. Where no confirmation of receipt of instruction is received, please check your account
                 or contact our Customer experience team (customerservice@unitedcapitalplcgroup.com) before resending the
@@ -214,10 +214,10 @@ export default function PrivacyStatement() {
                 Limited. No Indemnified Person will be liable for any incorrect instruction given with respect to such
                 transactions.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 11. NO SOLICITATION
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 The information on this Website was prepared for informational purposes only without regard to any
                 particular user’s investment objectives, financial situation, or means, and we are not soliciting any
                 action based upon it. Nothing on this Website or in these terms may be construed as a recommendation; or
@@ -229,19 +229,19 @@ export default function PrivacyStatement() {
                 information and do not represent that this material is accurate, current, or complete and it should not
                 be relied upon as such.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 12. FEES/CHARGES
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 12.1 For funding of your United Capital Securities Limited Account, a 1.5% fee of the funding or a
                 maximum of N2000.00 cap may be charged to the user by the payment gateway as service charges. 12.2 Any
                 attempt to make transactions from unfunded accounts or with insufficient funds will be rejected. Users
                 are encouraged to ensure their accounts are adequately funded for each transaction.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 13. LIABILITY FOR THE USE OF THE WEBSITE
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 13.1 You are advised to check carefully before transacting or investing in any product as the
                 information on this Website may not always be up to date or complete. The Company will not be liable for
                 any losses where you fail to verify before investing. If unsure of the products and services you want to
@@ -250,10 +250,10 @@ export default function PrivacyStatement() {
                 through this website, we do not however have control of their content and will not be responsible for
                 losses incurred because of the use of such websites.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 14. DISCLAIMER
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 14.1 Please note that the information contained in this Website are also for general purposes.
                 Therefore, we shall endeavour to keep all such information up to date and correct. However, we make no
                 warranties of any kind, either expressly or impliedly about the accuracy, completeness, suitability, or
@@ -268,10 +268,10 @@ export default function PrivacyStatement() {
                 secure as the Company will not be liable for any loss or damage caused by any use of your log in details
                 in connection with the use of this Website.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 15. GOVERNING LAW AND DISPUTE RESOLUTION
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 15.1 These Terms and Conditions are governed by Nigerian Law. All disputes and claims arising from this
                 Agreement shall be resolved by Arbitration by a single Arbitrator in accordance with the Arbitration and
                 Conciliation Act CAP A18, Laws of the Federation of Nigeria 2004, which Rules are deemed incorporated by
@@ -288,19 +288,19 @@ export default function PrivacyStatement() {
                 dissatisfied with the decision of the Arbitrator may refer the matter to the Securities and Exchange
                 Commission.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 16. SEVERABILITY
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 In the event that any provision of these terms is found to be unenforceable, illegal or invalid by a
                 court of competent jurisdiction, the enforceability, legality and validity of the remaining provisions
                 shall not in any way be affected or impaired thereby and such provision shall be ineffective only to the
                 extent of such unenforceability, illegality or invalidity.
               </Text>
-              <Text weight="bold" variant="h4" color="text-headerColor">
+              <Text weight="bold" variant="h3" color="text-headerColor">
                 17. HEADINGS
               </Text>
-              <Text weight="normal" variant="body" color="text-headerColor">
+              <Text weight="normal" variant="h4" color="text-headerColor">
                 The headings in this document have been provided for convenience only and do not affect the
                 interpretation of the clauses.
               </Text>

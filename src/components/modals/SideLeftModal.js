@@ -20,9 +20,7 @@ const SideLeftModal = ({
     <Background>
       <Slide in={isOpen ?? false} direction="right">
         <div
-          className={`${
-            bgColor ? "bg-pink" : "bg-white"
-          } lg:hidden block max-h-screen overflow-y-auto overflow-hidden no-scrollbar`}
+          className={`${bgColor ? "bg-pink" : "bg-white"} lg:hidden block max-h-screen overflow-y-auto overflow-hidden`}
           style={{ minWidth: minWidth, width: modalWidth, height: modalHeight }}
         >
           {children}

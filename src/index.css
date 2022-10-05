@@ -9,7 +9,7 @@ body {
 
 * {
   scroll-behavior: smooth;
-  font-family: "Century Gothic", "Roboto", "sans-serif";
+  font-family: "Century Gothic", "Roboto";
 }
 
 .imgMask {
@@ -52,6 +52,7 @@ body {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
 }
+
 .lds-ring {
   display: inline-block;
   position: relative;

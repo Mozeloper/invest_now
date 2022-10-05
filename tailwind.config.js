@@ -35,7 +35,7 @@ module.exports = {
         BACKGROUND_WHITE: "#FFFFFF",
       },
       fontFamily: {
-        CenturyGothic: ["Century Gothic", "sans-serif"],
+        CenturyGothic: ["Century Gothic"],
       },
       fontSize: {
         xs: ["0.75rem", { lineHeight: "1rem" }],

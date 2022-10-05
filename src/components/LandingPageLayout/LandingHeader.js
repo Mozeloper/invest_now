@@ -186,7 +186,7 @@ export default function LandingHeader() {
                   format="font-normal cursor-pointer"
                   color="text-[#000000]"
                 >
-                  Utrace
+                  UTrace
                 </Text>
               </div>
             )}

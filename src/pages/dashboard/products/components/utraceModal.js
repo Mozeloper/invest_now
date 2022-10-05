@@ -104,7 +104,7 @@ export default function UtraceModal({ setUTraceModal, setShowResponseModal }) {
       </div>
       <div className="flex justify-center mt-2">
         <Text color="text-primary" variant="h1" weight="bold" format="whitespace-nowrap font-bold">
-          Utrace
+          UTrace
         </Text>
       </div>
       <Formik
@@ -216,7 +216,7 @@ export default function UtraceModal({ setUTraceModal, setShowResponseModal }) {
                   </div>
                 )}
                 {!!!productsReducer?.productSegementsIsLoading && (
-                  <div className="overflow-y-auto overflow-hidden no-scrollbar h-full mt-4 p-4">
+                  <div className="overflow-y-auto overflow-hidden h-full mt-4 p-4">
                     {productsReducer?.productSegmentData?.type === "products/segments/fulfilled" &&
                       SegmentData?.map((list, index) => {
                         return (
