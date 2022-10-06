@@ -219,7 +219,7 @@ export default function Index() {
             Looking to do more with your money? Let’s help you kickstart your investment journey.
           </Text>
         </div>
-        <div className="w-full flex md:flex-row flex-col md:items-center md:justify-center gap-2 my-4 md:my-8">
+        <div className="w-full flex md:flex-row flex-col justify-center gap-2 my-4 md:my-8">
           <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
             <img src={stepOne} alt="step-1" className="w-[50px] h-[50px]" loading="lazy" />
             <Text>Step 1</Text>
