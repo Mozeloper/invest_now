@@ -41,7 +41,7 @@ export default function Faq() {
           className="px-[2%] my-6 flex justify-between cursor-pointer"
         >
           <Text weight="bold" variant="h3" color="text-headerColor">
-            Investnow Related
+            General
           </Text>
           {isActive?.investnow_related ? (
             <img src={downArrow} alt="down_arrow" />
@@ -623,7 +623,7 @@ export default function Faq() {
           className="px-[2%] my-3 flex justify-between cursor-pointer"
         >
           <Text weight="bold" variant="h3" color="text-headerColor">
-            SECURITIES (STOCK TRADING)
+            Securities (Stock Trading)
           </Text>
           {isActive?.equity ? <img src={downArrow} alt="down_arrow" /> : <img src={rightArrow} alt="right_arrow" />}
         </div>

@@ -46,7 +46,7 @@ export default function LandingPageProduct() {
               src={productData?.imageUrlHome}
               alt="bg_product"
               loading="lazy"
-              className="max-w-[70%] w-full h-[300px] rounded-lg blur-[1px]"
+              className="max-w-[50%] w-full h-[300px] rounded-lg blur-[1px]"
             />
             <div className="top-[75%] left-0 absolute bg-black opacity-100 px-2">
               <Text weight="bold" color="text-white" variant="h0" format="tracking-wide text-center">

@@ -1,6 +1,6 @@
 /* eslint-disable eqeqeq */
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import Password from "../../../components/formFields/password";
@@ -12,7 +12,7 @@ import Button from "../../../components/Button";
 import "react-phone-input-2/lib/style.css";
 import MessageModal from "../../../components/modals/MessageModal";
 import { useSelector, useDispatch } from "react-redux";
-import { handlePasswordCreation } from "../../../store/slices/authSlices";
+import { handlePasswordCreation, handleLoginFromSignUp } from "../../../store/slices/authSlices";
 
 function checkUppercase(str) {
   for (var i = 0; i < str?.length; i++) {
@@ -35,7 +35,7 @@ export default function CreatePassword() {
     message: "",
   });
   const authReducer = useSelector((state) => state.authReducer);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const dispatch = useDispatch();
   const [passwordCharacterCheck, setPasswordCharacterCheck] = useState({
     password_length: false,
@@ -67,6 +67,11 @@ export default function CreatePassword() {
           }));
         }
       });
+  };
+
+  const dispatchhandleLoginFromSignUp = () => {
+    dispatch(handleLoginFromSignUp());
+    // navigate("/dashboard");
   };
 
   const passwordSchema = Yup.object().shape({
@@ -165,7 +170,7 @@ export default function CreatePassword() {
           handlePasswordUserCreation(data);
         }}
       >
-        {({ handleSubmit, handleChange, isSubmitting, values, touched, errors }) => (
+        {({ handleSubmit, handleChange, touched, errors }) => (
           <div className="bg-BACKGROUND_WHITE rounded-xl h-auto md:p-10 p-4 w-[100%] md:w-[80%]">
             <div className="mt-3 flex justify-start flex-col">
               <Text weight="bold" color="text-[#65666A]" variant="h2">
@@ -265,11 +270,11 @@ export default function CreatePassword() {
             Sign up successful
           </Text>
           <Text format="text-center mt-3" variant="body" color="text-[#465174]" weight="bold">
-            Your profile has been created, click “next” to open account and start investing.
+            Your profile has been created, login to open account and start investing.
           </Text>
           <div className="mt-2 w-full">
             <Button
-              onClick={() => navigate("/dashboard")}
+              onClick={() => dispatchhandleLoginFromSignUp()}
               title="Login"
               className="cursor-pointer w-full"
               type="button"

@@ -141,6 +141,7 @@ const initialState = {
   user: null,
   isLoading: false,
   authedUser: null,
+  SignSuccessDetails: null,
   isLoggedIn: false,
   forgetPasswordState: null,
   forgetPasswordOtpState: null,
@@ -164,6 +165,10 @@ export const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.isLoggedIn = false;
+    },
+    handleLoginFromSignUp: (state) => {
+      state.isLoggedIn = true;
+      state.authedUser = state.SignSuccessDetails;
     },
   },
   extraReducers: {
@@ -312,21 +317,20 @@ export const authSlice = createSlice({
     },
     [handlePasswordCreation.pending]: (state) => {
       state.isLoading = true;
-      state.authedUser = null;
+      state.SignSuccessDetails = null;
     },
     [handlePasswordCreation.fulfilled]: (state, action) => {
       state.isLoading = false;
-      state.isLoggedIn = true;
-      state.authedUser = action?.payload?.data;
+      state.SignSuccessDetails = action?.payload?.data;
     },
-    [handlePasswordCreation.rejected]: (state, action) => {
+    [handlePasswordCreation.rejected]: (state) => {
       state.isLoading = false;
-      state.authedUser = null;
+      state.SignSuccessDetails = null;
     },
   },
 });
 
 export const { reducer, actions } = authSlice;
-export const { resetInitialState, resetState } = actions;
+export const { resetInitialState, handleLoginFromSignUp, resetState } = actions;
 
 export default reducer;
