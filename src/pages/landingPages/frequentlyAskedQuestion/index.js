@@ -639,7 +639,7 @@ export default function FrequentlyAskedQuestion() {
           className="p-[1%] bg-[#EDEDED] my-3 flex justify-between cursor-pointer"
         >
           <Text weight="bold" variant="h3">
-            SECURITIES (STOCK TRADING)
+            Securities (Stock Trading)
           </Text>
           {isActive?.equity ? <img src={downArrow} alt="down_arrow" /> : <img src={rightArrow} alt="right_arrow" />}
         </div>
