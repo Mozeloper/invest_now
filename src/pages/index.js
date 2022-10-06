@@ -75,7 +75,7 @@ export default function Index() {
               </div>
             )}
             {count === 2 && (
-              <div className="text-5xl font-bold smooth text-tertiary tracking-wide">
+              <div className="text-5xl font-bold smooth w-full mb-10 text-tertiary tracking-wide">
                 InvestNow enables you have complete control of your investment portfolio
               </div>
             )}
