@@ -246,7 +246,7 @@ export default function Index() {
             <Text variant="h4" format="text-[#000000] font-bold">
               Fund your account
             </Text>
-            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[65%] font-normal">
+            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[70%] font-normal">
               Put funds into your account with your debit card or bank account.
             </Text>
           </div>
@@ -256,7 +256,7 @@ export default function Index() {
             <Text variant="h4" format="text-[#000000] font-bold">
               Receive returns
             </Text>
-            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[65%] font-normal">
+            <Text variant="h4" format="text-[#000000] text-center md:text-left w-full font-normal">
               Start recieving returns!
             </Text>
           </div>
