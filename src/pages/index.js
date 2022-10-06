@@ -19,6 +19,7 @@ import bag from "../assets/images/bag.svg";
 import hand from "../assets/images/hand.svg";
 import chart from "../assets/images/chart.svg";
 import Correct from "../assets/icons/correct.svg";
+import orangeArrow from "../assets/icons/orange_arrow.svg";
 import googleplayStore from "../assets/icons/googlePlayStore_icon.svg";
 import appleIcon from "../assets/icons/apple_icon.svg";
 
@@ -68,19 +69,19 @@ export default function Index() {
           data-aos-duration="2000"
           className="lg:w-[60%] w-full wrapper flex flex-col items-center lg:items-start justify-center"
         >
-          <div className="text-wrap lg:text-start text-center w-[60%] lg:w-[80%] h-[160px] md:mb-6 mb-20">
+          <div className="text-wrap lg:text-start md:text-center text-center w-full h-[160px]">
             {count === 1 && (
-              <div className="text-5xl font-bold smooth w-[80%] text-tertiary tracking-wide">
+              <div className="text-5xl font-bold smooth lg:w-[80%] md:w-full w-full text-tertiary tracking-wide">
                 All your investment needs now just one tap away
               </div>
             )}
             {count === 2 && (
-              <div className="text-5xl font-bold smooth w-full mb-10 text-tertiary tracking-wide">
+              <div className="text-5xl font-bold smooth w-full text-tertiary tracking-wide">
                 InvestNow enables you have complete control of your investment portfolio
               </div>
             )}
           </div>
-          <div className="lg:self-start self-center">
+          <div className="lg:self-start self-center md:mt-5 mt-32">
             <Button
               title="Create a free account"
               onClick={() => navigate("/bvn_verification")}
@@ -136,7 +137,7 @@ export default function Index() {
           </div>
         </div>
       </div>
-      <div className="wrapper my-16 w-full flex md:flex-row flex-col-reverse">
+      <div className="wrapper md:my-16 my-8 w-full flex md:flex-row flex-col-reverse">
         <div
           data-aos="fade-right"
           data-aos-duration="2000"
@@ -148,11 +149,11 @@ export default function Index() {
           <Text variant="h3" format="font-normal my-4">
             Enjoy competitive returns when you invest with us.
           </Text>
-          <div onClick={() => navigate("/login")} className="flex gap-2">
-            <Text variant="h4" color="text-primary" format="cursor-pointer self-start font-bold">
+          <div onClick={() => navigate("/login")} className="flex items-center gap-2">
+            <Text variant="h4" color="text-primary" format="cursor-pointer font-bold">
               Start investing
             </Text>
-            &gt;
+            <img src={orangeArrow} alt="img" loading="lazy" className="w-[6px] h-[12px] mt-[3px]" />
           </div>
         </div>
         <div data-aos="fade-left" data-aos-duration="2000" className="basis-full md:basis-1/2">
@@ -174,11 +175,11 @@ export default function Index() {
           <Text variant="h3" format="font-normal my-4">
             Get real-time information on your investments in one place.
           </Text>
-          <div onClick={() => navigate("/login")} className="flex gap-2">
+          <div onClick={() => navigate("/login")} className="flex items-center gap-2">
             <Text variant="h4" color="text-primary" format="cursor-pointer self-start font-bold">
               Start investing
             </Text>
-            &gt;
+            <img src={orangeArrow} alt="img" loading="lazy" className="w-[6px] h-[12px] mt-[3px]" />
           </div>
         </div>
       </div>
@@ -195,11 +196,11 @@ export default function Index() {
             With Asset-Backed Loan, you can access a loan of up to 95% of your investment value to meet your urgent
             needs.
           </Text>
-          <div onClick={() => setOpenModal(true)} className="flex gap-2">
-            <Text variant="h4" color="text-primary" format="cursor-pointer self-start font-bold">
+          <div onClick={() => setOpenModal(true)} className="flex items-center gap-2">
+            <Text variant="h4" color="text-primary" format="cursor-pointer font-bold">
               Get A Loan
             </Text>
-            &gt;
+            <img src={orangeArrow} alt="img" loading="lazy" className="w-[6px] h-[12px] mt-[3px]" />
           </div>
         </div>
         <div className="basis-full md:basis-1/2">
@@ -226,7 +227,7 @@ export default function Index() {
             <Text variant="h4" format="text-[#000000]" weight="extrabold">
               Choose a product
             </Text>
-            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[60%] font-normal">
+            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[70%] font-normal">
               Select a product from our array of Investment offerings.
             </Text>
           </div>
@@ -236,7 +237,7 @@ export default function Index() {
             <Text variant="h4" format="text-[#000000] font-bold">
               Open an account
             </Text>
-            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[65%] font-normal">
+            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[70%] font-normal">
               Simply provide us with some information about you.
             </Text>
           </div>
@@ -246,7 +247,7 @@ export default function Index() {
             <Text variant="h4" format="text-[#000000] font-bold">
               Fund your account
             </Text>
-            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[70%] font-normal">
+            <Text variant="h4" format="text-[#000000] text-center md:text-left w-[75%] font-normal">
               Put funds into your account with your debit card or bank account.
             </Text>
           </div>
@@ -277,7 +278,7 @@ export default function Index() {
           </Text>
         </div>
         <div className="w-full flex lg:flex-row flex-col justify-center items-center gap-8">
-          <div className="bg-[#FFF6F7] flex flex-col p-6 basis-1/3">
+          <div className="bg-[#FFF6F7] flex flex-col justify-between p-6 basis-1/3 h-[354px]">
             <img src={bag} alt="bag" className="w-[200px] h-[150px] self-center" loading="lazy" />
             <Text variant="h2" format="text-[#615F62] font-bold">
               Mutual funds
@@ -289,10 +290,10 @@ export default function Index() {
               <Text variant="h3" color="text-primary" format="cursor-pointer self-start font-bold">
                 Get Started
               </Text>
-              &gt;
+              <img src={orangeArrow} alt="img" loading="lazy" className="w-[6px] h-[12px] mt-[3px]" />
             </div>
           </div>
-          <div className="bg-[#FFF6F7] flex flex-col p-6 basis-1/3">
+          <div className="bg-[#FFF6F7] flex flex-col justify-between p-6 basis-1/3 h-[354px]">
             <img src={hand} alt="bag" className="w-[200px] h-[150px] self-center" loading="lazy" />
             <Text variant="h2" format="text-[#615F62] font-bold">
               Trust
@@ -304,10 +305,10 @@ export default function Index() {
               <Text variant="h3" color="text-primary" format="cursor-pointer self-start font-bold">
                 Get Started
               </Text>
-              &gt;
+              <img src={orangeArrow} alt="img" loading="lazy" className="w-[6px] h-[12px] mt-[3px]" />
             </div>
           </div>
-          <div className="bg-[#FFF6F7] flex flex-col p-6 basis-1/3">
+          <div className="bg-[#FFF6F7] flex flex-col justify-between p-6 basis-1/3 h-[354px]">
             <img src={chart} alt="bag" className="w-[200px] h-[150px] self-center" loading="lazy" />
             <Text variant="h2" format="text-[#615F62] font-bold">
               Securities
@@ -319,7 +320,7 @@ export default function Index() {
               <Text variant="h3" color="text-primary" format="cursor-pointer self-start font-bold">
                 Get Started
               </Text>
-              &gt;
+              <img src={orangeArrow} alt="img" loading="lazy" className="w-[6px] h-[12px] mt-[3px]" />
             </div>
           </div>
         </div>
@@ -333,35 +334,35 @@ export default function Index() {
           data-aos-duration="2000"
           className="flex justify-start overflow-x-auto no-scrollbar wrapper gap-4"
         >
-          <div className="bg-BACKGROUND_WHITE min-w-[420px] h-[220px] p-4">
+          <div className="bg-BACKGROUND_WHITE flex flex-col justify-between min-w-[420px] h-[220px] p-4">
             <Text variant="h4" format="w-[90%] font-extrabold mb-4">
               They pay good attention to me. They also provide quality and timely service which has, in no small
               measure, enabled me to achieve the much-needed objective of good returns on investment.
             </Text>
-            <div className="flex gap-2">
+            <div className="">
               <Text variant="small" format="mt-4 font-extrabold mb-4">
                 Jimmy Oshinowo
               </Text>
             </div>
           </div>
-          <div className="bg-BACKGROUND_WHITE min-w-[420px] h-[220px] p-4">
+          <div className="bg-BACKGROUND_WHITE flex flex-col justify-between min-w-[420px] h-[220px] p-4">
             <Text variant="h4" format="w-[90%] font-extrabold mb-4">
               I’ve had a very good experience with United Capital Plc. The company has related with me very well and has
               really added value to my business. They take pride in putting your interests first.
             </Text>
-            <div className="flex gap-2">
+            <div className="">
               <Text variant="small" format="mt-4 font-extrabold mb-4">
                 Mrs Aremu Ejiro
               </Text>
             </div>
           </div>
-          <div className="bg-BACKGROUND_WHITE min-w-[420px] h-[220px] p-4">
+          <div className="bg-BACKGROUND_WHITE flex flex-col justify-between min-w-[420px] h-[220px] p-4">
             <Text variant="h4" format="w-[90%] font-extrabold mb-4">
               I’ve invested with United Capital for a while now, and I’ve been telling others to join in. If they
               weren’t good at what they do, I wouldn’t have been transacting with them for over eight years.
             </Text>
 
-            <div className="flex gap-2">
+            <div className="">
               <Text variant="small" format="mt-4 font-extrabold mb-4">
                 Chief Chimezie Eleberi
               </Text>
@@ -375,7 +376,7 @@ export default function Index() {
           data-aos-duration="2000"
           className="w-full p-10 h-full flex justify-between md:items-center mb-16 gap-4 bg-primary rounded-md"
         >
-          <div className="basis-1/2 h-full flex flex-col justify-center">
+          <div className="md:basis-1/2 basis-full h-full flex flex-col justify-center">
             <div>
               <ReactStars
                 count={5}

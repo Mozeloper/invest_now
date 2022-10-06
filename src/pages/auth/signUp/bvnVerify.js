@@ -136,7 +136,7 @@ export default function BvnVerify() {
   const displayMessageAlert = () => {
     if (!!showMessageAlert) {
       return (
-        <MessageModal isOpen={showMessageAlert} minWidth="auto" modalWidth="650px" modalHeight="auto">
+        <MessageModal isOpen={showMessageAlert} minWidth="auto" modalWidth="886px" modalHeight="auto">
           <TermsOfService setShowMessageAlert={() => setShowMessageAlert(!showMessageAlert)} />
         </MessageModal>
       );

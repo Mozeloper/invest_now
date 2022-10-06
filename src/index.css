@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
+@import url("http://fonts.cdnfonts.com/css/century-gothic");
 
 body {
   margin: 0;
@@ -9,7 +9,7 @@ body {
 
 * {
   scroll-behavior: smooth;
-  font-family: "Century Gothic", "Roboto";
+  font-family: "Century Gothic", sans-serif;
 }
 
 .imgMask {

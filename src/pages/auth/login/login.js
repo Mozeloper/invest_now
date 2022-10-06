@@ -69,7 +69,7 @@ export default function Login() {
         </div>
       </MessageModal>
       <Text variant="h1" weight="bold">
-        Welcome Back
+        Welcome
       </Text>
       <Text variant="h4" weight="normal">
         Provide your login details to access your account.
