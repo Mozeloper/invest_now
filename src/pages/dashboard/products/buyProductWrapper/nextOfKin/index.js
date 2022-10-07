@@ -204,7 +204,7 @@ export default function NextOfKin() {
             }
           }}
         >
-          {({ handleSubmit, handleChange, setFieldValue, values, touched, errors }) => (
+          {({ handleSubmit, handleChange, setFieldValue, values, isSubmitting, touched, errors }) => (
             <Form onSubmit={handleSubmit} className="w-full h-full">
               <div className="flex md:flex-row flex-col gap-3 w-full mt-4">
                 <div className="w-full">
