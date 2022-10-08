@@ -91,7 +91,7 @@ export default function AllProducts() {
                         See All
                       </Text>
                     </div>
-                    <div className="mt-4 flex overflow-hidden overflow-x-auto gap-4">
+                    <div className="mt-4 flex overflow-hidden overflow-x-auto no-scrollbar gap-4">
                       <>
                         {product?.products.map((info, index) => {
                           return (

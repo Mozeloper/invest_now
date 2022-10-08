@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-// import Slider from "react-slick";
+import Carousel from "react-grid-carousel";
 import { useSelector, useDispatch } from "react-redux";
 import { ResponsiveContainer, LineChart, Line, XAxis, CartesianGrid, Tooltip } from "recharts";
 import { Skeleton, Box } from "@mui/material";
@@ -88,14 +88,6 @@ const data = [
     amt: 2100,
   },
 ];
-
-// const settings = {
-//   infinite: true,
-//   speed: 1000,
-//   // lazyLoad: true,
-//   slidesToShow: 3,
-//   slidesToScroll: 3,
-// };
 
 export default function Dashboard() {
   const dispatch = useDispatch();
@@ -203,31 +195,50 @@ export default function Dashboard() {
             {showCompletionStatus && (
               <>
                 <div className="border-b-2 border-[#7B839C] w-full my-4"></div>
-                <div className="overflow-x-auto py-4 w-full flex gap-8">
-                  {completion_statuses?.completion_status.map((step, index) => {
-                    return (
-                      <div key={index + 1} className="flex gap-3 items-center">
-                        <div
-                          className={`${
-                            step?.is_completed ? "bg-[#FFCF5C]" : "bg-[#A4A5A7]"
-                          } rounded-full h-[24px] w-[24px] text-center font-bold text-[#000000]`}
-                        >
-                          {index + 1}
-                        </div>
-                        <div className="flex flex-col">
-                          <div className="flex gap-2 items-center">
-                            <Text format="whitespace-nowrap" weight="extrabold" variant="h4">
-                              {step?.label}
-                            </Text>
-                            {step?.is_completed && <img src={checked} className="w-[12px] h-[12px]" alt="set_icon" />}
+                <div className="overflow-x-auto no-scrollbar py-4 w-full flex gap-8">
+                  <Carousel
+                    responsiveLayout={[
+                      {
+                        breakpoint: 1200,
+                        cols: 4,
+                      },
+                      {
+                        breakpoint: 990,
+                        cols: 3,
+                      },
+                    ]}
+                    mobileBreakpoint={670}
+                    cols={4}
+                    rows={1}
+                    gap={10}
+                    loop={false}
+                    showDots={true}
+                  >
+                    {completion_statuses?.completion_status.map((step, index) => {
+                      return (
+                        <Carousel.Item key={index + 1}>
+                          <div
+                            className={`${
+                              step?.is_completed ? "bg-[#FFCF5C]" : "bg-[#A4A5A7]"
+                            } rounded-full h-[24px] w-[24px] text-center font-bold text-[#000000]`}
+                          >
+                            {index + 1}
                           </div>
-                          <Text format="tracking-wide whitespace-nowrap" variant="body">
-                            Completes your profile up to {step?.percent}
-                          </Text>
-                        </div>
-                      </div>
-                    );
-                  })}
+                          <div className="flex flex-col">
+                            <div className="flex gap-2 items-center">
+                              <Text format="whitespace-nowrap" weight="extrabold" variant="h4">
+                                {step?.label}
+                              </Text>
+                              {step?.is_completed && <img src={checked} className="w-[12px] h-[12px]" alt="set_icon" />}
+                            </div>
+                            <Text format="tracking-wide whitespace-nowrap" variant="body">
+                              Completes your profile up to {step?.percent}
+                            </Text>
+                          </div>
+                        </Carousel.Item>
+                      );
+                    })}
+                  </Carousel>
                 </div>
               </>
             )}
@@ -246,99 +257,125 @@ export default function Dashboard() {
                   Account summary
                 </Text>
               </div>
-              <div className="w-full flex gap-2 overflow-hidden overflow-x-auto">
-                {/* <Slider {...settings}> */}
-                <div
-                  style={{ backgroundImage: `url(${redFrame})` }}
-                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text variant="body" color="text-white">
-                      Portfolio Net Value
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-white">
-                      {currencyEntities[account_summary?.agregateSummary[0]?.CurrencyId]}{" "}
-                      {account_summary?.agregateSummary[0]?.Total}
-                    </Text>
+              <Carousel
+                responsiveLayout={[
+                  {
+                    breakpoint: 1200,
+                    cols: 3,
+                  },
+                  {
+                    breakpoint: 990,
+                    cols: 2,
+                  },
+                ]}
+                mobileBreakpoint={670}
+                cols={4}
+                rows={1}
+                gap={10}
+                showDots={true}
+              >
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${redFrame})` }}
+                    className="p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text variant="body" color="text-white">
+                        Portfolio Net Value
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-white">
+                        {currencyEntities[account_summary?.agregateSummary[0]?.CurrencyId]}{" "}
+                        {account_summary?.agregateSummary[0]?.Total}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-                <div
-                  style={{ backgroundImage: `url(${greenFrame})` }}
-                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text color="text-[#65666A]" variant="body">
-                      Cash Account
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-[#65666A]">
-                      {currencyEntities[account_summary?.cashAccountSummary[0]?.CurrencyId]}{" "}
-                      {account_summary?.cashAccountSummary[0]?.Total}
-                    </Text>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${greenFrame})` }}
+                    className="p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text color="text-[#65666A]" variant="body">
+                        Cash Account
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-[#65666A]">
+                        {currencyEntities[account_summary?.cashAccountSummary[0]?.CurrencyId]}{" "}
+                        {account_summary?.cashAccountSummary[0]?.Total}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-                <div
-                  style={{ backgroundImage: `url(${purpleFrame})` }}
-                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={PurpleIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text color="text-[#65666A]" variant="body">
-                      Loans
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-[#65666A]">
-                      &#8358; 0.00
-                    </Text>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${purpleFrame})` }}
+                    className="p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={PurpleIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text color="text-[#65666A]" variant="body">
+                        Loans
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-[#65666A]">
+                        &#8358; 0.00
+                      </Text>
+                    </div>
                   </div>
-                </div>
-                <div
-                  style={{ backgroundImage: `url(${redFrame})` }}
-                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text color="text-white" variant="body">
-                      Mutual Funds
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-white">
-                      {currencyEntities[account_summary?.mutualFundsSummary[0]?.CurrencyId]}{" "}
-                      {account_summary?.mutualFundsSummary[0]?.Total}
-                    </Text>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${redFrame})` }}
+                    className="p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text color="text-white" variant="body">
+                        Mutual Funds
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-white">
+                        {currencyEntities[account_summary?.mutualFundsSummary[0]?.CurrencyId]}{" "}
+                        {account_summary?.mutualFundsSummary[0]?.Total}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-                <div
-                  style={{ backgroundImage: `url(${redFrame})` }}
-                  className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text color="text-white" variant="body">
-                      Trust
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-white">
-                      {currencyEntities[account_summary?.placementSummary[0]?.CurrencyId]}{" "}
-                      {account_summary?.placementSummary[0]?.Total}
-                    </Text>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${redFrame})` }}
+                    className=" p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text color="text-white" variant="body">
+                        Trust
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-white">
+                        {currencyEntities[account_summary?.placementSummary[0]?.CurrencyId]}{" "}
+                        {account_summary?.placementSummary[0]?.Total}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-                <div
-                  style={{ backgroundImage: `url(${redFrame})` }}
-                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text color="text-[#fff]" variant="body">
-                      Securities
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-[#fff]">
-                      {currencyEntities[account_summary?.equitySummary[0]?.CurrencyId]}{" "}
-                      {account_summary?.equitySummary[0]?.Total}
-                    </Text>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${redFrame})` }}
+                    className="p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text color="text-[#fff]" variant="body">
+                        Securities
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-[#fff]">
+                        {currencyEntities[account_summary?.equitySummary[0]?.CurrencyId]}{" "}
+                        {account_summary?.equitySummary[0]?.Total}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-                {/* </Slider> */}
-              </div>
+                </Carousel.Item>
+              </Carousel>
             </>
           )}
         <div className="w-full mt-4">
