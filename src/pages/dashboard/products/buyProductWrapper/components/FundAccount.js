@@ -316,7 +316,7 @@ export default function FundAccount({ handleCloseModal }) {
           please tell us how frequent
         </Text>
       )}
-      {howFrequentState === "S" && (
+      {howFrequentState !== "S" && howFrequentState !== "" && (
         <div className="mt-2 w-[80%] flex justify-center">
           <Text variant="body" weight="normal" color="text-black">
             10.00 NGN will be debited from your Account and Credited into your portfolio account to validate your Debit
@@ -432,13 +432,27 @@ export default function FundAccount({ handleCloseModal }) {
           </div>
         </div>
       </MessageModal>
-      <MessageModal isOpen={showErrorModals?.initializePaymentSuccess} modalWidth="300px" modalHeight="auto">
-        <div className="flex flex-col justify-center items-center w-full">
-          <Text format="text-center mt-3 whitespace-nowrap" variant="h3" color="text-[#465174]" weight="bold">
-            Congratulations
+      <MessageModal isOpen={showErrorModals?.initializePaymentSuccess} modalWidth="450px" modalHeight="auto">
+        <div className="flex justify-end">
+          <img
+            className="cursor-pointer h-[50px] w-[50px]"
+            src={close}
+            alt="close_btn"
+            onClick={() => {
+              setShowErrorModals((prev) => ({
+                ...prev,
+                initializePaymentSuccess: false,
+                details: null,
+              }));
+            }}
+          />
+        </div>
+        <div className="flex flex-col w-full">
+          <Text variant="h2" color="text-[#465174]" weight="bold">
+            You’re about to deposit NGN{amount}
           </Text>
-          <Text format="text-center mt-3" variant="body" color="text-[#465174]" weight="bold">
-            {showErrorModals?.details}
+          <Text format="mt-3" variant="h4" color="text-[#465174]">
+            NGN{amount} would be debited from your bank account
           </Text>
           <div className="mt-4 w-full">
             <Button

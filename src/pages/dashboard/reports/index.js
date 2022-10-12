@@ -71,7 +71,7 @@ export default function Reports() {
               success: false,
               message: null,
             }));
-          }, 2000);
+          }, 4000);
         }
       })
       .catch((err) => {
@@ -86,7 +86,7 @@ export default function Reports() {
             error: false,
             message: null,
           }));
-        }, 2000);
+        }, 4000);
       });
   };
 

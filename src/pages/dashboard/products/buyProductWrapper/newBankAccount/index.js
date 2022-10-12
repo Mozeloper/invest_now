@@ -260,7 +260,7 @@ export default function NewBankAccount() {
               // }}
             >
               <Text color={`${isSelected?.new_bank_details ? "text-white" : null}`} weight="bold" variant="h4">
-                Provide new bank details
+                Provide bank details
               </Text>
               <img
                 src={isSelected?.new_bank_details ? downArrowWhite : downArrow}

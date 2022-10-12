@@ -36,7 +36,6 @@ const AutoCompleteContainer = styled.div`
 `;
 const InputField = styled.input`
   outline: none;
-  font-family: DM Sans;
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
@@ -47,7 +46,6 @@ const InputField = styled.input`
   height: 52px;
   background: #f2f2f2;
   &::placeholder {
-    font-family: DM Sans;
     font-style: normal;
     font-weight: normal;
     font-size: 14px;
@@ -59,7 +57,6 @@ const InputField = styled.input`
   &:focus::placeholder {
     left: 2px;
     top: 2px;
-    font-family: DM Sans;
     font-style: normal;
     font-weight: normal;
     font-size: 10px;

@@ -154,14 +154,15 @@ export default function EmploymentDetails({ handleCloseModals }) {
                   </Text>
                 ) : null}
               </div>
-
-              <div className="flex justify-start mt-8 lg:w-[50%] w-full">
-                <Button
-                  title="Submit"
-                  className="cursor-pointer w-full"
-                  type="submit"
-                  isLoading={updateKycSliceReducer.saveEmploymentDetailsIsLoading}
-                />
+              <div className="flex justify-center mt-8">
+                <div className="md:w-[50%] w-full">
+                  <Button
+                    title="Submit"
+                    className="cursor-pointer w-full"
+                    type="submit"
+                    isLoading={updateKycSliceReducer.saveEmploymentDetailsIsLoading}
+                  />
+                </div>
               </div>
             </Form>
             {message !== "" && (

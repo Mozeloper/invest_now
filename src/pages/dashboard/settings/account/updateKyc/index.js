@@ -330,7 +330,7 @@ export default function UpdateKyc({ handleCloseItemRouting }) {
           </ul>
         </div>
         <Text variant="h4" weight="bold">
-          Please note that you will be required to complete your KYC to make withdrawal
+          Please note that you will be required to complete your KYC to make withdrawals
         </Text>
         <div className="w-full flex justify-center">
           <div className="mt-8 w-[60%]">

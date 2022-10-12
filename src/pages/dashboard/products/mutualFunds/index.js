@@ -66,12 +66,7 @@ export default function MutualFunds() {
                         <>
                           {product?.products.map((info, index) => {
                             return (
-                              <div
-                                key={index}
-                                className={`h-[400px] w-[290px] ${
-                                  index % 2 ? "bg-[#EEECFE]" : "bg-[#E7F5FF]"
-                                }  rounded-lg p-2`}
-                              >
+                              <div key={index} className={`h-[400px] w-[290px] bg-[${info?.bg_color}] rounded-lg p-2`}>
                                 {product?.name !== "Mutual Funds" ? (
                                   <div
                                     style={{

@@ -87,6 +87,24 @@ const data = [
     Trust_Fund: 1800,
     amt: 2100,
   },
+  {
+    name: "Oct",
+    Mutual_Funds: 2456,
+    Trust_Fund: 1800,
+    amt: 2100,
+  },
+  {
+    name: "Nov",
+    Mutual_Funds: 2456,
+    Trust_Fund: 1800,
+    amt: 2100,
+  },
+  {
+    name: "Dec",
+    Mutual_Funds: 2456,
+    Trust_Fund: 1800,
+    amt: 2100,
+  },
 ];
 
 export default function Dashboard() {
@@ -213,6 +231,7 @@ export default function Dashboard() {
                     gap={10}
                     loop={false}
                     showDots={true}
+                    hideArrow={true}
                   >
                     {completion_statuses?.completion_status.map((step, index) => {
                       return (
@@ -269,10 +288,10 @@ export default function Dashboard() {
                   },
                 ]}
                 mobileBreakpoint={670}
-                cols={4}
+                cols={3}
                 rows={1}
                 gap={10}
-                showDots={true}
+                showDots={false}
               >
                 <Carousel.Item>
                   <div

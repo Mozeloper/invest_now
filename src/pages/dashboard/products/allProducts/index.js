@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
+import Carousel from "react-grid-carousel";
 import { useNavigate, useOutletContext } from "react-router-dom";
 import Text from "../../../../components/Typography/Typography";
 import Button from "../../../../components/Button";
@@ -62,105 +63,295 @@ export default function AllProducts() {
         {!!!productsReducer?.allProductIsLoading &&
           productsReducer?.allProductData?.type === "products/allProducts/fulfilled" && (
             <>
-              {productsReducer?.allProductData?.payload?.data?.data.map((product, i) => {
-                return (
-                  <div key={i}>
-                    <div key={product?.id} className="w-full mt-4 flex justify-between md:pr-[1%]">
-                      <Text color="text-red" weight="bold" variant="h3">
-                        {product?.name}
-                      </Text>
-                      <Text
-                        onClick={() =>
-                          navigate(
-                            `${
-                              product?.name === "Mutual Funds"
-                                ? "/products/mutual_funds"
-                                : product?.name === "Trust"
-                                ? "/products/trust"
-                                : product?.name === "Securities"
-                                ? "/products/securities"
-                                : "/products/all"
-                            }`
-                          )
-                        }
-                        variant="h4"
-                        format="cursor-pointer"
-                        weight="bold"
-                        color="text-[#465174]"
+              {productsReducer?.allProductData?.payload?.data?.data
+                .filter((list) => list.name === "Mutual Funds")
+                .map((product, i) => {
+                  return (
+                    <>
+                      <div className="w-full mt-4 flex justify-between md:pr-[1%]">
+                        <Text color="text-red" weight="bold" variant="h3">
+                          {product?.name}
+                        </Text>
+                        <Text
+                          onClick={() => navigate("/products/mutual_funds")}
+                          variant="h4"
+                          format="cursor-pointer"
+                          weight="bold"
+                          color="text-[#465174]"
+                        >
+                          See All
+                        </Text>
+                      </div>
+                      <Carousel
+                        // key={i}
+                        responsiveLayout={[
+                          {
+                            breakpoint: 1200,
+                            cols: 3,
+                          },
+                          {
+                            breakpoint: 990,
+                            cols: 2,
+                          },
+                        ]}
+                        mobileBreakpoint={670}
+                        cols={4}
+                        rows={1}
+                        gap={10}
+                        showDots={false}
                       >
-                        See All
-                      </Text>
-                    </div>
-                    <div className="mt-4 flex overflow-hidden overflow-x-auto no-scrollbar gap-4">
-                      <>
                         {product?.products.map((info, index) => {
                           return (
-                            <div
-                              key={index}
-                              className={`h-[400px] w-[290px] ${
-                                index % 2 ? "bg-[#EEECFE]" : "bg-[#E7F5FF]"
-                              }  rounded-lg p-2`}
-                            >
-                              {product?.name !== "Mutual Funds" ? (
-                                <div
-                                  style={{
-                                    backgroundImage: `url(${info?.imageUrlHome})`,
-                                    height: "171px",
-                                    width: "270px",
-                                    margin: 0,
-                                    backgroundSize: "cover",
-                                    backgroundRepeat: "no-repeat",
-                                    borderRadius: "10px",
-                                    padding: "3px",
-                                  }}
-                                >
-                                  {/* <div className="p-2 mt-3 bg-BACKGROUND_GREEN w-[60%] rounded-lg self-end flex gap-3 justify-end">
+                            <Carousel.Item key={index}>
+                              <div className={`h-[400px] w-[290px] rounded-lg p-2 bg-[${info?.bg_color ?? "#EEECFE"}]`}>
+                                {product?.name !== "Mutual Funds" ? (
+                                  <div
+                                    style={{
+                                      backgroundImage: `url(${info?.imageUrlHome})`,
+                                      height: "171px",
+                                      width: "270px",
+                                      margin: 0,
+                                      backgroundSize: "cover",
+                                      backgroundRepeat: "no-repeat",
+                                      borderRadius: "10px",
+                                      padding: "3px",
+                                    }}
+                                  >
+                                    {/* <div className="p-2 mt-3 bg-BACKGROUND_GREEN w-[60%] rounded-lg self-end flex gap-3 justify-end">
                                   <p className="text-sm font-bold text-white">2012</p>
                                   <p className="text-sm font-bold text-white">Gains</p>
                                   <p className="text-sm font-bold text-white">22.5%</p>
                                 </div> */}
-                                </div>
-                              ) : (
-                                <img
-                                  src={info?.imageUrlHome}
-                                  alt="product_img"
-                                  className="rounded-lg min-w-[270px] h-[171px]"
-                                />
-                              )}
-                              <div className="mt-3 flex flex-col justify-between h-[170px]">
-                                <div
-                                  dangerouslySetInnerHTML={{
-                                    __html: info?.introHtml.substring(0, 140).concat("..."),
-                                  }}
-                                />
+                                  </div>
+                                ) : (
+                                  <img
+                                    src={info?.imageUrlHome}
+                                    alt="product_img"
+                                    className="rounded-lg min-w-[270px] h-[171px]"
+                                  />
+                                )}
+                                <div className="mt-3 flex flex-col justify-between h-[170px]">
+                                  <div
+                                    dangerouslySetInnerHTML={{
+                                      __html: info?.introHtml.substring(0, 140).concat("..."),
+                                    }}
+                                  />
 
-                                <div className="w-full self-end flex justify-between items-center">
-                                  <Text
-                                    format="cursor-pointer"
-                                    onClick={() => handleOpenProductDetailsModal(info?.code)}
-                                    weight="bold"
-                                    variant="h4"
-                                  >
-                                    Read More
-                                  </Text>
-                                  <div>
-                                    <Button
+                                  <div className="w-full self-end flex justify-between items-center">
+                                    <Text
+                                      format="cursor-pointer"
                                       onClick={() => handleOpenProductDetailsModal(info?.code)}
-                                      title={`${info?.name === "UTrace" ? "E-dividend Search" : "Open Account"}`}
-                                      textColor="#fff"
-                                      className="px-3 font-bold outline-none"
-                                    />
+                                      weight="bold"
+                                      variant="h4"
+                                    >
+                                      Read More
+                                    </Text>
+                                    <div>
+                                      <Button
+                                        onClick={() => handleOpenProductDetailsModal(info?.code)}
+                                        title={`${info?.name === "UTrace" ? "E-dividend Search" : "Open Account"}`}
+                                        textColor="#fff"
+                                        className="px-3 font-bold outline-none"
+                                      />
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
+                            </Carousel.Item>
                           );
                         })}
-                      </>
+                      </Carousel>
+                    </>
+                  );
+                })}
+            </>
+          )}
+        {!!!productsReducer?.allProductIsLoading &&
+          productsReducer?.allProductData?.type === "products/allProducts/fulfilled" && (
+            <>
+              {productsReducer?.allProductData?.payload?.data?.data
+                .filter((list) => list.name === "Trust")
+                .map((product, i) => {
+                  return (
+                    <div key={i}>
+                      <div key={product?.id} className="w-full mt-4 flex justify-between md:pr-[1%]">
+                        <Text color="text-red" weight="bold" variant="h3">
+                          {product?.name}
+                        </Text>
+                        <Text
+                          onClick={() => navigate("/products/trust")}
+                          variant="h4"
+                          format="cursor-pointer"
+                          weight="bold"
+                          color="text-[#465174]"
+                        >
+                          See All
+                        </Text>
+                      </div>
+                      <div className="mt-4 flex overflow-hidden overflow-x-auto no-scrollbar gap-10">
+                        <>
+                          {product?.products.map((info, index) => {
+                            return (
+                              <div
+                                key={index}
+                                className={`h-[400px] w-[290px] ${
+                                  index % 2 ? "bg-[#EEECFE]" : "bg-[#E7F5FF]"
+                                }  rounded-lg p-2`}
+                              >
+                                {product?.name !== "Mutual Funds" ? (
+                                  <div
+                                    style={{
+                                      backgroundImage: `url(${info?.imageUrlHome})`,
+                                      height: "171px",
+                                      width: "270px",
+                                      margin: 0,
+                                      backgroundSize: "cover",
+                                      backgroundRepeat: "no-repeat",
+                                      borderRadius: "10px",
+                                      padding: "3px",
+                                    }}
+                                  >
+                                    {/* <div className="p-2 mt-3 bg-BACKGROUND_GREEN w-[60%] rounded-lg self-end flex gap-3 justify-end">
+                                  <p className="text-sm font-bold text-white">2012</p>
+                                  <p className="text-sm font-bold text-white">Gains</p>
+                                  <p className="text-sm font-bold text-white">22.5%</p>
+                                </div> */}
+                                  </div>
+                                ) : (
+                                  <img
+                                    src={info?.imageUrlHome}
+                                    alt="product_img"
+                                    className="rounded-lg min-w-[270px] h-[171px]"
+                                  />
+                                )}
+                                <div className="mt-3 flex flex-col justify-between h-[170px]">
+                                  <div
+                                    dangerouslySetInnerHTML={{
+                                      __html: info?.introHtml.substring(0, 140).concat("..."),
+                                    }}
+                                  />
+
+                                  <div className="w-full self-end flex justify-between items-center">
+                                    <Text
+                                      format="cursor-pointer"
+                                      onClick={() => handleOpenProductDetailsModal(info?.code)}
+                                      weight="bold"
+                                      variant="h4"
+                                    >
+                                      Read More
+                                    </Text>
+                                    <div>
+                                      <Button
+                                        onClick={() => handleOpenProductDetailsModal(info?.code)}
+                                        title={`${info?.name === "UTrace" ? "E-dividend Search" : "Open Account"}`}
+                                        textColor="#fff"
+                                        className="px-3 font-bold outline-none"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </>
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </>
+          )}
+        {!!!productsReducer?.allProductIsLoading &&
+          productsReducer?.allProductData?.type === "products/allProducts/fulfilled" && (
+            <>
+              {productsReducer?.allProductData?.payload?.data?.data
+                .filter((list) => list.name === "Securities")
+                .map((product, i) => {
+                  return (
+                    <div key={i}>
+                      <div key={product?.id} className="w-full mt-4 flex justify-between md:pr-[1%]">
+                        <Text color="text-red" weight="bold" variant="h3">
+                          {product?.name}
+                        </Text>
+                        <Text
+                          onClick={() => navigate("/products/securities")}
+                          variant="h4"
+                          format="cursor-pointer"
+                          weight="bold"
+                          color="text-[#465174]"
+                        >
+                          See All
+                        </Text>
+                      </div>
+                      <div className="mt-4 flex overflow-hidden overflow-x-auto no-scrollbar gap-10">
+                        <>
+                          {product?.products.map((info, index) => {
+                            return (
+                              <div
+                                key={index}
+                                className={`h-[400px] w-[290px] ${
+                                  index % 2 ? "bg-[#EEECFE]" : "bg-[#E7F5FF]"
+                                }  rounded-lg p-2`}
+                              >
+                                {product?.name !== "Mutual Funds" ? (
+                                  <div
+                                    style={{
+                                      backgroundImage: `url(${info?.imageUrlHome})`,
+                                      height: "171px",
+                                      width: "270px",
+                                      margin: 0,
+                                      backgroundSize: "cover",
+                                      backgroundRepeat: "no-repeat",
+                                      borderRadius: "10px",
+                                      padding: "3px",
+                                    }}
+                                  >
+                                    {/* <div className="p-2 mt-3 bg-BACKGROUND_GREEN w-[60%] rounded-lg self-end flex gap-3 justify-end">
+                                  <p className="text-sm font-bold text-white">2012</p>
+                                  <p className="text-sm font-bold text-white">Gains</p>
+                                  <p className="text-sm font-bold text-white">22.5%</p>
+                                </div> */}
+                                  </div>
+                                ) : (
+                                  <img
+                                    src={info?.imageUrlHome}
+                                    alt="product_img"
+                                    className="rounded-lg min-w-[270px] h-[171px]"
+                                  />
+                                )}
+                                <div className="mt-3 flex flex-col justify-between h-[170px]">
+                                  <div
+                                    dangerouslySetInnerHTML={{
+                                      __html: info?.introHtml.substring(0, 140).concat("..."),
+                                    }}
+                                  />
+
+                                  <div className="w-full self-end flex justify-between items-center">
+                                    <Text
+                                      format="cursor-pointer"
+                                      onClick={() => handleOpenProductDetailsModal(info?.code)}
+                                      weight="bold"
+                                      variant="h4"
+                                    >
+                                      Read More
+                                    </Text>
+                                    <div>
+                                      <Button
+                                        onClick={() => handleOpenProductDetailsModal(info?.code)}
+                                        title={`${info?.name === "UTrace" ? "E-dividend Search" : "Open Account"}`}
+                                        textColor="#fff"
+                                        className="px-3 font-bold outline-none"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </>
+                      </div>
+                    </div>
+                  );
+                })}
             </>
           )}
       </div>

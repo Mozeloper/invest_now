@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Carousel from "react-grid-carousel";
 import moment from "moment";
 import { Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -272,7 +273,7 @@ export default function Portfolio() {
     <>
       <MessageModal modalHeight="200px" modalWidth="400px" isOpen={showModal?.isVerifying} bgColor={true}>
         <div className="flex flex-col justify-center h-full items-center">
-          <Text variant="h3" weight="bold" format="text-center">
+          <Text variant="h3" weight="bold">
             Kyc Is Undergoing verification try again later
           </Text>
           <div className="flex justify-center w-full my-6">
@@ -379,64 +380,88 @@ export default function Portfolio() {
           )}
           {!!!portfolioReducer?.portfolioStatisticsIsLoading &&
             portfolioReducer?.portfolioStatisticsData?.type === "portfolio/portfolioStatistics/fulfilled" && (
-              <>
-                <div
-                  style={{ backgroundImage: `url(${greenFrame})` }}
-                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text variant="body" color="text-[#65666A]">
-                      Portfolio Net Value
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-[#65666A]">
-                      &#8358; {portfolioStats?.portfolio_net_value}
-                    </Text>
+              <Carousel
+                responsiveLayout={[
+                  {
+                    breakpoint: 1200,
+                    cols: 2,
+                  },
+                  {
+                    breakpoint: 990,
+                    cols: 1,
+                  },
+                ]}
+                mobileBreakpoint={670}
+                cols={4}
+                rows={1}
+                // gap={4}
+                showDots={true}
+              >
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${greenFrame})` }}
+                    className="p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={GreenIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text variant="body" color="text-[#65666A]">
+                        Portfolio Net Value
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-[#65666A]">
+                        &#8358; {portfolioStats?.portfolio_net_value}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-                <div
-                  style={{ backgroundImage: `url(${redFrame})` }}
-                  className=" p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text color="text-white" variant="body">
-                      Trust
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-white">
-                      &#8358; {portfolioStats?.trust}
-                    </Text>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${redFrame})` }}
+                    className=" p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text color="text-white" variant="body">
+                        Trust
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-white">
+                        &#8358; {portfolioStats?.trust}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-                <div
-                  style={{ backgroundImage: `url(${redFrame})` }}
-                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text color="text-white" variant="body">
-                      Mutual Funds
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-white">
-                      &#8358; {portfolioStats?.mutual_funds}
-                    </Text>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${redFrame})` }}
+                    className="p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text color="text-white" variant="body">
+                        Mutual Funds
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-white">
+                        &#8358; {portfolioStats?.mutual_funds}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-                <div
-                  style={{ backgroundImage: `url(${redFrame})` }}
-                  className="p-4 flex items-center gap-4 min-w-[345px] h-[148px]"
-                >
-                  <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
-                  <div className="flex flex-col justify-center">
-                    <Text color="text-[#fff]" variant="body">
-                      Securities
-                    </Text>
-                    <Text weight="bold" variant="h2" color="text-[#fff]">
-                      &#8358; {portfolioStats?.securities}
-                    </Text>
+                </Carousel.Item>
+                <Carousel.Item>
+                  <div
+                    style={{ backgroundImage: `url(${redFrame})` }}
+                    className="p-4 flex items-center gap-4 w-[345px] h-[148px]"
+                  >
+                    <img src={RedIcon} alt="icon" className="w-[64px] h-[64px]" />
+                    <div className="flex flex-col justify-center">
+                      <Text color="text-[#fff]" variant="body">
+                        Securities
+                      </Text>
+                      <Text weight="bold" variant="h2" color="text-[#fff]">
+                        &#8358; {portfolioStats?.securities}
+                      </Text>
+                    </div>
                   </div>
-                </div>
-              </>
+                </Carousel.Item>
+              </Carousel>
             )}
         </div>
         {!!!portfolioReducer?.portfolioPerformanceIsLoading &&
@@ -494,7 +519,7 @@ export default function Portfolio() {
                               setCashAccountId(data?.portfolio_account_id);
                               setCustomerId(data?.customer_id);
                             }}
-                            className={`cursor-pointer min-w-[345px] h-[148px] p-4 ${
+                            className={`cursor-pointer w-[345px] h-[148px] p-4 ${
                               index === 1 ? "bg-[#E2FFB7]" : index % 2 ? "bg-[#FFD8EF]" : "bg-[#65666A]"
                             }`}
                           >

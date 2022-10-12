@@ -77,9 +77,7 @@ export default function Securities() {
                             return (
                               <div
                                 key={index}
-                                className={`h-[400px] w-[290px] ${
-                                  index % 2 ? "bg-[#EEECFE]" : "bg-[#E7F5FF]"
-                                }  rounded-lg p-2`}
+                                className={`h-[400px] w-[290px] bg-[${info?.bg_color ?? "#EEECFE"}] rounded-lg p-2`}
                               >
                                 <div
                                   style={{

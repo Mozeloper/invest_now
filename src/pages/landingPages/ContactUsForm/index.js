@@ -233,6 +233,9 @@ export default function ContactUsForm() {
             <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
               southern region Port Harcourt No.14 Azikiwe Road, Port Harcourt, Nigeria.
             </Text>
+            <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
+              Heritage Tower, Ambassadorial Enclave, Opp Liberia road ridge, Accra, Ghana
+            </Text>
           </div>
         </div>
       </div>
