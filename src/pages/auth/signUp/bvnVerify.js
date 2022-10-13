@@ -120,7 +120,7 @@ export default function BvnVerify() {
             setOpenStatusMessage(true);
             setStatusMessage((prev) => ({
               ...prev,
-              reason: "User Aleady Exist",
+              reason: "User Already Exist",
               message: res?.data?.message,
             }));
           } else {
