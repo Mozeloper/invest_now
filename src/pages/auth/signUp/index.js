@@ -24,7 +24,7 @@ export default function SignUpLayout() {
       <div data-aos="fade-in" data-aos-duration="2000" className="flex w-full max-h-screen min-h-screen bg-[#fff6f6]">
         <div className="lg:w-[55%] w-[100%] md:h-screen h-full p-1 md:p-12">
           <div className="flex justify-center my-10">
-            <img onClick={() => navigate("/login")} src={Logosmall} alt="logo" className="cursor-pointer" />
+            <img onClick={() => navigate("/")} src={Logosmall} alt="logo" className="cursor-pointer" />
           </div>
           <div className="overflow-x-auto overflow-hidden no-scrollbar md:px-[10%] px-[5%] md:w-[90%] w-full">
             <MultiStepForm
