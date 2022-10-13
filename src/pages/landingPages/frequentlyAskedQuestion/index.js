@@ -129,12 +129,12 @@ export default function FrequentlyAskedQuestion() {
               <div className="font-normal text-sm text-headerColor">
                 You can learn more about our products by following the link{" "}
                 <a
-                  href="https://investnow.ng/Registration"
+                  href="https://investnow.ng"
                   target="_blank"
                   rel="noreferrer"
                   className="text-primary font-bold text-sm cursor-pointer"
                 >
-                  https://investnow.ng/Registration
+                  https://investnow.ng
                 </a>
               </div>
             )}
@@ -161,12 +161,12 @@ export default function FrequentlyAskedQuestion() {
                   <li className="font-normal text-sm text-headerColor">
                     Click on the link:{" "}
                     <a
-                      href="https://investnow.ng/Registration/Existing"
+                      href="https://investnow.ng"
                       target="_blank"
                       rel="noreferrer"
                       className="text-primary font-bold text-sm cursor-pointer"
                     >
-                      https://investnow.ng/Registration/Existing
+                      https://investnow.ng
                     </a>
                   </li>
                   <li className="font-normal text-sm text-headerColor">Input your client ID/account number</li>

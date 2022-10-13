@@ -33,9 +33,9 @@ export default function ContactUsForm() {
     email: Yup.string().email("Must be a valid email").max(255).required("Email is required"),
     firstName: Yup.string().required("Full Name is Required"),
     lastName: Yup.string().required("Last Name is Required"),
-    subject: Yup.string().required("Subject is Required"),
+    // subject: Yup.string().required("Subject is Required"),
     category: Yup.string().required("Category is Required"),
-    message: Yup.string().required("message is Required"),
+    message: Yup.string().required("Message is Required"),
   });
 
   return (
@@ -80,7 +80,7 @@ export default function ContactUsForm() {
                   <MyInput
                     className="w-full"
                     placeholder=""
-                    label="Last Name"
+                    label="Last Name *"
                     name="lastName"
                     type="text"
                     handleChange={handleChange}
@@ -147,7 +147,7 @@ export default function ContactUsForm() {
                   <MyInput
                     className="w-full"
                     placeholder=""
-                    label="Subject *"
+                    label="Subject"
                     name="subject"
                     type="text"
                     handleChange={handleChange}
@@ -216,26 +216,51 @@ export default function ContactUsForm() {
               Monday - Friday 08:00am – 04:00pm
             </Text>
           </div>
-          <div className="flex flex-col items-center gap-3 w-full">
+          <div className="flex flex-col items-center justify-center gap-3 w-full">
             <img src={LocationIcon} alt="message_icon" className="w-[80px] h-[80px]" />
             <Text weight="bold" variant="h3" color="text-[#000000]">
-              Our location
+              Our locations
             </Text>
-            <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
-              Headquarters 3rd and 4th Floor, Afriland Towers, 97/105 Broad Street, Lagos, Nigeria.
-            </Text>
-            <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
-              Western Region UBA Building, Lbanon/Jubilee Market Street, Dugbe, Ibadan Nigeria.
-            </Text>
-            <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
-              Northern region Abuja No.33 Monrovia Street, Wuse 2, Abuja, Nigeria.
-            </Text>
-            <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
-              southern region Port Harcourt No.14 Azikiwe Road, Port Harcourt, Nigeria.
-            </Text>
-            <Text weight="normal" variant="h4" color="text-[#000000]" format="w-[50%] text-center">
-              Heritage Tower, Ambassadorial Enclave, Opp Liberia road ridge, Accra, Ghana
-            </Text>
+            <div className="w-full">
+              <Text weight="bold" variant="h4" color="text-[#000000]" format="w-full text-center">
+                Headquarters
+              </Text>
+              <Text weight="normal" variant="h4" color="text-[#000000]" format="w-full text-center">
+                3rd and 4th Floor, Afriland Towers, 97/105 Broad Street, Lagos, Nigeria.
+              </Text>
+            </div>
+            <div className="w-full">
+              <Text weight="bold" variant="h4" color="text-[#000000]" format="w-full text-center">
+                Western Region
+              </Text>
+              <Text weight="normal" variant="h4" color="text-[#000000]" format="w-full text-center">
+                UBA Building, Lbanon/Jubilee Market Street, Dugbe, Ibadan Nigeria.
+              </Text>
+            </div>
+            <div className="w-full">
+              <Text weight="bold" variant="h4" color="text-[#000000]" format="w-full text-center">
+                Northern Region (Abuja)
+              </Text>
+              <Text weight="normal" variant="h4" color="text-[#000000]" format="w-full text-center">
+                No.33 Monrovia Street, Wuse 2, Abuja, Nigeria.
+              </Text>
+            </div>
+            <div className="w-full">
+              <Text weight="bold" variant="h4" color="text-[#000000]" format="w-full text-center">
+                Southern Region (Port Harcourt)
+              </Text>
+              <Text weight="normal" variant="h4" color="text-[#000000]" format="w-full text-center">
+                No.14 Azikiwe Road, Port Harcourt, Nigeria.
+              </Text>
+            </div>
+            <div className="w-full">
+              <Text weight="bold" variant="h4" color="text-[#000000]" format="w-full text-center">
+                Ghana
+              </Text>
+              <Text weight="normal" variant="h4" color="text-[#000000]" format="w-full text-center">
+                Heritage Tower, Ambassadorial Enclave, Opp Liberia road ridge, Accra, Ghana
+              </Text>
+            </div>
           </div>
         </div>
       </div>

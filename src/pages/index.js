@@ -144,7 +144,7 @@ export default function Index() {
           className="basis-full md:basis-1/2 wrapper flex flex-col justify-center"
         >
           <Text variant="h1" format="font-bold">
-            Invest your money in money in profitable assets{" "}
+            Invest your money in profitable assets{" "}
           </Text>
           <Text variant="h3" format="font-normal my-4">
             Enjoy competitive returns when you invest with us.
@@ -327,7 +327,7 @@ export default function Index() {
       </div>
       <div className="w-full flex flex-col bg-tertiary p-6 pb-16">
         <Text color="text-white" variant="h1" format="self-center font-extrabold mb-4">
-          What our investors say about us
+          "What our investors say about us"
         </Text>
         <div
           data-aos="fade-right"
