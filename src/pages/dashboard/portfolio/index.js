@@ -3,7 +3,7 @@ import Carousel from "react-grid-carousel";
 import moment from "moment";
 import { Skeleton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { ResponsiveContainer, LineChart, Line, XAxis, CartesianGrid, Tooltip } from "recharts";
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import { currencyEntities } from "../../../helper";
 import Correct from "../../../assets/icons/correct.svg";
 import Button from "../../../components/Button";
@@ -370,7 +370,7 @@ export default function Portfolio() {
             />
           </div>
         </div>
-        <div className="w-full flex gap-2 no-scrollbar overflow-hidden overflow-x-auto">
+        <div className="w-full">
           {portfolioReducer?.portfolioStatisticsIsLoading && (
             <div className="w-full flex gap-2">
               <Skeleton sx={{ bgcolor: "grey.200" }} variant="rectangular" width="345px" height={148} />
@@ -392,10 +392,9 @@ export default function Portfolio() {
                   },
                 ]}
                 mobileBreakpoint={670}
-                cols={4}
+                cols={3}
                 rows={1}
-                // gap={4}
-                showDots={true}
+                gap={10}
               >
                 <Carousel.Item>
                   <div
@@ -630,9 +629,10 @@ export default function Portfolio() {
                           margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
                         >
                           <XAxis dataKey="name" />
+                          <YAxis />
                           <Tooltip />
                           <CartesianGrid stroke="#f5f5f5" />
-                          <Line type="monotone" dataKey="investment_returns" stroke="#0FC6C2" yAxisId={0} />
+                          <Line type="monotone" dataKey="investment_returns" stroke="#0FC6C2" />
                         </LineChart>
                       </ResponsiveContainer>
                     </div>

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import Carousel from "react-grid-carousel";
 import { useSelector, useDispatch } from "react-redux";
-import { ResponsiveContainer, LineChart, Line, XAxis, CartesianGrid, Tooltip } from "recharts";
+import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from "recharts";
 import { Skeleton, Box } from "@mui/material";
 import Text from "../../components/Typography/Typography";
 import Button from "../../components/Button";
@@ -427,12 +427,12 @@ export default function Dashboard() {
               <ResponsiveContainer width="95%" height={400}>
                 <LineChart width={600} height={800} data={data} margin={{ top: 5, right: 20, left: 10, bottom: 5 }}>
                   <XAxis dataKey="name" />
-                  {/* <YAxis /> */}
+                  <YAxis />
                   <Tooltip />
                   {/* <Legend /> */}
                   <CartesianGrid stroke="#f5f5f5" />
-                  <Line type="monotone" dataKey="Mutual_Funds" stroke="#EF69A7" yAxisId={0} />
-                  <Line type="monotone" dataKey="Trust_Fund" stroke="#21C3F2" yAxisId={1} />
+                  <Line type="monotone" dataKey="Mutual_Funds" stroke="#EF69A7" />
+                  <Line type="monotone" dataKey="Trust_Fund" stroke="#21C3F2" />
                 </LineChart>
               </ResponsiveContainer>
             </div>
