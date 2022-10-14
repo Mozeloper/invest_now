@@ -54,7 +54,7 @@ export default function LandingPageProduct() {
               </Text>
             </div>
           </div>
-          <div className="wrapper w-full mt-5 flex flex-col gap-5">
+          <div className="w-full mt-5 flex flex-col gap-5">
             <Text weight="bold" color="text-[#65666A]" variant="h2" format="tracking-wide">
               Benefits and features of {productData?.name}
             </Text>
@@ -65,7 +65,7 @@ export default function LandingPageProduct() {
               }}
             />
           </div>
-          <div className="w-[30%] mt-[3%] mb-[10%] wrapper">
+          <div className="w-[20%] mt-[3%] mb-[10%]">
             <Button
               title={`${productData?.name === "UTrace" ? "Request Search" : "Open Account"}`}
               onClick={() => navigate("/bvn_verification")}

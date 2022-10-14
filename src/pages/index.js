@@ -118,20 +118,12 @@ export default function Index() {
           <div className="w-full">
             {count === 1 && (
               <div>
-                <img
-                  alt="banner"
-                  src={slideImages[0].url}
-                  className="w-full object-cover smooth min-h-[calc(100vh-72px)] h-[calc(100vh-72px)]"
-                />
+                <img alt="banner" src={slideImages[0].url} className="object-cover smooth" />
               </div>
             )}
             {count === 2 && (
               <div>
-                <img
-                  alt="banner"
-                  src={slideImages[1].url}
-                  className="w-full object-cover smooth min-h-[calc(100vh-72px)] h-[calc(100vh-72px)]"
-                />
+                <img alt="banner" src={slideImages[1].url} className="object-cover smooth" />
               </div>
             )}
           </div>
@@ -220,8 +212,8 @@ export default function Index() {
             Looking to do more with your money? Let’s help you kickstart your investment journey.
           </Text>
         </div>
-        <div className="w-full flex md:flex-row flex-col justify-center gap-2 my-4 md:my-8">
-          <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
+        <div className="w-full flex md:flex-row flex-col md:justify-between gap-2 my-4 md:my-8">
+          <div className="flex flex-col md:items-start items-center gap-1">
             <img src={stepOne} alt="step-1" className="w-[50px] h-[50px]" loading="lazy" />
             <Text>Step 1</Text>
             <Text variant="h4" format="text-[#000000]" weight="extrabold">
@@ -231,7 +223,7 @@ export default function Index() {
               Select a product from our array of Investment offerings.
             </Text>
           </div>
-          <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
+          <div className="flex flex-col md:items-start items-center gap-1">
             <img src={stepTwo} alt="step-2" className="w-[50px] h-[50px]" loading="lazy" />
             <Text>Step 2</Text>
             <Text variant="h4" format="text-[#000000] font-bold">
@@ -241,7 +233,7 @@ export default function Index() {
               Simply provide us with some information about you.
             </Text>
           </div>
-          <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
+          <div className="flex flex-col md:items-start items-center gap-1">
             <img src={stepThree} alt="step-3" className="w-[50px] h-[50px]" loading="lazy" />
             <Text>Step 3</Text>
             <Text variant="h4" format="text-[#000000] font-bold">
@@ -251,7 +243,7 @@ export default function Index() {
               Put funds into your account with your debit card or bank account.
             </Text>
           </div>
-          <div className="flex flex-col basis-1/4 md:items-start items-center gap-1">
+          <div className="flex flex-col md:items-start items-center gap-1">
             <img src={stepFour} alt="step-4" className="w-[50px] h-[50px]" loading="lazy" />
             <Text>Step 4</Text>
             <Text variant="h4" format="text-[#000000] font-bold">
