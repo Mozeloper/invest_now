@@ -213,7 +213,7 @@ export default function Dashboard() {
             {showCompletionStatus && (
               <>
                 <div className="border-b-2 border-[#7B839C] w-full my-4"></div>
-                <div className="overflow-x-auto no-scrollbar py-4 w-full flex gap-8">
+                <div className="py-4 w-full flex gap-8">
                   <Carousel
                     responsiveLayout={[
                       {

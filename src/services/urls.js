@@ -35,7 +35,7 @@ export const appUrls = {
   maritalStatusURL: "api/v2/marital-status-type/list",
   saveBioDataURL: "api/v2/customers/save-profile",
   employementStatusURL: "api/v2/employment-status-type/list",
-  salaryBandURL: "api/v2/salary-range-type/list",
+  salaryBandURL: "api/v2/income-band-type/list",
   employementDetailsURL: "api/v2/customers/save-employment-details",
   noReasonTinURL: "api/v2/no-tin-reason-type/list",
   saveSelfCertificationURL: "api/v2/customers/save-self-certification",
