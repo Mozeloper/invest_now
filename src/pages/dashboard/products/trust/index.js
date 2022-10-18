@@ -70,25 +70,11 @@ export default function Trust() {
                                 key={index}
                                 className={`h-[400px] w-[290px] bg-[${info?.bg_color ?? "#EEECFE"}] rounded-lg p-2`}
                               >
-                                <div
-                                  style={{
-                                    backgroundImage: `url(${info?.imageUrlHome})`,
-                                    height: "171px",
-                                    width: "270px",
-                                    backgroundSize: "cover",
-                                    backgroundRepeat: "no-repeat",
-                                    borderRadius: "10px",
-                                    padding: "3px",
-                                    display: "flex",
-                                    flexDirection: "column",
-                                  }}
-                                >
-                                  {/* <div className="p-2 mt-3 bg-BACKGROUND_GREEN w-[60%] rounded-lg self-end flex gap-3 justify-end">
-                                  <p className="text-sm font-bold text-white">2012</p>
-                                  <p className="text-sm font-bold text-white">Gains</p>
-                                  <p className="text-sm font-bold text-white">22.5%</p>
-                                </div> */}
-                                </div>
+                                <img
+                                  src={info?.imageUrlHome}
+                                  alt="product_img"
+                                  className="rounded-lg min-w-[270px] h-[171px]"
+                                />
                                 <div className="mt-3 flex flex-col justify-between h-[170px]">
                                   <div
                                     dangerouslySetInnerHTML={{

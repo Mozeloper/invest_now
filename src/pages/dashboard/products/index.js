@@ -34,7 +34,7 @@ export default function Products() {
 
   return (
     <>
-      <MessageModal modalHeight="300px" modalWidth="400px" isOpen={showModal} bgColor={true}>
+      <MessageModal modalHeight="300px" modalWidth="350px" isOpen={showModal} bgColor={true}>
         <div className="flex flex-col justify-center h-full items-center">
           <Text variant="h2" weight="bold">
             Kyc Not Completed
