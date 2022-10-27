@@ -82,16 +82,27 @@ const WebcamCapture = ({ handleCloseWebCaptureUploadModals }) => {
       )}
       {image !== "" && (
         <>
-          <img src={image} alt="img" className="h-[200px] w-[230px]" />
-          <div className="flex flex-col gap-1 w-[50%]">
-            <Button
-              onClick={() => utilityBillSefie()}
-              title="Save Picture"
-              className="cursor-pointer w-full"
-              type="button"
-              isLoading={dashboardReducer?.profileIsUploading}
-            />
-            <Button onClick={() => setImage("")} title="Retake" className="cursor-pointer w-full" type="button" />
+          <img src={image} alt="img" className="h-[300px] w-[300px] mb-2" />
+          <div className="flex justify-center gap-3 w-[300px]">
+            <div className="w-[50%]">
+              <Button
+                title="retake"
+                className="font-extrabold border border-[#65666A]"
+                type="button"
+                textColor="#65666A"
+                backgroundColor="none"
+                onClick={() => setImage("")}
+              />
+            </div>
+            <div className="w-[50%]">
+              <Button
+                onClick={() => utilityBillSefie()}
+                isLoading={dashboardReducer?.profileIsUploading}
+                title="Save Picture"
+                className="cursor-pointer w-full"
+                type="button"
+              />
+            </div>
           </div>
         </>
       )}
@@ -270,7 +281,7 @@ export default function UploadUtilityBill({ handleCloseModals }) {
                 {images !== "" && (
                   <div className="flex flex-col items-center justify-center gap-4">
                     <img src={imageList} alt="img_preview" className="h-[300px] w-[300px]" />
-                    <div className="flex justify-center gap-3  w-[300px]">
+                    <div className="flex justify-center gap-3 w-[300px]">
                       <div className="w-[50%]">
                         <Button
                           title="retake"
