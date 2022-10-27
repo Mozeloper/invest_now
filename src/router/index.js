@@ -45,28 +45,12 @@ import FurtherProductsUpload from "../pages/dashboard/products/buyProductWrapper
 import ReccuringFunding from "../pages/dashboard/reccuringFunding";
 import SingleReccuringFunding from "../pages/dashboard/reccuringFunding/singleReccuringFunding";
 import WrapperLayout from "../components/LandingPageLayout";
-// import FixedIncomeFund from "../pages/landingPages/mutualFunds/fixedIncomeFund";
-import EquityFund from "../pages/landingPages/mutualFunds/equityFund";
-import MoneyMarketFund from "../pages/landingPages/mutualFunds/moneyMarketFund";
-import BalancedFund from "../pages/landingPages/mutualFunds/balancedFund";
-import WealthWomenFund from "../pages/landingPages/mutualFunds/wealthWomenFund";
-import SkukFund from "../pages/landingPages/mutualFunds/skukFund";
-import NigerianEurobandFund from "../pages/landingPages/mutualFunds/nigerianEurobandFund";
-import EducationTrust from "../pages/landingPages/trust/educationTrust";
-import NigeriaDiasporaTrust from "../pages/landingPages/trust/nigeriaDiasporaTrust";
-import PrivateInvestment from "../pages/landingPages/trust/privateInvestment";
-import StockTrading from "../pages/landingPages/securities/stockTrading";
-import Utrace from "../pages/landingPages/securities/utrace";
-import WeeklyInvestment from "../pages/landingPages/analysis/weeklyInvestment";
-import PanAfricanMonitor from "../pages/landingPages/analysis/panAfricanMonitor";
-import DailyPriceList from "../pages/landingPages/analysis/dailyPriceList";
-import InterestCalcuator from "../pages/landingPages/analysis/interestCalcuator";
-import MutualFundReturns from "../pages/landingPages/analysis/mutualFundReturns";
 import LandingPageProduct from "../pages/landingPages/products";
 import FrequentlyAskedQuestion from "../pages/landingPages/frequentlyAskedQuestion";
 import ContactUsForm from "../pages/landingPages/ContactUsForm";
 import PrivacyStatement from "../pages/landingPages/privacyStatement";
 import TermsandConditions from "../pages/landingPages/termsAndConditions";
+import CreateLoan from "../pages/dashboard/loans/createLoan";
 
 export default function AppRoute() {
   return (
@@ -80,22 +64,6 @@ export default function AppRoute() {
             <Route path="/privacy_statement" element={<PrivacyStatement />} />
             <Route path="/terms_and_conditions" element={<TermsandConditions />} />
             <Route path="/contact_us_form" element={<ContactUsForm />} />
-            {/* <Route path="/Mutual_Funds/equity_fund" element={<EquityFund />} />
-            <Route path="/Mutual_Funds/money_market_fund" element={<MoneyMarketFund />} />
-            <Route path="/Mutual_Funds/balanced_fund" element={<BalancedFund />} />
-            <Route path="/Mutual_Funds/wealth_for_women_funds" element={<WealthWomenFund />} />
-            <Route path="/Mutual_Funds/skuk_fund" element={<SkukFund />} />
-            <Route path="/Mutual_Funds/nigerian_euroband_fund" element={<NigerianEurobandFund />} />
-            <Route path="/trust/education_trust" element={<EducationTrust />} />
-            <Route path="/trust/nigerian_diaspora_trust" element={<NigeriaDiasporaTrust />} />
-            <Route path="/trust/private_investment" element={<PrivateInvestment />} />
-            <Route path="/securities/stock_trading" element={<StockTrading />} />
-            <Route path="/securities/utrace" element={<Utrace />} />
-            <Route path="/analysis/weekly_investment_view" element={<WeeklyInvestment />} />
-            <Route path="/analysis/pan_african_monitor" element={<PanAfricanMonitor />} />
-            <Route path="/analysis/daily_price_list" element={<DailyPriceList />} />
-            <Route path="/analysis/interest_calculator" element={<InterestCalcuator />} />
-            <Route path="/analysis/mutual_funds_return" element={<MutualFundReturns />} /> */}
           </Route>
           <Route element={<LoginLayout />}>
             <Route path="/login" element={<Login />} />
@@ -133,6 +101,7 @@ export default function AppRoute() {
           <Route path="/active_reccurent_payments" element={<ReccuringFunding />} />
           <Route path="/active_reccurent_payments/:id/:customer_id" element={<SingleReccuringFunding />} />
           <Route path="/loans" element={<Loans />} />
+          <Route path="/loans/request_loan" element={<CreateLoan />} />
           <Route path="/statements" element={<Reports />} />
           <Route path="/settings/*" element={<Settings />}>
             <Route path="accounts" element={<Accounts />} />

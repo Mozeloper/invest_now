@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Text from "../../../../components/Typography/Typography";
-import NotificationIcon from "../../../../assets/icons/notification_icon.svg";
+// import NotificationIcon from "../../../../assets/icons/notification_icon.svg";
 import ratesIcon from "../../../../assets/icons/rates.svg";
 // import { SearchBar } from "../../../../components/SearchBar";
 import SideLeftModal from "../../../../components/modals/SideLeftModal";
@@ -28,7 +28,7 @@ export default function Header() {
       </NotificationModal>
       <div className="bg-BACKGROUND_WHITE h-[88px] fixed w-full lg:w-[84%] z-50">
         <div className="hidden h-[88px] w-full lg:block p-4">
-          <div className="w-full flex gap-4 justify-end items-center">
+          <div className="w-full flex gap-4 justify-end items-center mt-4">
             {/* <SearchBar placeholder="search transactions, products, portfolios e.t.c" /> */}
             <div
               onClick={() => setViewDailyRates(true)}
@@ -37,12 +37,12 @@ export default function Header() {
               <img src={ratesIcon} alt="notification_icon" className="w-[22px] h-[12px]" />
               <Text variant="h4">View daily rates</Text>
             </div>
-            <img
+            {/* <img
               onClick={() => setNotificationBar(true)}
               src={NotificationIcon}
               alt="notification_icon"
               className="w-[40px] h-[40px] cursor-pointer"
-            />
+            /> */}
           </div>
         </div>
         <div className="lg:pl-[16%] lg:hidden h-[88px] w-full flex justify-between">
@@ -60,12 +60,12 @@ export default function Header() {
               <img src={ratesIcon} alt="rate_icon" className="w-[22px] h-[12px]" />
               <Text variant="h4">View daily rates</Text>
             </div>
-            <img
+            {/* <img
               onClick={() => setNotificationBar(true)}
               src={NotificationIcon}
               alt="notification_icon"
               className="w-[40px] h-[40px] cursor-pointer"
-            />
+            /> */}
           </div>
         </div>
       </div>

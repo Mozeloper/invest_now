@@ -270,16 +270,31 @@ export default function UploadPassport({ handleCloseModals }) {
                 {images !== "" && (
                   <div className="flex flex-col items-center justify-center gap-4">
                     <img src={imageList} alt="img_preview" className="h-[300px] w-[300px]" />
-                    <div className="w-[50%]">
-                      <Button
-                        onClick={() => {
-                          utilityBillUpload();
-                        }}
-                        isLoading={updateKycSliceReducer?.isLoadingPassport}
-                        title="Save Picture"
-                        className="cursor-pointer w-full"
-                        type="button"
-                      />
+                    <div className="flex justify-center gap-3  w-[300px]">
+                      <div className="w-[50%]">
+                        <Button
+                          title="retake"
+                          className="font-extrabold border border-[#65666A]"
+                          type="button"
+                          textColor="#65666A"
+                          backgroundColor="none"
+                          onClick={() => {
+                            onImageUpload();
+                            setImages("");
+                          }}
+                        />
+                      </div>
+                      <div className="w-[50%]">
+                        <Button
+                          onClick={() => {
+                            utilityBillUpload();
+                          }}
+                          isLoading={updateKycSliceReducer?.isLoadingPassport}
+                          title="Save Picture"
+                          className="cursor-pointer w-full"
+                          type="button"
+                        />
+                      </div>
                     </div>
                   </div>
                 )}

@@ -35,7 +35,7 @@ export default function LandingHeader() {
       <SideRightModal modalWidth="500px" bgColor={true} isOpen={viewDailyRates}>
         <ViewDailyRates setViewDailyRates={setViewDailyRates} />
       </SideRightModal>
-      <div className="z-20 w-full bg-BACKGROUND_WHITE shadow flex gap-8 lg:gap-16 justify-between header">
+      <div className="z-20 w-full bg-BACKGROUND_WHITE flex gap-8 lg:gap-16 justify-between header">
         <img
           onClick={() => navigate("/")}
           src={Logo}

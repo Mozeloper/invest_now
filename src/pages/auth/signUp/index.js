@@ -1,11 +1,11 @@
 import React from "react";
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
-import { MultiStepForm, Step } from "react-multi-form";
 import { Slide } from "react-slideshow-image";
 import "react-slideshow-image/dist/styles.css";
 import banner from "../../../assets/images/secondBg-login.png";
 import LoginBgImg from "../../../assets/images/login-bg.png";
 import Logosmall from "../../../assets/icons/logo.svg";
+import StepsIndicatorSignup from "./components/StepsIndicatorSignup";
 
 const slideImages = [
   {
@@ -27,9 +27,8 @@ export default function SignUpLayout() {
             <img onClick={() => navigate("/")} src={Logosmall} alt="logo" className="cursor-pointer" />
           </div>
           <div className="overflow-x-auto overflow-hidden no-scrollbar md:px-[10%] px-[5%] md:w-[90%] w-full">
-            <MultiStepForm
-              accentColor="#E32526"
-              activeStep={`${
+            <StepsIndicatorSignup
+              currentStep={
                 pathname === "/bvn_verification"
                   ? 1
                   : pathname === "/profile_update"
@@ -39,12 +38,8 @@ export default function SignUpLayout() {
                   : pathname === "/create_password"
                   ? 3
                   : 4
-              }`}
-            >
-              <Step label="BVN verification"></Step>
-              <Step label="Profile update"></Step>
-              <Step label="Password set up"></Step>
-            </MultiStepForm>
+              }
+            />
           </div>
           <div className="wrapper flex flex-col gap-4">
             <div className="mt-4 md:basis-3/4" data-aos="fade-up" data-aos-duration="2000">
