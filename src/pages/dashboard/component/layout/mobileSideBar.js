@@ -212,9 +212,7 @@ export default function MobileSideBar() {
                 Request embassy Statement
               </Text>
             </NavLink>
-            <NavLink
-              to="/contact_relationship_manager"
-              className={({ isActive }) => (isActive ? "bg-[#FFE5E5]" : "")}
+            <div
               style={{
                 width: "100%",
                 padding: "10px",
@@ -226,7 +224,7 @@ export default function MobileSideBar() {
             >
               <img src={contact} alt="dashboard_icon" />
               <Text variant="body"> Contact Relationship manager</Text>
-            </NavLink>
+            </div>
           </div>
           <div
             onClick={() => handlelogout()}

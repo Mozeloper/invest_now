@@ -32,8 +32,8 @@ import Trust from "../pages/dashboard/products/trust";
 import Securities from "../pages/dashboard/products/securities";
 import OtpForgetPassword from "../pages/auth/forgetPassword/otpForgetPassword";
 import ChangePasswordForgetPassword from "../pages/auth/forgetPassword/changePasswordForgetPassword";
-import RequestEmbassy from "../pages/dashboard/requestEmbassy";
-import RelationshipManager from "../pages/dashboard/relationshipManager";
+// import RequestEmbassy from "../pages/dashboard/requestEmbassy";
+// import RelationshipManager from "../pages/dashboard/relationshipManager";
 import BuyProductWrapper from "../pages/dashboard/products/buyProductWrapper";
 import BuyProducts from "../pages/dashboard/products/buyProductWrapper/buyProduct";
 import NewBankAccount from "../pages/dashboard/products/buyProductWrapper/newBankAccount";
@@ -109,8 +109,8 @@ export default function AppRoute() {
             <Route path="faq" element={<Faq />} />
             <Route path="contact_us" element={<ContactUs />} />
           </Route>
-          <Route path="/request_embassy_statement" element={<RequestEmbassy />} />
-          <Route path="/contact_relationship_manager" element={<RelationshipManager />} />
+          {/* <Route path="/request_embassy_statement" element={<RequestEmbassy />} /> */}
+          {/* <Route path="/contact_relationship_manager" element={<RelationshipManager />} /> */}
         </Route>
         {/* <Route path="/products/open_account/*" element={<OpenAccount />} /> */}
         <Route path="/Not-found" element={<NotFound />} />

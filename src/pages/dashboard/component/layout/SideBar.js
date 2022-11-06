@@ -22,6 +22,10 @@ import ProfilePicSetup from "./other/profilePicSetup";
 import { handleCustomerDetails, handleDeleteProfilePicture } from "../../../../store/slices/dashboardSlice";
 import { reintializeState } from "../../../../store/slices/buyProductSlice";
 import Button from "../../../../components/Button";
+import CustomerManager from "./other/customerManager";
+import EmbassyStatement from "./other/embassyStatement";
+import ViewEmbassy from "./other/viewEmbassy";
+import RequestEmbassy from "./other/requestEmbassy";
 
 export default function SideBar() {
   const userDetails = useSelector((state) => state?.authReducer.authedUser);
@@ -38,6 +42,10 @@ export default function SideBar() {
   const [openModal, setOpenModal] = useState({
     upload_profile_pic: false,
     delete_profile_pic: false,
+    relationship_manager: false,
+    embassy_statement: false,
+    view_embassy_statement: false,
+    request_embassy_statement: false,
     message: null,
   });
 
@@ -62,6 +70,30 @@ export default function SideBar() {
           [type]: true,
         }));
         break;
+      case "relationship_manager":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "embassy_statement":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "view_embassy_statement":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "request_embassy_statement":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
       case "delete_profile_pic":
         setOpenModal((prev) => ({
           ...prev,
@@ -76,6 +108,30 @@ export default function SideBar() {
   const handleCloseModals = (type) => {
     switch (type) {
       case "upload_profile_pic":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "relationship_manager":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "embassy_statement":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "view_embassy_statement":
+        setOpenModal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "request_embassy_statement":
         setOpenModal((prev) => ({
           ...prev,
           [type]: false,
@@ -252,27 +308,22 @@ export default function SideBar() {
           </div>
           <div className="border-b border-[#BCBCBC] w-full m-4"></div>
           <div className="w-full">
-            <NavLink
-              to="/request_embassy_statement"
-              className={({ isActive }) => (isActive ? "bg-[#FFE5E5]" : "")}
+            <div
+              onClick={() => handleOpenModals("embassy_statement")}
               style={{
                 width: "100%",
                 padding: "10px",
                 borderRadius: "8px",
                 display: "flex",
                 gap: "1rem",
-                fontSize: "",
+                cursor: "pointer",
               }}
             >
               <img loading="lazy" src={embassy} alt="dashboard_icon" />
-              <Text variant="body">
-                {""}
-                Request embassy Statement
-              </Text>
-            </NavLink>
-            <NavLink
-              to="/contact_relationship_manager"
-              className={({ isActive }) => (isActive ? "bg-[#FFE5E5]" : "")}
+              <Text variant="body">Request embassy Statement</Text>
+            </div>
+            <div
+              onClick={() => handleOpenModals("relationship_manager")}
               style={{
                 width: "100%",
                 padding: "10px",
@@ -280,11 +331,12 @@ export default function SideBar() {
                 borderRadius: "8px",
                 display: "flex",
                 gap: "1rem",
+                cursor: "pointer",
               }}
             >
               <img src={contact} alt="dashboard_icon" />
               <Text variant="body"> Contact Relationship manager</Text>
-            </NavLink>
+            </div>
           </div>
           <div
             onClick={() => handlelogout()}
@@ -308,6 +360,18 @@ export default function SideBar() {
       </div>
       <MessageModal bgColor={true} modalHeight="450px" isOpen={openModal?.upload_profile_pic}>
         <ProfilePicSetup handleCloseModals={handleCloseModals} />
+      </MessageModal>
+      <MessageModal modalHeight="450px" isOpen={openModal?.relationship_manager}>
+        <CustomerManager handleCloseModals={handleCloseModals} />
+      </MessageModal>
+      <MessageModal modalWidth="600px" modalHeight="450px" isOpen={openModal?.embassy_statement}>
+        <EmbassyStatement handleCloseModals={handleCloseModals} handleOpenModals={handleOpenModals} />
+      </MessageModal>
+      <MessageModal modalHeight="95vh" isOpen={openModal?.view_embassy_statement}>
+        <ViewEmbassy handleCloseModals={handleCloseModals} handleOpenModals={handleOpenModals} />
+      </MessageModal>
+      <MessageModal modalHeight="100vh" isOpen={openModal?.request_embassy_statement}>
+        <RequestEmbassy handleCloseModals={handleCloseModals} handleOpenModals={handleOpenModals} />
       </MessageModal>
       <MessageModal bgColor={true} modalHeight="200px" modalWidth="300px" isOpen={openModal?.delete_profile_pic}>
         <div className="flex flex-col justify-center items-center w-full">
