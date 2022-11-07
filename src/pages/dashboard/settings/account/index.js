@@ -7,6 +7,7 @@ import UpdateKyc from "./updateKyc";
 import PaymentCards from "./paymentCards";
 import LinkInvestmentaccount from "./linkInvestmentAccount";
 import ResetPassword from "./resetPassword";
+import CustomerInformationUpdate from "./customerInformationUpdate";
 
 export default function Accounts() {
   const navigate = useNavigate();
@@ -176,6 +177,9 @@ export default function Accounts() {
       </MessageModal>
       <MessageModal isOpen={openModal?.change_password} modalHeight="auto" minWidth="300px">
         <ResetPassword handleCloseItemRouting={handleCloseItemRouting} />
+      </MessageModal>
+      <MessageModal isOpen={openModal?.information_update} modalHeight="95vh" minWidth="350px">
+        <CustomerInformationUpdate handleCloseItemRouting={handleCloseItemRouting} />
       </MessageModal>
     </>
   );

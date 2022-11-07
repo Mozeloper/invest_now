@@ -107,7 +107,7 @@ export default function LinkInvestmentaccount({ handleCloseItemRouting }) {
                 <div className="w-full mt-4">
                   <Input placeholder="Select Bank" type="text" name="bankName" handleChange={handleChange} />
                   {errors.bankName && touched.bankName ? (
-                    <Text variant="body" weight="normal" color="text-red-700">
+                    <Text variant="body" weight="normal" color="text-red">
                       {errors.bankName}
                     </Text>
                   ) : null}
@@ -116,7 +116,7 @@ export default function LinkInvestmentaccount({ handleCloseItemRouting }) {
                 <div className="w-full mt-4">
                   <Input placeholder="Account Number" type="text" name="accountNumber" handleChange={handleChange} />
                   {errors.accountNumber && touched.accountNumber ? (
-                    <Text variant="body" weight="normal" color="text-red-700">
+                    <Text variant="body" weight="normal" color="text-red">
                       {errors.accountNumber}
                     </Text>
                   ) : null}
@@ -124,7 +124,7 @@ export default function LinkInvestmentaccount({ handleCloseItemRouting }) {
                 <div className="w-full mt-4">
                   <Input placeholder="Account Name" type="text" name="accountName" handleChange={handleChange} />
                   {errors.accountName && touched.accountName ? (
-                    <Text variant="body" weight="normal" color="text-red-700">
+                    <Text variant="body" weight="normal" color="text-red">
                       {errors.accountName}
                     </Text>
                   ) : null}
