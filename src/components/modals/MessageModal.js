@@ -5,14 +5,28 @@ import styled from "styled-components";
 
 const portatRoot = document.getElementById("portal-root");
 
-const MessageModal = ({ children, isOpen, bgColor, minWidth, modalWidth = "500px", modalHeight = "450px" }) => {
+const MessageModal = ({
+  children,
+  isOpen,
+  bgColor,
+  minWidth,
+  modalWidth = "500px",
+  modalHeight = "450px",
+}) => {
   if (!isOpen) return null;
   return ReactDOM.createPortal(
     <Background>
       <Slide in={isOpen ?? false}>
         <div
-          className={`${bgColor ? "bg-pink" : "bg-white"} p-10 max-h-screen overflow-y-auto overflow-hidden`}
-          style={{ minWidth: minWidth, borderRadius: 10, width: modalWidth, height: modalHeight }}
+          className={`${
+            bgColor ? "bg-pink" : "bg-white"
+          } p-10 max-h-screen overflow-y-auto overflow-hidden`}
+          style={{
+            minWidth: minWidth,
+            borderRadius: 10,
+            width: modalWidth,
+            height: modalHeight,
+          }}
         >
           {children}
         </div>
@@ -32,7 +46,7 @@ const Background = styled.div`
   left: 0;
   background: rgba(0, 0, 0, 0.25);
   display: flex;
-  z-index: 9999;
+  z-index: 99;
   justify-content: center;
   align-items: center;
 `;

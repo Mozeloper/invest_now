@@ -154,32 +154,61 @@ export default function Accounts() {
           {itemTitles.map((list, index) => {
             return (
               <div className="px-[2%] flex flex-col" key={index}>
-                <div onClick={() => handleOpenItemRouting(list?.type)} className="flex justify-between cursor-pointer">
+                <div
+                  onClick={() => handleOpenItemRouting(list?.type)}
+                  className="flex justify-between cursor-pointer"
+                >
                   <Text weight="normal" variant="body" color="text-headerColor">
                     {list?.title}
                   </Text>
                   <img src={rightArrow} alt="right_arrow" />
                 </div>
-                {index !== 7 && <div className="border-b border-[#BCBCBC] w-full my-5"></div>}
+                {index !== 7 && (
+                  <div className="border-b border-[#BCBCBC] w-full my-5"></div>
+                )}
               </div>
             );
           })}
         </div>
       </div>
-      <MessageModal isOpen={openModal?.update_kyc} modalHeight="auto" minWidth="320px">
+      <MessageModal
+        isOpen={openModal?.update_kyc}
+        modalHeight="auto"
+        minWidth="320px"
+      >
         <UpdateKyc handleCloseItemRouting={handleCloseItemRouting} />
       </MessageModal>
-      <MessageModal isOpen={openModal?.payment_card} modalHeight="auto" minWidth="300px">
+      <MessageModal
+        isOpen={openModal?.payment_card}
+        modalHeight="auto"
+        minWidth="300px"
+      >
         <PaymentCards handleCloseItemRouting={handleCloseItemRouting} />
       </MessageModal>
-      <MessageModal isOpen={openModal?.link_investment_accounts} modalHeight="auto" minWidth="300px">
-        <LinkInvestmentaccount handleCloseItemRouting={handleCloseItemRouting} />
+      <MessageModal
+        isOpen={openModal?.link_investment_accounts}
+        modalHeight="auto"
+        modalWidth="700px"
+      >
+        <LinkInvestmentaccount
+          handleCloseItemRouting={handleCloseItemRouting}
+        />
       </MessageModal>
-      <MessageModal isOpen={openModal?.change_password} modalHeight="auto" minWidth="300px">
+      <MessageModal
+        isOpen={openModal?.change_password}
+        modalHeight="auto"
+        minWidth="300px"
+      >
         <ResetPassword handleCloseItemRouting={handleCloseItemRouting} />
       </MessageModal>
-      <MessageModal isOpen={openModal?.information_update} modalHeight="95vh" minWidth="350px">
-        <CustomerInformationUpdate handleCloseItemRouting={handleCloseItemRouting} />
+      <MessageModal
+        isOpen={openModal?.information_update}
+        modalHeight="95vh"
+        minWidth="350px"
+      >
+        <CustomerInformationUpdate
+          handleCloseItemRouting={handleCloseItemRouting}
+        />
       </MessageModal>
     </>
   );

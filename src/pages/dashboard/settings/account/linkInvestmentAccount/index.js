@@ -1,20 +1,31 @@
 import React, { useState } from "react";
-import { Formik, Form } from "formik";
-import * as Yup from "yup";
+
 import closeBtn from "../../../../../assets/icons/close_btn.svg";
-import Button from "../../../../../components/Button";
-import Input from "../../../../../components/formFields/inputs";
+// import Button from "../../../../../components/Button";
 import MessageModal from "../../../../../components/modals/MessageModal";
 import Text from "../../../../../components/Typography/Typography";
+import ConfirmDialog from "./components/confirmDialog";
+import Otp from "./components/otp";
 
 export default function LinkInvestmentaccount({ handleCloseItemRouting }) {
   const [openModal, setOpenMpdal] = useState({
-    add_investment_account: false,
+    confirm_otp: false,
+    confirm_dialog: false,
   });
+
+  const [linkUnlink, setLinkUnlink] = useState("");
+
+  const [isNotEmpty] = useState(true);
 
   const handleOpenCardModal = (type) => {
     switch (type) {
-      case "add_investment_account":
+      case "confirm_otp":
+        setOpenMpdal((prev) => ({
+          ...prev,
+          [type]: true,
+        }));
+        break;
+      case "confirm_dialog":
         setOpenMpdal((prev) => ({
           ...prev,
           [type]: true,
@@ -27,7 +38,13 @@ export default function LinkInvestmentaccount({ handleCloseItemRouting }) {
 
   const handleCloseCardModal = (type) => {
     switch (type) {
-      case "add_investment_account":
+      case "confirm_otp":
+        setOpenMpdal((prev) => ({
+          ...prev,
+          [type]: false,
+        }));
+        break;
+      case "confirm_dialog":
         setOpenMpdal((prev) => ({
           ...prev,
           [type]: false,
@@ -37,12 +54,6 @@ export default function LinkInvestmentaccount({ handleCloseItemRouting }) {
         break;
     }
   };
-
-  const investmentAccountSchema = Yup.object().shape({
-    bankName: Yup.string().required("Bank Number is required"),
-    accountName: Yup.string().required("Account Name is Required"),
-    accountNumber: Yup.string().required("Account Number is required"),
-  });
 
   return (
     <>
@@ -56,86 +67,108 @@ export default function LinkInvestmentaccount({ handleCloseItemRouting }) {
       </div>
       <div className="w-full flex flex-col gap-2">
         <Text variant="h2" weight="bold">
-          Linked Investment Accounts
+          My Accounts
         </Text>
-
-        <Text variant="h4" weight="normal">
-          Create an Investment Account
-        </Text>
+        {isNotEmpty && (
+          <Text variant="h4" weight="normal">
+            Below is the list of all your united capital accounts
+          </Text>
+        )}
       </div>
-      <div className="flex flex-col mt-10 text-center mx-auto justify-center h-[50%] items-center w-[85%]">
-        <Text variant="h4" weight="bold">
-          You dont have investment account. Click on the button below to add
-        </Text>
-        <div className="flex justify-start mt-8 w-full">
-          <Button
-            onClick={() => handleOpenCardModal("add_investment_account")}
-            title="Add New Card"
-            className="cursor-pointer w-full"
-            type="button"
-          />
+      {isNotEmpty ? (
+        <div className="w-full mt-4">
+          <table className="w-full">
+            <thead className="border-b border-gray">
+              <tr>
+                <td className="text-[#667085] text-left whitespace-nowrap">
+                  Account
+                </td>
+                <td className="text-[#667085] text-left whitespace-nowrap">
+                  System
+                </td>
+                <td className="text-[#667085] text-left whitespace-nowrap"></td>
+              </tr>
+            </thead>
+            <tbody className="w-full">
+              <tr className="w-full border-b border-gray">
+                <td className="text-[#667085] py-3 whitespace-nowrap">
+                  OKUSANYE ABIOLA MARY
+                </td>
+                <td className="text-[#667085] py-3 whitespace-nowrap">
+                  SECURITIES
+                </td>
+                <td className="whitespace-nowrap py-3 text-[#667085]">
+                  <button
+                    className="cursor-pointer w-full bg-primary border-none text-white p-1 cursor-pointer rounded-md"
+                    type="button"
+                    onClick={() => {
+                      setLinkUnlink("unlink");
+                      handleOpenCardModal("confirm_dialog");
+                    }}
+                  >
+                    UNLINK
+                  </button>
+                </td>
+              </tr>
+              <tr className="w-full border-b border-gray">
+                <td className="text-[#667085] py-3 whitespace-nowrap">
+                  OKUSANYE ABIOLA MARY
+                </td>
+                <td className="text-[#667085] py-3 whitespace-nowrap">
+                  ASSEST MANAGEMENT
+                </td>
+                <td className="whitespace-nowrap py-3  text-[#667085]">
+                  <button
+                    className="cursor-pointer w-full bg-BACKGROUND_GREEN border-none text-white p-1 cursor-pointer rounded-md"
+                    type="button"
+                    onClick={() => {
+                      setLinkUnlink("link");
+                      handleOpenCardModal("confirm_dialog");
+                    }}
+                  >
+                    LINK
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </div>
-      <MessageModal isOpen={openModal?.add_investment_account} modalHeight="auto" minWidth="300px">
-        <div className="flex justify-end w-full">
-          <img
-            onClick={() => handleCloseCardModal("add_investment_account")}
-            src={closeBtn}
-            alt="close_btn"
-            className="h-[40px] w-[40px] cursor-pointer"
-          />
+      ) : (
+        <div className="flex flex-col mt-2 text-center mx-auto justify-center h-[50%] items-center w-[85%]">
+          <Text variant="h4" weight="bold">
+            You dont have investment account. Click on the button below to add
+          </Text>
+          {/* <div className="flex justify-start mt-8 w-full">
+            <Button
+              onClick={() => handleOpenCardModal("confirm_otp")}
+              title="Add New Card"
+              className="cursor-pointer w-full"
+              type="button"
+            />
+          </div> */}
         </div>
-        <Text variant="h2" weight="bold">
-          Add a bank Account
-        </Text>
-        <Formik
-          initialValues={{
-            bankName: "",
-            accountNumber: "",
-            accountName: "",
-          }}
-          validationSchema={investmentAccountSchema}
-          onSubmit={async (values) => {
-            console.log(values);
-            handleCloseCardModal("add_investment_account");
-            handleCloseItemRouting("link_investment_accounts");
-          }}
-        >
-          {({ handleSubmit, handleChange, isSubmitting, touched, errors }) => (
-            <>
-              <Form onSubmit={handleSubmit} className="w-[100%]">
-                <div className="w-full mt-4">
-                  <Input placeholder="Select Bank" type="text" name="bankName" handleChange={handleChange} />
-                  {errors.bankName && touched.bankName ? (
-                    <Text variant="body" weight="normal" color="text-red">
-                      {errors.bankName}
-                    </Text>
-                  ) : null}
-                </div>
-
-                <div className="w-full mt-4">
-                  <Input placeholder="Account Number" type="text" name="accountNumber" handleChange={handleChange} />
-                  {errors.accountNumber && touched.accountNumber ? (
-                    <Text variant="body" weight="normal" color="text-red">
-                      {errors.accountNumber}
-                    </Text>
-                  ) : null}
-                </div>
-                <div className="w-full mt-4">
-                  <Input placeholder="Account Name" type="text" name="accountName" handleChange={handleChange} />
-                  {errors.accountName && touched.accountName ? (
-                    <Text variant="body" weight="normal" color="text-red">
-                      {errors.accountName}
-                    </Text>
-                  ) : null}
-                </div>
-                <div className="flex justify-start mt-8 lg:w-[50%] w-full">
-                  <Button title="Submit" className="cursor-pointer w-full" type="submit" isLoading={isSubmitting} />
-                </div>
-              </Form>
-            </>
-          )}
-        </Formik>
+      )}
+      <MessageModal
+        isOpen={openModal?.confirm_otp}
+        modalHeight="auto"
+        minWidth="300px"
+      >
+        <Otp
+          handleCloseCardModal={handleCloseCardModal}
+          handleCloseItemRouting={handleCloseItemRouting}
+        />
+      </MessageModal>
+      <MessageModal
+        isOpen={openModal?.confirm_dialog}
+        modalHeight="auto"
+        minWidth="300px"
+      >
+        <ConfirmDialog
+          handleCloseCardModal={handleCloseCardModal}
+          handleCloseItemRouting={handleCloseItemRouting}
+          handleOpenCardModal={handleOpenCardModal}
+          linkUnlink={linkUnlink}
+        />
       </MessageModal>
     </>
   );
